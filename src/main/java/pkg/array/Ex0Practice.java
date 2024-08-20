@@ -10,12 +10,20 @@ public class Ex0Practice
     // Expected: 1, 3, 5, 6 on left side, 9, 10, 13 on right side
     public static int[] classify(int arr[], int n)
     {
-        int trace = -1;
-        for (int i = arr.length; i >= 0; i--)
+        int trace = arr.length;
+        int i;
+        for (i = arr.length - 1; i >= 0; i--)
         {
-
+            if (arr[i] > n)
+            {
+                trace--;
+                int temp = arr[i];
+                arr[i] = arr[trace];
+                arr[trace] = temp;
+            }
         }
-        return new int[] { 0 };
+        System.out.println("Stopped at " + arr[trace]);
+        return arr;
     }
 
 

@@ -11,7 +11,8 @@ public class Ex1
     public static int[] classify(int arr[], int n)
     {
         int trace = -1;
-        for (int i = 0; i < arr.length; i++)
+        int i;
+        for (i = 0; i < arr.length; i++)
         {
             if (arr[i] > n)
             {
@@ -21,6 +22,7 @@ public class Ex1
                 arr[trace] = temp;
             }
         }
+        System.out.println("Stopped at " + arr[trace]);
         return arr;
     }
 
