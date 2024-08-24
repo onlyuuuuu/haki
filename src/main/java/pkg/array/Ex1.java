@@ -10,19 +10,7 @@ public class Ex1
     // Expected: 9, 10, 13 on left side. 1, 3, 5, 6 on right side
     public static int[] classify(int arr[], int n)
     {
-        int trace = -1;
-        int i;
-        for (i = 0; i < arr.length; i++)
-        {
-            if (arr[i] > n)
-            {
-                trace++;
-                int temp = arr[i];
-                arr[i] = arr[trace];
-                arr[trace] = temp;
-            }
-        }
-        System.out.println("Stopped at " + arr[trace]);
+
         return arr;
     }
 
