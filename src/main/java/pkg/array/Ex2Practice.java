@@ -6,7 +6,18 @@ public class Ex2Practice
 {
     public static int removeDuplicates(int[] arr)
     {
-        return 0;
+        int trace = arr.length - 1;
+        for (int i = arr.length - 2; i >= 0; i--)
+        {
+            if (arr[i] == arr[trace] - 1)
+            {
+                trace--;
+                int temp = arr[i];
+                arr[i] = arr[trace];
+                arr[trace] = temp;
+            }
+        }
+        return trace;
     }
 
     public static void main(String[] args)
