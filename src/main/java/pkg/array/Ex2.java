@@ -6,18 +6,7 @@ public class Ex2
 {
     public static int removeDuplicates(int[] arr)
     {
-        int trace = 0;
-        for (int i = 1; i < arr.length; i++)
-        {
-            if (arr[i] == arr[trace] + 1)
-            {
-                trace++;
-                int temp = arr[i];
-                arr[i] = arr[trace];
-                arr[trace] = temp;
-            }
-        }
-        return trace;
+        return 0;
     }
 
     public static void main(String[] args)
