@@ -10,18 +10,7 @@ public class Ex0Practice
     // Expected: 1, 3, 5, 6 on left side, 9, 10, 13 on right side
     public static int classify(int arr[], int m)
     {
-        int trace = arr.length;
-        for (int i = arr.length - 1; i > -1; i--)
-        {
-            if (arr[i] > m)
-            {
-                trace--;
-                int temp = arr[i];
-                arr[i] = arr[trace];
-                arr[trace] = temp;
-            }
-        }
-        return trace;
+        return 0;
     }
 
 
