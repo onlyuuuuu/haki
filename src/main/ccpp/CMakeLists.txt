@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.30)
+project(Tutorial C CXX)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+add_executable(ccpp ex1.cpp)
