@@ -1,4 +1,5 @@
 src/main/ccpp/ccpp
+src/main/ccpp/.cmake/
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
