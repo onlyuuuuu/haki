@@ -1,6 +1,7 @@
 src/main/ccpp/ccpp
 src/main/ccpp/.cmake/
 src/main/ccpp/ccpp.dir/
+src/main/ccpp/sandbox
 src/main/ccpp/ex0
 src/main/ccpp/ex1
 src/main/ccpp/ex2
