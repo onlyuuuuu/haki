@@ -23,7 +23,7 @@ int main()
     int n;
     cin >> n;
 
-    int a[n + 2];
+    long long a[n + 2];
     a[0] = 0;
     a[n + 1] = 0;
 
