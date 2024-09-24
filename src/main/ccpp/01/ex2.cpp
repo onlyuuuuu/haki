@@ -47,6 +47,25 @@ int main()
         while (a[lst.top()] >= a[i])
             lst.pop();
         l[i] = lst.top();
-        lst.push(a[i]);
+        lst.push(i);
     }
+
+    for (int i = n; i >= 1; --i)
+    {
+        while (a[rst.top()] >= a[i])
+            rst.pop();
+        r[i] = rst.top();
+        rst.push(i);
+    }
+
+    long long max = 0;
+    long long area = 0;
+    for (int i = 1; i <= n; ++i)
+    {
+        area = ((i - l[i]) + (r[i] - i) - 1) * a[i];
+        if (area > max)
+            max = area;
+    }
+
+    cout << max << endl;
 }
