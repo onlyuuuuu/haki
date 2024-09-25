@@ -18,21 +18,6 @@
 
 using namespace std;
 
-class CustomCompare
-{
-public:
-    int arr[];
-
-    CustomCompare(int arr[])
-    {
-    }
-
-    bool operator() (int, int)
-    {
-        return true;
-    }
-};
-
 int main()
 {
     int i, j, k;
@@ -49,8 +34,8 @@ int main()
         cin >> numberOfJudges;
         cin >> numberOfOppPerFight;
         int apm[numberOfJudges];
-        CustomCompare customCompare(apm);
-        priority_queue<int, vector<int>, > minHeapIndexes;
+        auto compare = [&apm] (int a, int b){ return apm[a] > apm[b]; };
+        priority_queue<int, vector<int>, decltype(compare)> minHeapIndexes(compare);
         left = 0;
         right = numberOfOppPerFight - 1;
         for (j = 0; j < numberOfOppPerFight; ++j)
@@ -60,7 +45,8 @@ int main()
         }
         for (k = j; k < numberOfJudges; ++k)
             cin >> apm[k];
-        result.append(apm[minHeapIndexes.top()] + " ");
+        result.append(to_string(apm[minHeapIndexes.top()]));
+        result.append(" ");
 
         // next
         ++left;
@@ -71,10 +57,13 @@ int main()
         {
             while (!minHeapIndexes.empty() && minHeapIndexes.top() < left)
                 minHeapIndexes.pop();
-
+            result.append(to_string(apm[minHeapIndexes.top()]));
+            result.append(" ");
             // next
             ++left;
             minHeapIndexes.push(++right);
         }
+        result.append("\n");
     }
+    cout << result << endl;
 }
