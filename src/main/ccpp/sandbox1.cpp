@@ -1,8 +1,11 @@
 #include <bits/stdc++.h>
+
 using namespace std;
+
 int temp, max, min;
 int i, j, k, l, m, n;
 int a[10000], b[10000];
+
 static auto _ = []()
 {
     ios::sync_with_stdio(false);
@@ -10,6 +13,7 @@ static auto _ = []()
     cout.tie(NULL);
     return NULL;
 }();
+
 int main()
 {
     
