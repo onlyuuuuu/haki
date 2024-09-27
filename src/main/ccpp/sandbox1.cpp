@@ -5,6 +5,7 @@ int temp, max, min, total, avg, ans, result;
 int i, j, k, l, m, n;
 const int MAX_SIZE = 10000;
 static int arr[MAX_SIZE];
+static int vec(MAX_SIZE);
 static auto compareForMax = [](int i1, int i2) { return arr[i1] < arr[i2]; };
 static auto compareForMin = [](int i1, int i2) { return arr[i1] > arr[i2]; };
 static priority_queue<int, vector<int>, decltype(compareForMax)> maxIndexHeap(compareForMax);
@@ -12,7 +13,7 @@ static priority_queue<int, vector<int>, decltype(compareForMin)> minIndexHeap(co
 static priority_queue<int> maxHeap;
 static priority_queue<int, vector<int>, greater<int>> minHeap;
 #define NEW_LINE "\n";
-#define clearVector(v,size) v.clear(); v = vector<int>(size);
+#define clearVector(v, size) v.clear(); v = vector<int>(size);
 #define clearMaxHeap(mh) mh = priority_queue<int>();
 #define clearMinHeap(mh) mh = priority_queue<int, vector<int>, greater<int>>();
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return NULL; }();
