@@ -22,32 +22,7 @@ static priority_queue<int, vector<int>, greater<int>>            minHeap;
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return NULL; }();
 int main()
 {
-    vector<int> v(10);
-    for (i = 0; i < 10; i++) v[i] = i + 1;
-    for (i = 0; i < 10; i++) cout << v[i] << " ";
-    clearv(v, 10);
-    cout << endl << v.size() << endl;
-    cout << v[0] << endl;
-
-    stack<int> st;
-    st.push(1);
-    cout << st.top() << endl;
-    //st = stack<int>();
-    st = {};
-    cout << st.size() << endl;
-    st.push(2);
-    cout << st.top() << endl;
-
-//    queue<int> q;
-//    q.push(1);
-//    cout << q.front() << endl;
-//    q = {};
-//    cout << q.size() << endl;
-//    q.push(2);
-//    cout << q.front() << endl;
-
-    deque<int> dq;
-    dq.clear();
+    
 
     cout << output;
     return 0;
