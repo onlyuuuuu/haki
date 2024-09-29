@@ -22,7 +22,7 @@ static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL
 #define cleariminh(iminh) iminh = priority_queue<int, vector<int>, decltype(compareForMin)>(compareForMin);
 int main()
 {
-
+    
 
     cout << output;
     return 0;
