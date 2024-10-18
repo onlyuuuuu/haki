@@ -54,5 +54,17 @@ int main()
         cout << item << " ";
     cout << endl;
 
+    cout << "First element: " << *_multiset.cbegin() << endl;
+    cout << "Last element:  " << *prev(_multiset.end()) << endl;
+
+    _multiset.erase(_multiset.begin());
+
+    for (int item : _multiset)
+        cout << item << " ";
+    cout << endl;
+
+    cout << "First element: " << *_multiset.cbegin() << endl;
+    cout << "Last element:  " << *prev(_multiset.end()) << endl;
+
     return 0;
 }

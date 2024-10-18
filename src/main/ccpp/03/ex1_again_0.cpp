@@ -30,6 +30,10 @@ static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL
 #define cleariminh(iminh) iminh = priority_queue<int, vector<int>, decltype(compare_for_min_or_desc)>(compare_for_min_or_desc);
 int main()
 {
+    cin >> m;
+    cin >> n;
+    cin >> k;
+
 
     return 0;
 }
