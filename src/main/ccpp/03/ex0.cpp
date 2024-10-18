@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define NEW_LINE "\n";
+static const string NEW_LINE = "\n";
 string output = "";
 int temp, max, min, total, avg, ans, result;
 int i, j, k, l, m, n;

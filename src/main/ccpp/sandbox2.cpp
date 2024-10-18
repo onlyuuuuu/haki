@@ -15,6 +15,10 @@ static priority_queue<int, vector<int>, decltype(compareForMax)> maxIndexHeap(co
 static priority_queue<int, vector<int>, decltype(compareForMin)> minIndexHeap(compareForMin);
 static priority_queue<int>                                       maxHeap;
 static priority_queue<int, vector<int>, greater<int>>            minHeap;
+static set<int>                    _set;
+static set<int, greater<int>>      _set_desc;
+static multiset<int>               _multiset;
+static multiset<int, greater<int>> _multiset_desc;
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return NULL; }();
 #define clearo(o)         obj = {};
 #define clearv(v, size)   v = vector<int>(size);
@@ -22,8 +26,42 @@ static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL
 #define cleariminh(iminh) iminh = priority_queue<int, vector<int>, decltype(compareForMin)>(compareForMin);
 int main()
 {
+//    _set.insert(10);
+//    _set.insert(5);
+//    _set.insert(12);
+//    _set.insert(3);
+//
+//    for (int item : _set)
+//        cout << item << endl;
 
+//    _set_desc.insert(10);
+//    _set_desc.insert(5);
+//    _set_desc.insert(12);
+//    _set_desc.insert(3);
+//
+//    for (int item : _set_desc)
+//        cout << item << endl;
 
+//    _multiset.insert(10);
+//    _multiset.insert(5);
+//    _multiset.insert(12);
+//    _multiset.insert(3);
+//    _multiset.insert(5);
+//    _multiset.insert(10);
+//
+//    for (int item : _multiset)
+//        cout << item << endl;
+
+    _multiset_desc.insert(10);
+    _multiset_desc.insert(5);
+    _multiset_desc.insert(12);
+    _multiset_desc.insert(3);
+    _multiset_desc.insert(5);
+    _multiset_desc.insert(10);
+
+    for (int item : _multiset_desc)
+        cout << item << endl;
+    
     cout << output;
     return 0;
 }
