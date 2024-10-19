@@ -32,7 +32,6 @@ int main()
 {
     multiset<int> tree1;
     multiset<int> tree2;
-    multiset<int> &ref = tree1;
 
     tree1.insert(12);
     tree1.insert(5);
@@ -44,6 +43,8 @@ int main()
     tree2.insert(3);
     tree2.insert(9);
 
+    multiset<int> ref = tree1;
+
     for (multiset<int>::iterator it = ref.begin(); it != ref.end(); it++)
         cout << *it << " ";
     cout << endl;
@@ -51,6 +52,13 @@ int main()
     ref = tree2;
 
     for (multiset<int>::iterator it = ref.begin(); it != ref.end(); it++)
+        cout << *it << " ";
+    cout << endl;
+
+    for (multiset<int>::iterator it = tree1.begin(); it != tree1.end(); it++)
+        cout << *it << " ";
+    cout << endl;
+    for (multiset<int>::iterator it = tree2.begin(); it != tree2.end(); it++)
         cout << *it << " ";
     cout << endl;
 
