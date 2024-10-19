@@ -3,8 +3,8 @@ using namespace std;
 static const string NEW_LINE = "\n";
 static const int    MAX_SIZE = 10000;
 static string output = "";
-static int temp, MAX, MIN, total, sum, avg, ans, result;
-static int a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, x, y, z, w;
+static int temp, max, min, total, avg, ans, result;
+static int i, j, k, l, m, n;
 static stack<int>  _stack;
 static queue<int>  _queue;
 static deque<int>  _deque;
@@ -17,7 +17,7 @@ static priority_queue<int>                                                 _maxH
 static priority_queue<int, vector<int>, greater<int>>                      _minHeap;
 static set<int>                                                            _set;
 static set<int, greater<int>>                                              _set_desc;
-static multiset<int>                                                       _multiset, tree1, tree2, tree3, &tree_ref = tree1;
+static multiset<int>                                                       _multiset;
 static multiset<int, greater<int>>                                         _multiset_desc;
 static set<int, decltype(compare_for_max_or_asc)>                          _index_set(compare_for_max_or_asc);
 static set<int, decltype(compare_for_min_or_desc)>                         _index_set_desc(compare_for_min_or_desc);
@@ -30,66 +30,26 @@ static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL
 #define cleariminh(iminh) iminh = priority_queue<int, vector<int>, decltype(compare_for_min_or_desc)>(compare_for_min_or_desc);
 int main()
 {
-    cin >> m;
-    cin >> n;
-    cin >> k;
-    for (i = 0; i < m; i++)
-    {
-        cin >> temp;
-        tree1.insert(temp);
-    }
-    for (i = 0; i < n; i++)
-    {
-        cin >> temp;
-        tree2.insert(temp);
-    }
+    _multiset.insert(10);
+    _multiset.insert(5);
+    _multiset.insert(12);
+    _multiset.insert(3);
+    _multiset.insert(5);
+    _multiset.insert(10);
 
-    // init
-    a = *tree1.cbegin();
-    b = *tree2.cbegin();
-    if (a <= b)
-    {
-        tree1.erase(tree1.cbegin());
-        for (int i : tree2)
-            tree3.insert(i + a);
-    }
-    else
-    {
-        tree2.erase(tree2.cbegin());
-        for (int i : tree1)
-            tree3.insert(i + b);
-    }
+    for (multiset<int>::iterator it = _multiset.begin(); it != _multiset.end(); it++)
+        cout << *it << " ";
+    cout << endl;
 
-    multiset<int>::iterator it;
-    while (true)
-    {
-        if (tree1.empty() || tree2.empty())
-            break;
-        a = *tree1.cbegin();
-        b = *tree2.cbegin();
-        c = 0;
-        if (a <= b)
-        {
-            tree1.erase(tree1.cbegin());
-            tree_ref = tree2;
-            c = a;
-        }
-        else
-        {
-            tree2.erase(tree2.cbegin());
-            tree_ref = tree1;
-            c = b;
-        }
-        it = tree_ref.cbegin();
-        sum = c + (int)*it;
-        MAX = *prev(tree3.cend());
+//    multiset<int>::iterator it;
+//    for (it = prev(_multiset.end()); it != _multiset.begin(); it--)
+//        cout << *it << " ";
+//    cout << *it << " ";
+//    cout << endl;
 
-        if ((int)tree3.size() == k && sum > MAX)
-            break;
-
-    }
-
-
+    for (multiset<int>::reverse_iterator it = _multiset.rbegin(); it != _multiset.rend(); it++)
+        cout << *it << " ";
+    cout << endl;
 
     return 0;
 }
