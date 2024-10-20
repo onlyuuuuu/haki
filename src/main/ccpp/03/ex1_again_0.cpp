@@ -78,8 +78,7 @@ int main()
         if ( sum >= maxv ) break;
         tree3.erase(prev(tree3.cend()));
         tree3.insert(sum);
-        it++;
-        for ( it; it != tree2.cend(); it++ )
+        for ( it++; it != tree2.cend(); it++ )
         {
             sum = chosen + (int)*it;
             maxv = (int)*prev(tree3.cend());
