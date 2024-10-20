@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>max_v
+#include <bits/stdc++.h>
 using namespace std;
 static const string NEW_LINE = "\n";
 static const int    MAX_SIZE = 10000;
