@@ -44,7 +44,7 @@ int main()
         cin >> temp;
         tree2.insert(temp);
     }
-    while ( tree3.size() < k )
+    while ( (int)tree3.size() < k )
     {
         if ( tree1.empty() || tree2.empty() ) break;
         if ( (int)*tree1.cbegin() > (int)*tree2.cbegin() )
