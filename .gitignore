@@ -16,6 +16,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 **/build.ninja
+C/test
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
