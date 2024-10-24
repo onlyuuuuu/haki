@@ -31,14 +31,13 @@ static multiset<int, decltype(compare_for_max_or_asc)>                     index
 static multiset<int, decltype(compare_for_max_or_asc)>::iterator           index_dset_it;
 static multiset<int, decltype(compare_for_min_or_desc)>                    index_dset_desc(compare_for_min_or_desc);
 static multiset<int, decltype(compare_for_min_or_desc)>::iterator          index_dset_desc_it;
-static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return NULL; }();
+static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return 0; }();
 int main(int argc, char **argv)
 {
     uset.insert(6);
     uset.insert(14);
     uset.insert(8);
     uset.insert(11);
-
     for (uset_it = uset.cbegin(); uset_it != uset.cend(); uset_it++)
         cout << *uset_it << " ";
     cout << endl;

@@ -15,7 +15,7 @@ static priority_queue<int, vector<int>, decltype(compareForMax)> maxIndexHeap(co
 static priority_queue<int, vector<int>, decltype(compareForMin)> minIndexHeap(compareForMin);
 static priority_queue<int>                                       maxHeap;
 static priority_queue<int, vector<int>, greater<int>>            minHeap;
-static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return NULL; }();
+static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return 0; }();
 #define clearo(o)         obj = {};
 #define clearv(v, size)   v = vector<int>(size);
 #define clearimaxh(imaxh) imaxh = priority_queue<int, vector<int>, decltype(compareForMax)>(compareForMax);

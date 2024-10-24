@@ -23,7 +23,7 @@ static set<int, decltype(compare_for_max_or_asc)>                          _inde
 static set<int, decltype(compare_for_min_or_desc)>                         _index_set_desc(compare_for_min_or_desc);
 static set<int, decltype(compare_for_max_or_asc)>                          _index_multiset(compare_for_max_or_asc);
 static set<int, decltype(compare_for_min_or_desc)>                         _index_multiset_desc(compare_for_min_or_desc);
-static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return NULL; }();
+static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return 0; }();
 #define clearo(o)         obj = {};
 #define clearv(v, size)   v = vector<int>(size);
 #define clearimaxh(imaxh) imaxh = priority_queue<int, vector<int>, decltype(compare_for_max_or_asc)>(compare_for_max_or_asc);
