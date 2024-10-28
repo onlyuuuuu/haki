@@ -16,7 +16,13 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 **/build.ninja
-C/test
+src/main/ccpp/C/test
+src/main/ccpp/C/*.img
+src/main/ccpp/C/*.xz
+src/main/ccpp/C/*.zip
+src/main/ccpp/C/*.tar.gz
+src/main/ccpp/C/*.dtb
+src/main/ccpp/C/qemu-rpi-kernel
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
