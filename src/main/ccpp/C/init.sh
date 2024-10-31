@@ -10,6 +10,7 @@ sudo apt install -y --allow-insecure-repositories   gcc \
                                                     qemu-user \
                                                     qemu-user-static \
                                                     qemu-system \
+                                                    dtc \
                                                     make \
                                                     cmake \
                                                     git \
