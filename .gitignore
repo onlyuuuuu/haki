@@ -23,6 +23,10 @@ src/main/ccpp/C/*.zip
 src/main/ccpp/C/*.tar.gz
 src/main/ccpp/C/*.dtb
 src/main/ccpp/C/qemu-rpi-kernel
+src/main/ccpp/C/linux
+src/main/ccpp/C/*linux*
+src/main/ccpp/C/kernel
+src/main/ccpp/C/build
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
