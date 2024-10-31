@@ -34,3 +34,8 @@ sudo apt install -y gcc \
                     grub2-common \
                     iptables \
                     python3-sphinx
+
+mkdir -p kernel/armhf/
+rm -rf kernel/armhf/*
+
+make O=kernel/armhf -C linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- multi_v7_defconfig
