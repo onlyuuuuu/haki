@@ -39,7 +39,7 @@ sudo apt install -y --allow-insecure-repositories   gcc \
                                                     java \
                                                     perl
 
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git > /dev/null 2>&1 &
+#git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git > /dev/null 2>&1 &
 
 sudo mkdir -p /tools && sudo chown -R zero:zero /tools
 sudo mkdir -p /x && sudo chown -R zero:zero /x
@@ -64,3 +64,5 @@ tar xzvf toolbox.tar.gz
 find . -type d -name "jetbrains-toolbox-*" -exec mv {}/jetbrains-toolbox jetbrains-toolbox \; > /dev/null 2>&1
 find . -type d -name "jetbrains-toolbox-*" -exec rm -rf {} \; > /dev/null 2>&1
 ./jetbrains-toolbox
+
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
