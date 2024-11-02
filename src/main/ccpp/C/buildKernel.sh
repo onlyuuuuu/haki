@@ -2,8 +2,6 @@
 
 BASE_DIR=$(pwd)
 
-echo 0 | sudo echo "Gained root session"
-
 mkdir -p kernel/armhf/
 rm -rf kernel/armhf/*
 
@@ -13,8 +11,7 @@ git pull
 
 make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- multi_v7_defconfig
 make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-echo 0 | sudo echo "Gained root session"
-sudo make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules_install install
+echo 0 | sudo -S make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules_install install
 
 cd $BASE_DIR
 
