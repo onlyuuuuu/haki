@@ -11,7 +11,6 @@ git pull
 
 make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- multi_v7_defconfig
 make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-echo 0 | sudo -S make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules_install install
 
 cd $BASE_DIR
 
