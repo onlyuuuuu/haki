@@ -27,6 +27,7 @@ src/main/ccpp/C/linux
 src/main/ccpp/C/*linux*
 src/main/ccpp/C/kernel
 src/main/ccpp/C/build
+src/main/ccpp/C/rootfs.ext4
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
