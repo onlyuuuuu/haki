@@ -13,6 +13,11 @@ sudo apt install -y --allow-insecure-repositories   gcc \
                                                     dtc \
                                                     make \
                                                     cmake \
+                                                    crossbuild-essential-armel \
+                                                    crossbuild-essential-armhf \
+                                                    crossbuild-essential-arm64 \
+                                                    crossbuild-essential-i386 \
+                                                    crossbuild-essential-amd64 \
                                                     git \
                                                     flex \
                                                     bison \
