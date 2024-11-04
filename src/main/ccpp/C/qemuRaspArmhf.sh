@@ -2,9 +2,6 @@
 
 echo 0 | sudo -S qemu-system-arm \
   -machine raspi2b \
-  -cpu cortex-a7 \
-  -smp 4 \
-  -m 1G \
   -drive if=sd,format=raw,file=2024-10-22-raspios-bookworm-armhf-lite.img \
   -dtb bcm2709-rpi-2-b.dtb \
   -kernel kernel7.img \
