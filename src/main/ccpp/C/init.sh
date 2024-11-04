@@ -2,48 +2,66 @@
 
 #/bin/bash
 
-sudo apt install -y --allow-insecure-repositories   gcc \
-                                                    gcc-arm-linux-gnueabi \
-                                                    gcc-arm-linux-gnueabihf \
-                                                    gdb \
-                                                    gdb-multiarch \
-                                                    qemu-user \
-                                                    qemu-user-static \
-                                                    qemu-system \
-                                                    dtc \
-                                                    make \
-                                                    cmake \
-                                                    crossbuild-essential-armel \
-                                                    crossbuild-essential-armhf \
-                                                    crossbuild-essential-arm64 \
-                                                    crossbuild-essential-i386 \
-                                                    crossbuild-essential-amd64 \
-                                                    git \
-                                                    flex \
-                                                    bison \
-                                                    bc \
-                                                    libncurses-dev \
-                                                    exuberant-ctags \
-                                                    libssl-dev \
-                                                    binutils \
-                                                    util-linux \
-                                                    e2fsprogs \
-                                                    jfsutils \
-                                                    reiserfsprogs \
-                                                    xfsprogs \
-                                                    squashfs-tools \
-                                                    btrfs-progs \
-                                                    pcmciautils \
-                                                    quota \
-                                                    ppp \
-                                                    procps \
-                                                    oprofile \
-                                                    udev \
-                                                    grub2-common \
-                                                    iptables \
-                                                    python3-sphinx \
-                                                    java \
-                                                    perl
+echo 0 | sudo -S apt install -y gcc \
+                                gcc-arm-linux-gnueabi \
+                                gcc-arm-linux-gnueabihf \
+                                gdb \
+                                gdb-multiarch \
+                                qemu-user \
+                                qemu-user-static \
+                                qemu-system \
+                                dtc \
+                                make \
+                                cmake \
+                                ninja-build \
+                                crossbuild-essential-armel \
+                                crossbuild-essential-armhf \
+                                crossbuild-essential-arm64 \
+                                crossbuild-essential-i386 \
+                                crossbuild-essential-amd64 \
+                                git \
+                                flex \
+                                bison \
+                                bc \
+                                libncurses-dev \
+                                exuberant-ctags \
+                                libssl-dev \
+                                binutils \
+                                util-linux \
+                                e2fsprogs \
+                                jfsutils \
+                                reiserfsprogs \
+                                xfsprogs \
+                                squashfs-tools \
+                                btrfs-progs \
+                                pcmciautils \
+                                quota \
+                                ppp \
+                                procps \
+                                oprofile \
+                                udev \
+                                grub2-common \
+                                iptables \
+                                python3-full \
+                                python3-sphinx \
+                                python3-pip \
+                                pipx \
+                                java \
+                                perl
+
+echo 0 | sudo -S apt install -y libglib2.0-dev \
+                                libgcrypt20-dev \
+                                zlib1g-dev \
+                                autoconf \
+                                automake \
+                                libtool \
+                                bison \
+                                flex \
+                                libpixman-1-dev
+
+pipx install sphinx_rtd_theme --include-deps
+pipx ensurepath
+pip install sphinx_rtd_theme --break-system-packages
 
 #git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git > /dev/null 2>&1 &
 
