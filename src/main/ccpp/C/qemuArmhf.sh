@@ -25,15 +25,16 @@
 
 
   #-drive if=sd,format=raw,file=2024-10-22-raspios-bookworm-armhf.img \
-sudo qemu-system-arm \
-  -machine raspi2b \
-  -cpu cortex-a7 \
-  -smp 4 \
-  -m 1G \
-  -drive if=sd,format=raw,file=2024-10-22-raspios-bookworm-armhf.img \
-  -dtb bcm2710-rpi-2-b.dtb \
-  -kernel kernel/raspberrypi/armhf/arch/arm/boot/zImage \
-  -netdev user,id=net0,hostfwd=tcp::2222-:22 \
-  -device usb-net,netdev=net0 \
-  -append 'rw root=/dev/mmcblk0p2 loglevel=8' \
-  -no-reboot
+
+# sudo qemu-system-arm \
+#   -machine raspi2b \
+#   -cpu cortex-a7 \
+#   -smp 4 \
+#   -m 1G \
+#   -drive if=sd,format=raw,file=2024-10-22-raspios-bookworm-armhf.img \
+#   -dtb bcm2710-rpi-2-b.dtb \
+#   -kernel kernel/raspberrypi/armhf/arch/arm/boot/zImage \
+#   -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+#   -device usb-net,netdev=net0 \
+#   -append 'rw root=/dev/mmcblk0p2 loglevel=8' \
+#   -no-reboot

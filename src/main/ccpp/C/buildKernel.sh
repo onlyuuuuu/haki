@@ -17,6 +17,7 @@ cd $BASE_DIR
 
 cd raspberrypi-linux
 git pull
+KERNEL=kernel7
 make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm KERNEL=kernel7 CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
 make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm KERNEL=kernel7 CROSS_COMPILE=arm-linux-gnueabihf-
 
@@ -27,10 +28,16 @@ dtc -q -I dtb -O dts -o vexpress-v2p-ca15-tc1.dts vexpress-v2p-ca15-tc1.dtb
 
 cd $BASE_DIR
 
+cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/dts/broadcom/bcm2709-rpi-2-b.dtb $BASE_DIR/bcm2709-rpi-2-b.dtb
 cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/dts/broadcom/bcm2710-rpi-2-b.dtb $BASE_DIR/bcm2710-rpi-2-b.dtb
+cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/dts/broadcom/bcm2836-rpi-2-b.dtb $BASE_DIR/bcm2836-rpi-2-b.dtb
+dtc -q -I dtb -O dts -o bcm2709-rpi-2-b.dts bcm2709-rpi-2-b.dtb
 dtc -q -I dtb -O dts -o bcm2710-rpi-2-b.dts bcm2710-rpi-2-b.dtb
+dtc -q -I dtb -O dts -o bcm2836-rpi-2-b.dts bcm2836-rpi-2-b.dtb
+
+cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/$KERNEL.img
 
 # Size: 8G
-#qemu-img create -f raw rootfs.ext4
-dd if=/dev/zero of=rootfs.ext4 bs=4k count=2097152
-mkfs.ext4 rootfs.ext4
+# qemu-img create -f raw rootfs.ext4
+# dd if=/dev/zero of=rootfs.ext4 bs=4k count=2097152
+# mkfs.ext4 rootfs.ext4
