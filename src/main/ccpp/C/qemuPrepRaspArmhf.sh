@@ -12,7 +12,7 @@ echo 0 | sudo -S rm -rf mnt/root/*
 # 8192    x 512 = 4194304
 # 1056768 x 512 = 541065216
 
-echo 0 | sudo -S mount -o loop,offset=4194304 024-10-22-raspios-bookworm-armhf-lite.img mnt/boot
+echo 0 | sudo -S mount -o loop,offset=4194304 2024-10-22-raspios-bookworm-armhf-lite.img mnt/boot
 echo 0 | sudo -S cp $BASE_DIR/mnt/boot/$KERNEL.img $BASE_DIR/mnt/boot/$KERNEL-backup.img
 echo 0 | sudo -S cp $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/mnt/boot/$KERNEL.img
 echo 0 | sudo -S cp $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/dts/overlays/*.dtb* $BASE_DIR/mnt/boot/overlays/
