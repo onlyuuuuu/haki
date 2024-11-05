@@ -8,6 +8,10 @@ BASE_DIR=$(pwd)
 mkdir -p mnt/boot
 mkdir -p mnt/root
 
+rm -rf 2024-10-22-raspios-bookworm-armhf-lite.img 2024-10-22-raspios-bookworm-arm64-lite.img
+cp -rf /tools/2024-10-22-raspios-bookworm-armhf-lite.img 2024-10-22-raspios-bookworm-armhf-lite.img
+cp -rf /tools/2024-10-22-raspios-bookworm-arm64-lite.img 2024-10-22-raspios-bookworm-arm64-lite.img
+
 # 32 bit
 KERNEL=kernel7
 echo 0 | sudo -S rm -rf mnt/boot/*
