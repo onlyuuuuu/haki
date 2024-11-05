@@ -2,19 +2,19 @@
 
 BASE_DIR=$(pwd)
 
+echo 0 | sudo -S rm -rf kernel/raspberrypi/armhf/
+echo 0 | sudo -S rm -rf kernel/raspberrypi/arm64/
+
 mkdir -p kernel/raspberrypi/armhf/
 mkdir -p kernel/raspberrypi/arm64/
-
-rm -rf kernel/raspberrypi/armhf/*
-rm -rf kernel/raspberrypi/arm64/*
 
 # 32 bit
 cd $BASE_DIR/raspberrypi-linux
 git pull
 KERNEL=kernel7
-make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
+make -j6 O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
 sed -i -E 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-v7l-MY_CUSTOM_KERNEL"/' $BASE_DIR/kernel/raspberrypi/armhf/.config
-make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
+make -j6 O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 cd $BASE_DIR
 cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/$KERNEL.img
 
@@ -22,9 +22,9 @@ cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/$KERNEL
 cd $BASE_DIR/raspberrypi-linux
 git pull
 KERNEL=kernel8
-make O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux bcm2711_defconfig
+make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux bcm2711_defconfig
 sed -i -E 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-v8l-MY_CUSTOM_KERNEL"/' $BASE_DIR/kernel/raspberrypi/arm64/.config
-make O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux
+make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux
 cd $BASE_DIR
 cp -rf $BASE_DIR/kernel/raspberrypi/arm64/arch/arm64/boot/Image.gz $BASE_DIR/$KERNEL.img
 

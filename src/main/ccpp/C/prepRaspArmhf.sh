@@ -30,7 +30,7 @@ echo 0 | sudo -S echo 'arm_64bit=0' | sudo tee -a mnt/boot/config.txt
 echo 0 | sudo -S umount mnt/boot
 echo 0 | sudo -S umount mnt/root 2> /dev/null
 echo 0 | sudo -S mount -o loop,offset=541065216 2024-10-22-raspios-bookworm-armhf-lite.img mnt/root
-echo 0 | sudo -S make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
+echo 0 | sudo -S make -j6 O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
 echo 0 | sudo -S umount mnt/root
 qemu-img resize -f raw 2024-10-22-raspios-bookworm-armhf-lite.img 4G
 
@@ -51,6 +51,6 @@ echo 0 | sudo -S echo 'zero:$6$nKazTU9UYkZ15LbS$aKazZgSp5z/ynlHPrDeaE7x5h4AF3bki
 echo 0 | sudo -S umount mnt/boot
 echo 0 | sudo -S umount mnt/root 2> /dev/null
 echo 0 | sudo -S mount -o loop,offset=541065216 2024-10-22-raspios-bookworm-arm64-lite.img mnt/root
-echo 0 | sudo -S make O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
+echo 0 | sudo -S make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
 echo 0 | sudo -S umount mnt/root
 qemu-img resize -f raw 2024-10-22-raspios-bookworm-arm64-lite.img 8G
