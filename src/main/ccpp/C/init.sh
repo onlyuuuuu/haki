@@ -6,6 +6,8 @@ sudo mkdir -p /y && sudo chown -R zero:zero /y
 sudo mkdir -p /z && sudo chown -R zero:zero /z
 sudo mkdir -p /0 && sudo chown -R zero:zero /0
 
+echo 0 | sudo -S apt install -y curl wget git
+
 cd /tools
 if [[ "$(uname -p)" == "aarch64" ]]; then
     curl -L -o code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64'
@@ -25,7 +27,7 @@ find . -type d -name "jetbrains-toolbox-*" -exec rm -rf {} \; > /dev/null 2>&1
 ./jetbrains-toolbox
 
 git clone --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-git clone --depth 1 https://github.com/raspberrypi/linux.git
+git clone --depth 1 https://github.com/raspberrypi/linux.git raspberrypi-linux
 git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
 
 cd qemu
