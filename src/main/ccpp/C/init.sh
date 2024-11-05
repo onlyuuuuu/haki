@@ -6,7 +6,7 @@ sudo mkdir -p /y && sudo chown -R zero:zero /y
 sudo mkdir -p /z && sudo chown -R zero:zero /z
 sudo mkdir -p /0 && sudo chown -R zero:zero /0
 
-echo 0 | sudo -S apt install -y curl wget git
+echo 0 | sudo -S apt install -y curl wget git libfuse2
 
 cd /tools
 if [[ "$(uname -p)" == "aarch64" ]]; then
