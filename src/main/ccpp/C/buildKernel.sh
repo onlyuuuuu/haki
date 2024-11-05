@@ -5,34 +5,18 @@ BASE_DIR=$(pwd)
 mkdir -p kernel/armhf/
 rm -rf kernel/armhf/*
 
-mkdir -p kernel/raspberrypi/armhf/
-rm -rf kernel/raspberrypi/armhf/*
-
-# cd linux
-# git pull
-# make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- multi_v7_defconfig
-# make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-# cd $BASE_DIR
-# cp -rf $BASE_DIR/kernel/armhf/arch/arm/boot/dts/arm/vexpress-v2p-ca15-tc1.dtb $BASE_DIR/vexpress-v2p-ca15-tc1.dtb
-# dtc -q -I dtb -O dts -o vexpress-v2p-ca15-tc1.dts vexpress-v2p-ca15-tc1.dtb
-
 # 32 bit
-cd $BASE_DIR/raspberrypi-linux
+# TODO: Need to fix this since we are building this linux kernel on native aarch64
+cd linux
 git pull
-KERNEL=kernel7
-make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
-make O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
+make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- multi_v7_defconfig
+make O=$BASE_DIR/kernel/armhf -C $BASE_DIR/linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 cd $BASE_DIR
-cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/$KERNEL.img
+cp -rf $BASE_DIR/kernel/armhf/arch/arm/boot/dts/arm/vexpress-v2p-ca15-tc1.dtb $BASE_DIR/vexpress-v2p-ca15-tc1.dtb
+dtc -q -I dtb -O dts -o vexpress-v2p-ca15-tc1.dts vexpress-v2p-ca15-tc1.dtb
 
 # 64 bit
-cd $BASE_DIR/raspberrypi-linux
-git pull
-KERNEL=kernel8
-make O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux bcm2711_defconfig
-make O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux
-cd $BASE_DIR
-cp -rf $BASE_DIR/kernel/raspberrypi/arm64/arch/arm64/boot/Image.gz $BASE_DIR/$KERNEL.img
+
 
 # Size: 8G
 # qemu-img create -f raw rootfs.ext4
