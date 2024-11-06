@@ -19,14 +19,14 @@ cd $BASE_DIR
 cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/$KERNEL.img
 
 # 64 bit
-cd $BASE_DIR/raspberrypi-linux
-git pull
-KERNEL=kernel8
-make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux bcm2711_defconfig
-sed -i -E 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-v8l-MY_CUSTOM_KERNEL"/' $BASE_DIR/kernel/raspberrypi/arm64/.config
-make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux
-cd $BASE_DIR
-cp -rf $BASE_DIR/kernel/raspberrypi/arm64/arch/arm64/boot/Image.gz $BASE_DIR/$KERNEL.img
+# cd $BASE_DIR/raspberrypi-linux
+# git pull
+# KERNEL=kernel8
+# make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux bcm2711_defconfig
+# sed -i -E 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-v8l-MY_CUSTOM_KERNEL"/' $BASE_DIR/kernel/raspberrypi/arm64/.config
+# make -j6 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux
+# cd $BASE_DIR
+# cp -rf $BASE_DIR/kernel/raspberrypi/arm64/arch/arm64/boot/Image.gz $BASE_DIR/$KERNEL.img
 
 # Size: 8G
 # qemu-img create -f raw rootfs.ext4

@@ -1,0 +1,1 @@
+console=serial0,115200 console=tty1 rootfstype=ext4 rootwait fsck.repair=yes init=/usr/lib/raspberrypi-sys-mods/firstboot
