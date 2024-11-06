@@ -18,7 +18,8 @@ echo 0 | sudo -S qemu-system-arm \
   -dtb bcm2709-rpi-2-b.dtb \
   -kernel vmlinuz \
   -append "rw earlyprintk loglevel=8 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rootdelay=1" \
-  -serial stdio
+  -no-reboot \
+  -nographic
 
 echo 0 | sudo -S qemu-system-aarch64 \
   -machine raspi3b \
