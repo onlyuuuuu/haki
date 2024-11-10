@@ -6,6 +6,15 @@
 # 2048    x 512 = 1048576
 # 1050624 x 512 = 537919488
 
+# 0       x 512 = 0
+# 1595392 x 512 = 816840704
+
+# echo 0 | sudo -S mount -o loop,offset=0 debian-12.7.0-armhf-netinst.iso mnt/p1
+# echo 0 | sudo -S mount -o loop,offset=816840704 debian-12.7.0-armhf-netinst.iso mnt/p2
+
+# echo 0 | sudo -S umount mnt/p1
+# echo 0 | sudo -S umount mnt/p2
+
 BASE_DIR=$(pwd)
 
 mkdir -p mnt/boot
