@@ -26,3 +26,10 @@ if (a + b not ok)
 calc diff & update min
 return min
 
+
+
+
+
+
+1 1
+2 5

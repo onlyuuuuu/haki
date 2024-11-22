@@ -74,7 +74,7 @@ int minimumLoss(vector<long> prices)
     return min;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     vector<long> v;
     v = { 20, 15, 8, 2, 12 }; cout << minimumLoss(v) << endl;
