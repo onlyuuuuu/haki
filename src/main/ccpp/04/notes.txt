@@ -1,0 +1,28 @@
+valid:   ia < ib
+invalid: ia > ib
+
+while (tree.size() >= 3)
+itc = tree.cbegin();
+a = itc;
+b = itc++;
+c = itc++;
+if (a + b = ok)
+   calc diff & update min
+   if (b + c = ok)
+       remove a
+       continue
+   else
+       remove b
+       continue
+else (a + b not ok)
+   remove a
+   continue
+
+a = tree.cbegin();
+b = tree.cend();
+if (a + b not ok)
+   return min
+
+calc diff & update min
+return min
+
