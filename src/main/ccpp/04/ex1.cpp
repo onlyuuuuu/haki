@@ -14,7 +14,7 @@ static int a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, x, y, z, w;
 //static priority_queue<int, vector<int>, decltype(compare_for_max_or_ascn)> max_index_heap(compare_for_max_or_ascn);
 //static priority_queue<int, vector<int>, decltype(compare_for_min_or_desc)> min_index_heap(compare_for_min_or_desc);
 //static priority_queue<int>                                                 max_heap;
-static priority_queue<int, vector<int>, greater<int>>                      min_heap;
+//static priority_queue<int, vector<int>, greater<int>>                      min_heap;
 //static set<int>                                                            uset;
 //static set<int>::iterator                                                  uset_it;
 //static set<int, greater<int>>                                              uset_desc;
@@ -34,12 +34,27 @@ static priority_queue<int, vector<int>, greater<int>>                      min_h
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0; }();
 
 static vector<vector<int>> movies;
-static auto compare_for_max_or_ascn = [](int i1, int i2) { return (movies[i1][0] == movies[i2][0]) ? movies[i1][1] < movies[i2][1] : movies[i1][0] < movies[i2][0]; };
-static multiset<int, decltype(compare_for_max_or_ascn)>           index_dset(compare_for_max_or_ascn);
-static multiset<int, decltype(compare_for_max_or_ascn)>::iterator index_dset_it;
-
-int max_depth(int start_index)
+static auto compare_for_max_or_ascn = [] (int i1, int i2)
 {
+    return (movies[i1][0] == movies[i2][0])
+        ? movies[i1][1] < movies[i2][1]
+        : movies[i1][0] < movies[i2][0];
+};
+static auto compare_for_max = [] (int i1, int i2)
+{
+    return movies[i1][2] < movies[i2][2];
+};
+static multiset<int, decltype(compare_for_max_or_ascn)>            index_dset(compare_for_max_or_ascn);
+static multiset<int, decltype(compare_for_max_or_ascn)>::iterator  index_dset_it;
+static priority_queue<int, vector<int>, decltype(compare_for_max)> max_index_heap(compare_for_max);
+
+int max_depth(int index)
+{
+    int min_end_time_movie_index = -1;
+    for (index_dset_it = index_dset.upper_bound(index); index_dset_it != index_dset.cend(); index_dset_it++)
+    {
+
+    }
     return 0;
 }
 
@@ -55,26 +70,8 @@ int main(int argc, char** argv)
         movies.push_back(v);
         index_dset.insert(i);
     }
-    total = 1;
-    min_heap.push(movies[*index_dset.cbegin()][1]);
-    index_dset_it = ++index_dset.cbegin();
-    //cout << endl;
-    for (; index_dset_it != index_dset.cend(); index_dset_it++)
-    {
-        //cout << movies[*index_dset_it][0] << " " << movies[*index_dset_it][1] << endl;
-        if ((int)min_heap.size() < k)
-        {
-            min_heap.push(movies[*index_dset_it][1]);
-            ++total;
-            continue;
-        }
-        if ((int)min_heap.size() == k && movies[*index_dset_it][0] < min_heap.top())
-            continue;
-        min_heap.pop();
-        min_heap.push(movies[*index_dset_it][1]);
-        ++total;
-    }
-    //cout << min_heap.top() << endl;
+    total = 0;
+
     cout << total << endl;
     return 0;
 }
