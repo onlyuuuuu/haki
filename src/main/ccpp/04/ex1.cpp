@@ -44,9 +44,15 @@ static auto compare_for_max = [] (int i1, int i2)
 {
     return movies[i1][3] < movies[i2][3];
 };
+static auto compare_for_min = [] (int i1, int i2)
+{
+    return movies[i1][1] > movies[i2][1];
+};
 static multiset<int, decltype(compare_for_max_or_ascn)>            index_dset(compare_for_max_or_ascn);
 static multiset<int, decltype(compare_for_max_or_ascn)>::iterator  index_dset_it;
 static priority_queue<int, vector<int>, decltype(compare_for_max)> max_index_heap(compare_for_max);
+//static priority_queue<int, vector<int>, decltype(compare_for_min)> min_index_heap(compare_for_min);
+static vector<priority_queue<int, vector<int>, decltype(compare_for_min)>> movies_min_heap_end_times;
 
 int counted_as(int index)
 {
@@ -94,6 +100,7 @@ int main(int argc, char** argv)
         cin >> b;
         vector<int> v = { a, b, 0, 0 };
         movies.push_back(v);
+        priority_queue<int, vector<int>, decltype(compare_for_min)> min_index_heap(compare_for_min);
         index_dset.insert(i);
     }
     vector<int> v = { 0, INT_MIN, 1, 0 };
