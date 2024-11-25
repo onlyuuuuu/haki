@@ -32,26 +32,19 @@ static priority_queue<int, vector<int>, greater<int>>                      min_h
 //static multiset<int, decltype(compare_for_min_or_desc)>                    index_dset_desc(compare_for_min_or_desc);
 //static multiset<int, decltype(compare_for_min_or_desc)>::iterator          index_dset_desc_it;
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0; }();
-
-static vector<vector<int>> movies;
-static auto compare_for_max_or_ascn = [](int i1, int i2)
-{
-    //if (movies[i1][0] == movies[i2][0])
-    //    movies[i1][1] < movies[i2][1];
-    return movies[i1][0] < movies[i2][0];
-};
-static multiset<int, decltype(compare_for_max_or_ascn)>           index_dset(compare_for_max_or_ascn);
-static multiset<int, decltype(compare_for_max_or_ascn)>::iterator index_dset_it;
-
-int max_depth(int start_index)
-{
-    return 0;
-}
-
 int main(int argc, char** argv)
 {
     cin >> n;
     cin >> k;
+    vector<vector<int>> movies;
+    auto compare_for_max_or_ascn = [&movies](int i1, int i2)
+    {
+        //if (movies[i1][0] == movies[i2][0])
+        //    movies[i1][1] < movies[i2][1];
+        return movies[i1][0] < movies[i2][0];
+    };
+    multiset<int, decltype(compare_for_max_or_ascn)>           index_dset(compare_for_max_or_ascn);
+    multiset<int, decltype(compare_for_max_or_ascn)>::iterator index_dset_it;
     for (i = 0; i < n; i++)
     {
         cin >> a;

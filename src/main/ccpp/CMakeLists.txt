@@ -7,4 +7,4 @@ include_directories(AFTER SYSTEM /Library/Developer/CommandLineTools/usr/include
 #add_executable(ccpp sandbox7.cpp)
 #add_executable(ccpp C/test.c)
 #add_executable(ccpp ds/red_black_tree.cpp)
-add_executable(ccpp 04/ex1.cpp)
+add_executable(ccpp 04/ex1_draft.cpp)
