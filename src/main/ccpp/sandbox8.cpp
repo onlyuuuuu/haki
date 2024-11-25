@@ -65,9 +65,13 @@ int main(int argc, char **argv)
     cout << *dset_it << " ";
     cout << endl;
 
-    // for (dset_it = dset.cbegin(); dset_it != dset.cend(); dset_it++)
-    //     cout << *dset_it << " ";
-    // cout << endl;
+    cout << *dset.upper_bound(17) << endl;
+    cout << (dset.upper_bound(17) == dset.cend()) << endl;
+
+    if (dset.upper_bound(17) == dset.cend())
+        cout << "This is the end..." << endl;
+
+    dset.upper_bound(17)++;
 
     return 0;
 }

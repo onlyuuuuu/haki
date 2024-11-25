@@ -50,12 +50,36 @@ static priority_queue<int, vector<int>, decltype(compare_for_max)> max_index_hea
 
 int max_depth(int index)
 {
+    if (movies[index][2] != 0)
+        return movies[index][2];
+    index_dset_it = index_dset.lower_bound(movies[index][1]);
     int min_end_time_movie_index = -1;
-    for (index_dset_it = index_dset.upper_bound(index); index_dset_it != index_dset.cend(); index_dset_it++)
+    while (index_dset_it != index_dset.cend())
     {
-
+        if (movies[*index_dset_it][2] == 0) // unmarked
+        {
+            min_end_time_movie_index = *index_dset_it;
+            ++index_dset_it;
+            break;
+        }
+        ++index_dset_it;
     }
-    return 0;
+    if (min_end_time_movie_index == -1) // all marked or nothing
+    {
+        movies[index][2] = 1;
+        max_index_heap.push(index);
+        return 1;
+    }
+    for (; index_dset_it != index_dset.cend(); index_dset_it++)
+    {
+        if (movies[index][2] != 0) // ignore the marked ones
+            continue;
+        if (movies[*index_dset_it][1] < movies[min_end_time_movie_index][1])
+            min_end_time_movie_index = *index_dset_it;
+    }
+    movies[index][2] = 1 + max_depth(min_end_time_movie_index);
+    max_index_heap.push(index);
+    return movies[index][2];
 }
 
 int main(int argc, char** argv)
@@ -66,12 +90,20 @@ int main(int argc, char** argv)
     {
         cin >> a;
         cin >> b;
-        vector<int> v = {a, b};
+        vector<int> v = {a, b, 0};
         movies.push_back(v);
         index_dset.insert(i);
     }
     total = 0;
-
+    for (index_dset_it = index_dset.lower_bound(5); index_dset_it != index_dset.cend(); index_dset_it++)
+        cout << *index_dset_it << " - " << movies[*index_dset_it][0] << " " << movies[*index_dset_it][1] << endl;
+    for (index_dset_it = index_dset.cbegin(); index_dset_it != index_dset.cend(); index_dset_it++)
+        max_depth(*index_dset_it);
+    for (i = 0; i < k; i++)
+    {
+        total += movies[max_index_heap.top()][2];
+        max_index_heap.pop();
+    }
     cout << total << endl;
     return 0;
 }
