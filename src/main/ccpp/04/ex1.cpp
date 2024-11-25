@@ -34,12 +34,7 @@ static priority_queue<int, vector<int>, greater<int>>                      min_h
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0; }();
 
 static vector<vector<int>> movies;
-static auto compare_for_max_or_ascn = [](int i1, int i2)
-{
-    //if (movies[i1][0] == movies[i2][0])
-    //    movies[i1][1] < movies[i2][1];
-    return movies[i1][0] < movies[i2][0];
-};
+static auto compare_for_max_or_ascn = [](int i1, int i2) { return (movies[i1][0] == movies[i2][0]) ? movies[i1][1] < movies[i2][1] : movies[i1][0] < movies[i2][0]; };
 static multiset<int, decltype(compare_for_max_or_ascn)>           index_dset(compare_for_max_or_ascn);
 static multiset<int, decltype(compare_for_max_or_ascn)>::iterator index_dset_it;
 
