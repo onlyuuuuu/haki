@@ -3,7 +3,7 @@ project(ccpp C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Add this if using LLVM: /opt/homebrew/Cellar/llvm/19.1.2/include/c++/v1 /usr/local/opt/llvm/include/c++/v1
-#include_directories(AFTER SYSTEM /Library/Developer/CommandLineTools/usr/include/c++/v1 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include /Library/Developer/CommandLineTools/usr/include /Library/Developer/CommandLineTools/usr/include /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include /usr/local/include /usr/include /usr/lib)
+include_directories(AFTER SYSTEM /Library/Developer/CommandLineTools/usr/include/c++/v1 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include /Library/Developer/CommandLineTools/usr/include /Library/Developer/CommandLineTools/usr/include /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include /usr/local/include /usr/include /usr/lib)
 #add_executable(ccpp sandbox7.cpp)
 #add_executable(ccpp C/test.c)
 #add_executable(ccpp ds/red_black_tree.cpp)

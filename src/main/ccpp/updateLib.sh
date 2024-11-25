@@ -6,8 +6,8 @@ sudo cp bits/stdc++.h /Library/Developer/CommandLineTools/usr/include/c++/v1/bit
 sudo mkdir -p /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/bits
 sudo cp bits/stdc++.h /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/bits/
 
-sudo mkdir -p /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/bits
-sudo cp bits/stdc++.h /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/bits/
+sudo mkdir -p /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/bits
+sudo cp bits/stdc++.h /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/bits/
 
 sudo mkdir -p /Library/Developer/CommandLineTools/usr/include/bits
 sudo cp bits/stdc++.h /Library/Developer/CommandLineTools/usr/include/bits/

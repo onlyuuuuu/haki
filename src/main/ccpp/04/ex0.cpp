@@ -31,7 +31,7 @@ using namespace std;
 //static multiset<int, decltype(compare_for_max_or_asc)>::iterator           index_dset_it;
 //static multiset<int, decltype(compare_for_min_or_desc)>                    index_dset_desc(compare_for_min_or_desc);
 //static multiset<int, decltype(compare_for_min_or_desc)>::iterator          index_dset_desc_it;
-static auto _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return 0; }();
+static auto _ = []() { ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0; }();
 
 int minimumLoss(vector<long> prices)
 {
