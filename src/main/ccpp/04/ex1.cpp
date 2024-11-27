@@ -32,64 +32,28 @@ static int a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, x, y, z, w;
 //static multiset<int, decltype(compare_for_min_or_desc)>                    index_dset_desc(compare_for_min_or_desc);
 //static multiset<int, decltype(compare_for_min_or_desc)>::iterator          index_dset_desc_it;
 static auto _ = []() { ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0; }();
-
 static vector<vector<int>> movies;
-static auto compare_for_max_or_ascn = [] (int i1, int i2)
+static vector<stack<int>> plans;
+static auto compare_min_movie_end_times = [] (int i1, int i2)
 {
-    return (movies[i1][0] == movies[i2][0])
-        ? movies[i1][1] < movies[i2][1]
-        : movies[i1][0] < movies[i2][0];
+    return (movies[i1][1] != movies[i2][1])
+        ? movies[i1][1] > movies[i2][1]
+        : movies[i1][0] > movies[i2][0];
 };
-static auto compare_for_max = [] (int i1, int i2)
+static auto compare_max_movie_sizes = [] (int i1, int i2)
 {
-    return movies[i1][3] < movies[i2][3];
+    return plans[i1].size() < plans[i2].size();
 };
-static auto compare_for_min = [] (int i1, int i2)
+static auto compare_desc_plan_end_times = [] (int i1, int i2)
 {
-    return movies[i1][1] > movies[i2][1];
+    return (plans[i1].top() != plans[i2].top())
+        ? plans[i1].top() > plans[i2].top()
+        : plans[i1].size() > plans[i2].size();
 };
-static multiset<int, decltype(compare_for_max_or_ascn)>            index_dset(compare_for_max_or_ascn);
-static multiset<int, decltype(compare_for_max_or_ascn)>::iterator  index_dset_it;
-static priority_queue<int, vector<int>, decltype(compare_for_max)> max_index_heap(compare_for_max);
-//static priority_queue<int, vector<int>, decltype(compare_for_min)> min_index_heap(compare_for_min);
-static vector<priority_queue<int, vector<int>, decltype(compare_for_min)>> movies_min_heap_end_times;
-
-int counted_as(int index)
-{
-    if (movies[index][2] == 1)
-        return 0;
-    // set temp location to do lower bound
-    movies[n][0] = movies[index][1];
-    movies[n][1] = INT_MIN;
-    multiset<int, decltype(compare_for_max_or_ascn)>::iterator it;
-    it = index_dset.lower_bound(n);
-    int min_end_time_movie_index = -1;
-    while (it != index_dset.cend())
-    {
-        if (movies[*it][2] == 0) // unmarked
-        {
-            min_end_time_movie_index = *it;
-            ++it;
-            break;
-        }
-        ++it;
-    }
-    if (min_end_time_movie_index == -1) // all marked or nothing
-    {
-        movies[index][2] = 1; // marked as counted
-        return 1;
-    }
-    for (; it != index_dset.cend(); it++)
-    {
-        if (movies[index][2] != 0) // if marked, then ignore
-            continue;
-        if (movies[*it][1] < movies[min_end_time_movie_index][1])
-            min_end_time_movie_index = *it;
-    }
-    movies[index][2] = 1; // marked as counted
-    return 1 + counted_as(min_end_time_movie_index);
-}
-
+static priority_queue<int, vector<int>, decltype(compare_min_movie_end_times)> least_et_movs_heap(compare_min_movie_end_times);
+static priority_queue<int, vector<int>, decltype(compare_max_movie_sizes)>     most_movs_size_heap(compare_max_movie_sizes);
+static multiset<int, decltype(compare_desc_plan_end_times)>                    plans_et_desc_tree(compare_desc_plan_end_times);
+static multiset<int, decltype(compare_desc_plan_end_times)>::iterator          plans_et_desc_tree_it;
 int main(int argc, char** argv)
 {
     cin >> n;
@@ -98,32 +62,14 @@ int main(int argc, char** argv)
     {
         cin >> a;
         cin >> b;
-        vector<int> v = { a, b, 0, 0 };
+        vector<int> v = { a, b };
         movies.push_back(v);
-        priority_queue<int, vector<int>, decltype(compare_for_min)> min_index_heap(compare_for_min);
-        index_dset.insert(i);
+        least_et_movs_heap.push(i);
     }
-    vector<int> v = { 0, INT_MIN, 1, 0 };
-    movies.push_back(v); // a temp location to do lower bound
+    stack<int> st;
+    st.push(0);
+    plans.push_back(st);
     total = 0;
-    //movies[n][0] = 5;
-    //for (index_dset_it = index_dset.lower_bound(n); index_dset_it != index_dset.cend(); index_dset_it++)
-    //    cout << *index_dset_it << " - " << movies[*index_dset_it][0] << " " << movies[*index_dset_it][1] << endl;
-    for (index_dset_it = index_dset.cbegin(); index_dset_it != index_dset.cend(); index_dset_it++)
-    {
-        temp = counted_as(*index_dset_it);
-        if (temp == 0)
-            continue;
-        movies[*index_dset_it][3] = temp;
-        max_index_heap.push(*index_dset_it);
-    }
-    //for (index_dset_it = index_dset.cbegin(); index_dset_it != index_dset.cend(); index_dset_it++)
-    //    cout << *index_dset_it << " - " << movies[*index_dset_it][0] << " " << movies[*index_dset_it][1] << " - " << movies[*index_dset_it][2] << " - " << movies[*index_dset_it][3] << endl;
-    for (i = 0; i < k; i++)
-    {
-        total += movies[max_index_heap.top()][3];
-        max_index_heap.pop();
-    }
     cout << total << endl;
     return 0;
 }
