@@ -46,12 +46,12 @@ static auto compare_max_movie_sizes = [] (int i1, int i2)
         return plans[i1].size() > plans[i2].size();
     return i1 < i2;
 };
-static auto compare_desc_plan_end_times = [] (int i1, int i2)
+static auto compare_desc_plan_end_times = [] (int i1, int i2) // TODO: Fix this comparator
 {
     if (movies[plans[i1].back()][1] != movies[plans[i2].back()][1])
         return movies[plans[i1].back()][1] > movies[plans[i2].back()][1];
     if (plans[i1].size() != plans[i2].size())
-        return plans[i1].size() > plans[i2].size();
+        return plans[i1].size() > plans[i2].size(); // TODO: Fix this line
     return i1 < i2;
 };
 static priority_queue<int, vector<int>, decltype(compare_min_movie_end_times)> least_et_movs_heap(compare_min_movie_end_times);
