@@ -62,7 +62,12 @@ int main(int argc, char** argv)
     total = 0;
     if (k >= n)
     {
-        cout << total << endl;
+        for (i = 0; i < n; i++)
+        {
+            cin >> a;
+            cin >> b;
+        }
+        cout << n << endl;
         return 0;
     }
     for (i = 0; i < n; i++)
