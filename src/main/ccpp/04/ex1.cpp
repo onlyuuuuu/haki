@@ -42,19 +42,23 @@ static auto compare_min_movie_end_times = [] (int i1, int i2)
 };
 static auto compare_max_movie_sizes = [] (int i1, int i2)
 {
-    return plans[i1].size() > plans[i2].size();
+    if (plans[i1].size() != plans[i2].size())
+        return plans[i1].size() > plans[i2].size();
+    return i1 > i2;
 };
 static auto compare_desc_plan_end_times = [] (int i1, int i2)
 {
-    return (plans[i1].top() != plans[i2].top())
-        ? plans[i1].top() > plans[i2].top()
-        : plans[i1].size() > plans[i2].size();
+    if (movies[plans[i1].top()][1] != movies[plans[i2].top()][1])
+        return movies[plans[i1].top()][1] > movies[plans[i2].top()][1];
+    if (plans[i1].size() != plans[i2].size())
+        return plans[i1].size() > plans[i2].size();
+    return i1 > i2;
 };
 static priority_queue<int, vector<int>, decltype(compare_min_movie_end_times)> least_et_movs_heap(compare_min_movie_end_times);
-static set<int, decltype(compare_max_movie_sizes)>                             plans_most_movs_size_tree(compare_max_movie_sizes);
-static set<int, decltype(compare_max_movie_sizes)>::iterator                   plans_most_movs_size_tree_it;
-static set<int, decltype(compare_desc_plan_end_times)>                         plans_et_desc_tree(compare_desc_plan_end_times);
-static set<int, decltype(compare_desc_plan_end_times)>::iterator               plans_et_desc_tree_it;
+static multiset<int, decltype(compare_max_movie_sizes)>                        plans_most_movs_size_tree(compare_max_movie_sizes);
+static multiset<int, decltype(compare_max_movie_sizes)>::iterator              plans_most_movs_size_tree_it;
+static multiset<int, decltype(compare_desc_plan_end_times)>                    plans_et_desc_tree(compare_desc_plan_end_times);
+static multiset<int, decltype(compare_desc_plan_end_times)>::iterator          plans_et_desc_tree_it;
 int main(int argc, char** argv)
 {
     cin >> n;
@@ -77,33 +81,39 @@ int main(int argc, char** argv)
         vector<int> v = { a, b };
         movies.push_back(v);
         least_et_movs_heap.push(i);
+
     }
-    stack<int> init_st_0; init_st_0.push(0);
+    vector<int> temp_v = { 0, 0 };
+    movies.push_back(temp_v);
+    stack<int> init_st_0; init_st_0.push(least_et_movs_heap.top()); least_et_movs_heap.pop();
     plans.push_back(init_st_0);
-    stack<int> init_st_1; init_st_1.push(least_et_movs_heap.top()); least_et_movs_heap.pop();
-    plans.push_back(init_st_1);
-    plans_et_desc_tree.insert(1);
-    plans_most_movs_size_tree.insert(1);
+    plans_et_desc_tree.insert(0);
+    plans_most_movs_size_tree.insert(0);
+    // at max, we probably would have n plans
     while (!least_et_movs_heap.empty())
     {
         i = least_et_movs_heap.top();
         least_et_movs_heap.pop();
-        plans[0].pop();
-        plans[0].push(movies[i][0]);
+        movies[n][1] = movies[i][0];
+        for (plans_et_desc_tree_it = plans_et_desc_tree.cbegin(); plans_et_desc_tree_it != plans_et_desc_tree.cend(); plans_et_desc_tree_it++)
+            cout << *plans_et_desc_tree_it << " - " << plans[*plans_et_desc_tree_it].top() << " - " << movies[plans[*plans_et_desc_tree_it].top()][1] << endl;
         plans_et_desc_tree_it = plans_et_desc_tree.lower_bound(0);
         if (plans_et_desc_tree_it == plans_et_desc_tree.cend())
         {
-            stack<int> temp; temp.push(i);
-            plans.push_back(temp);
-            plans_et_desc_tree.insert(i);
-            plans_most_movs_size_tree.insert(i);
+            stack<int> temp_st; temp_st.push(i);
+            plans.push_back(temp_st);
+            chosen = (int)plans.size() - 1;
+            plans_et_desc_tree.insert(chosen);
+            plans_most_movs_size_tree.insert(chosen);
             continue;
         }
-        plans[*plans_et_desc_tree_it].push(i);
-        plans_et_desc_tree.erase(plans_et_desc_tree_it);
-        plans_et_desc_tree.insert(*plans_et_desc_tree_it);
-        plans_most_movs_size_tree.erase(*plans_et_desc_tree_it);
-        plans_most_movs_size_tree.insert(*plans_et_desc_tree_it);
+        x = *plans_et_desc_tree_it;
+        plans_et_desc_tree.erase(plans_et_desc_tree_it); // armortized constant O(1) compared to .erase(x) O(logN)
+        // from this point onwards, *plans_et_desc_tree_it cannot be referenced anymore, so just use x
+        plans_most_movs_size_tree.erase(x);
+        plans[x].push(i);
+        plans_et_desc_tree.insert(x);
+        plans_most_movs_size_tree.insert(x);
     }
     plans_most_movs_size_tree_it = plans_most_movs_size_tree.cbegin();
     for (i = 1; i <= k; i++)
