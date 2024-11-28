@@ -42,7 +42,7 @@ static auto compare_min_movie_end_times = [] (int i1, int i2)
 };
 static auto compare_max_movie_sizes = [] (int i1, int i2)
 {
-    return plans[i1].size() < plans[i2].size();
+    return plans[i1].size() > plans[i2].size();
 };
 static auto compare_desc_plan_end_times = [] (int i1, int i2)
 {
@@ -51,13 +51,20 @@ static auto compare_desc_plan_end_times = [] (int i1, int i2)
         : plans[i1].size() > plans[i2].size();
 };
 static priority_queue<int, vector<int>, decltype(compare_min_movie_end_times)> least_et_movs_heap(compare_min_movie_end_times);
-static priority_queue<int, vector<int>, decltype(compare_max_movie_sizes)>     most_movs_size_heap(compare_max_movie_sizes);
-static multiset<int, decltype(compare_desc_plan_end_times)>                    plans_et_desc_tree(compare_desc_plan_end_times);
-static multiset<int, decltype(compare_desc_plan_end_times)>::iterator          plans_et_desc_tree_it;
+static set<int, decltype(compare_max_movie_sizes)>                             plans_most_movs_size_tree(compare_max_movie_sizes);
+static set<int, decltype(compare_max_movie_sizes)>::iterator                   plans_most_movs_size_tree_it;
+static set<int, decltype(compare_desc_plan_end_times)>                         plans_et_desc_tree(compare_desc_plan_end_times);
+static set<int, decltype(compare_desc_plan_end_times)>::iterator               plans_et_desc_tree_it;
 int main(int argc, char** argv)
 {
     cin >> n;
     cin >> k;
+    total = 0;
+    if (k >= n)
+    {
+        cout << total << endl;
+        return 0;
+    }
     for (i = 0; i < n; i++)
     {
         cin >> a;
@@ -66,10 +73,40 @@ int main(int argc, char** argv)
         movies.push_back(v);
         least_et_movs_heap.push(i);
     }
-    stack<int> st;
-    st.push(0);
-    plans.push_back(st);
-    total = 0;
+    stack<int> init_st_0; init_st_0.push(0);
+    plans.push_back(init_st_0);
+    stack<int> init_st_1; init_st_1.push(least_et_movs_heap.top()); least_et_movs_heap.pop();
+    plans.push_back(init_st_1);
+    plans_et_desc_tree.insert(1);
+    plans_most_movs_size_tree.insert(1);
+    while (!least_et_movs_heap.empty())
+    {
+        i = least_et_movs_heap.top();
+        least_et_movs_heap.pop();
+        plans[0].pop();
+        plans[0].push(movies[i][0]);
+        plans_et_desc_tree_it = plans_et_desc_tree.lower_bound(0);
+        if (plans_et_desc_tree_it == plans_et_desc_tree.cend())
+        {
+            stack<int> temp; temp.push(i);
+            plans.push_back(temp);
+            plans_et_desc_tree.insert(i);
+            plans_most_movs_size_tree.insert(i);
+            continue;
+        }
+        plans[*plans_et_desc_tree_it].push(i);
+        plans_et_desc_tree.erase(plans_et_desc_tree_it);
+        plans_et_desc_tree.insert(*plans_et_desc_tree_it);
+        plans_most_movs_size_tree.erase(*plans_et_desc_tree_it);
+        plans_most_movs_size_tree.insert(*plans_et_desc_tree_it);
+    }
+    plans_most_movs_size_tree_it = plans_most_movs_size_tree.cbegin();
+    for (i = 1; i <= k; i++)
+    {
+        if (plans_most_movs_size_tree_it == plans_most_movs_size_tree.cend()) break;
+        total += plans[*plans_most_movs_size_tree_it].size();
+        plans_most_movs_size_tree_it++;
+    }
     cout << total << endl;
     return 0;
 }
