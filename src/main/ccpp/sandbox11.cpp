@@ -42,7 +42,6 @@ int main(int argc, char **argv)
     cout << v.front() << endl;
     cout << *--v.end() << endl;
     cout << v.back() << endl;
-    cout << v.
 
     return 0;
 }
