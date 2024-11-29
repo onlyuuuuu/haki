@@ -46,12 +46,12 @@ static auto compare_max_movie_sizes = [] (int i1, int i2)
         return plans[i1].size() > plans[i2].size();
     return i1 < i2;
 };
-static auto compare_desc_plan_end_times = [] (int i1, int i2) // TODO: Fix this comparator
+static auto compare_desc_plan_end_times = [] (int i1, int i2) // TODO: fix this comparator
 {
     if (movies[plans[i1].back()][1] != movies[plans[i2].back()][1])
         return movies[plans[i1].back()][1] > movies[plans[i2].back()][1];
     if (plans[i1].size() != plans[i2].size())
-        return plans[i1].size() > plans[i2].size(); // TODO: Fix this line
+        return plans[i1].size() > plans[i2].size(); // TODO: fix this line
     return i1 < i2;
 };
 static priority_queue<int, vector<int>, decltype(compare_min_movie_end_times)> least_et_movs_heap(compare_min_movie_end_times);
@@ -112,6 +112,10 @@ int main(int argc, char** argv)
         plans_et_desc_tree.insert(x);
         plans_most_movs_size_tree.insert(x);
     }
+    /* TODO: select the most beneficial plans and
+             see if we can make it better by 
+             finding out which remaining movs from 
+             other plans can be added to the best plans */
     plans_most_movs_size_tree_it = plans_most_movs_size_tree.cbegin();
     for (i = 1; i <= k; i++)
     {
