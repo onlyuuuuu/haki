@@ -36,23 +36,46 @@ static vector<vector<int>> movies;
 static vector<vector<int>> plans;
 static auto compare_min_movie_end_times = [] (int i1, int i2)
 {
-    return (movies[i1][1] != movies[i2][1])
-        ? movies[i1][1] > movies[i2][1]
-        : movies[i1][0] > movies[i2][0];
+    if (movies[i1][1] != movies[i2][1])
+        return movies[i1][1] > movies[i2][1];
+    return movies[i1][0] > movies[i2][0];
 };
 static auto compare_max_movie_sizes = [] (int i1, int i2)
 {
     if (plans[i1].size() != plans[i2].size())
         return plans[i1].size() > plans[i2].size();
-    return i1 < i2;
+    return i1 > i2;
 };
-static auto compare_desc_plan_end_times = [] (int i1, int i2) // TODO: fix this comparator
+// Prioritise fitting before plan size (problems with below case)
+/* 
+5 1
+1 2
+2 3
+3 4
+1 5
+5 6
+*/
+// Need to deal with temp location, which is at index 0
+static auto compare_desc_plan_end_times = [] (int i1, int i2)
 {
+    // fitting
     if (movies[plans[i1].back()][1] != movies[plans[i2].back()][1])
         return movies[plans[i1].back()][1] > movies[plans[i2].back()][1];
+    // size
     if (plans[i1].size() != plans[i2].size())
-        return plans[i1].size() > plans[i2].size(); // TODO: fix this line
-    return i1 < i2;
+    {
+        if (i1 == 0)
+            return true;
+        if (i2 == 0)
+            return false;
+        return plans[i1].size() > plans[i2].size();
+    }
+    // index
+    if (i1 == 0)
+        return true;
+    if (i2 == 0)
+        return false;
+    return i1 > i2;
 };
 static priority_queue<int, vector<int>, decltype(compare_min_movie_end_times)> least_et_movs_heap(compare_min_movie_end_times);
 static set<int, decltype(compare_max_movie_sizes)>                             plans_most_movs_size_tree(compare_max_movie_sizes);
@@ -112,14 +135,14 @@ int main(int argc, char** argv)
         plans_et_desc_tree.insert(x);
         plans_most_movs_size_tree.insert(x);
     }
-    /* TODO: select the most beneficial plans and
-             see if we can make it better by 
-             finding out which remaining movs from 
-             other plans can be added to the best plans */
+    if (k >= (int)plans_most_movs_size_tree.size())
+    {
+        cout << n << endl;
+        return 0;
+    }
     plans_most_movs_size_tree_it = plans_most_movs_size_tree.cbegin();
     for (i = 1; i <= k; i++)
     {
-        if (plans_most_movs_size_tree_it == plans_most_movs_size_tree.cend()) break;
         total += plans[*plans_most_movs_size_tree_it].size();
         plans_most_movs_size_tree_it++;
     }
