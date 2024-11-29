@@ -80,13 +80,15 @@ int main(int argc, char** argv)
     {
         i = *tree1.cbegin();
         tree1.erase(tree1.cbegin());
-        if (movies[*tree2.cbegin()][1] > movies[i][0])
+        movies[n][1] = movies[i][0];
+        it2 = tree2.lower_bound(n);
+        if (it2 == tree2.cend())
         {
             tree2.insert(i);
             ++total;
             continue;
         }
-        tree2.erase(tree2.cbegin());
+        tree2.erase(it2);
         tree2.insert(i);
         ++total;
     }
