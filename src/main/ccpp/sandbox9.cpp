@@ -38,29 +38,44 @@ int main(int argc, char **argv)
     vector<int> v0 = { 5 };
     vector<int> v1 = { 12 };
     vector<int> v2 = { 8 };
+    vector<int> v3 = { 5 };
+    vector<int> v4 = { 12 };
+    vector<int> v5 = { 8 };
     v.push_back(v0);
     v.push_back(v1);
     v.push_back(v2);
+    v.push_back(v3);
+    v.push_back(v4);
+    v.push_back(v5);
 
-    auto compare_for_desc = [&v] (int i1, int i2){ return v[i1][0] > v[i2][0]; };
+    auto compare_for_desc = [&v] (int i1, int i2) {
+        if (v[i1][0] != v[i2][0])
+            return v[i1][0] > v[i2][0];
+        i1 = i1 == 0 ? INT8_MAX : i1;
+        i2 = i2 == 0 ? INT8_MAX : i2;
+        return i1 > i2;
+    };
 
-    multiset<int, decltype(compare_for_desc)>           tree(compare_for_desc);
-    multiset<int, decltype(compare_for_desc)>::iterator tree_it;
+    set<int, decltype(compare_for_desc)>           tree(compare_for_desc);
+    set<int, decltype(compare_for_desc)>::iterator tree_it;
 
     tree.insert(0);
     tree.insert(1);
     tree.insert(2);
+    tree.insert(3);
+    tree.insert(4);
+    tree.insert(5);
 
     for (tree_it = tree.cbegin(); tree_it != tree.cend(); tree_it++)
         cout << *tree_it << " - " << v[*tree_it][0] << endl;
     cout << endl;
 
-    x = 2;
-    tree.erase(x);
-
-    for (tree_it = tree.cbegin(); tree_it != tree.cend(); tree_it++)
-        cout << *tree_it << " - " << v[*tree_it][0] << endl;
-    cout << endl;
+//    x = 2;
+//    tree.erase(x);
+//
+//    for (tree_it = tree.cbegin(); tree_it != tree.cend(); tree_it++)
+//        cout << *tree_it << " - " << v[*tree_it][0] << endl;
+//    cout << endl;
 
     return 0;
 }
