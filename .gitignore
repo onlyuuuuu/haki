@@ -30,6 +30,8 @@ src/main/ccpp/C/kernel
 src/main/ccpp/C/build
 src/main/ccpp/C/mnt
 src/main/ccpp/C/rootfs.ext4
+src/main/ccpp/C/fromRaspiOSImage
+src/main/ccpp/C/fromUbuntuImage
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
