@@ -40,7 +40,7 @@ echo 0 | sudo -S cp $BASE_DIR/mnt/boot/$KERNEL.img $BASE_DIR/mnt/boot/$KERNEL-ba
 echo 0 | sudo -S cp $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/mnt/boot/$KERNEL.img
 echo 0 | sudo -S cp $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/dts/broadcom/*.dtb $BASE_DIR/mnt/boot/
 echo 0 | sudo -S cp $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/dts/overlays/*.dtb* $BASE_DIR/mnt/boot/overlays/
-echo 0 | sudo -S cp -rf $BASE_DIR/cmdline.raspios.updated.txt $BASE_DIR/mnt/boot/cmdline.txt
+echo 0 | sudo -S cp -rf $BASE_DIR/fromRaspiOSImage/cmdline.raspios.updated.txt $BASE_DIR/mnt/boot/cmdline.txt
 echo 0 | sudo -S touch mnt/boot/ssh
 echo 0 | sudo -S touch mnt/boot/userconf.txt
 echo 0 | sudo -S touch mnt/boot/config.txt
