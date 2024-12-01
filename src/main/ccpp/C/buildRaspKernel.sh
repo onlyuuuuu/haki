@@ -16,7 +16,7 @@ make -j6 O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARC
 sed -i -E 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-v7l-MY_CUSTOM_KERNEL"/' $BASE_DIR/kernel/raspberrypi/armhf/.config
 make -j6 O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 cd $BASE_DIR
-cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/$KERNEL.img
+cp -rf $BASE_DIR/kernel/raspberrypi/armhf/arch/arm/boot/zImage $BASE_DIR/kernel/raspberrypi/armhf/$KERNEL.img
 
 # 64 bit
 # cd $BASE_DIR/raspberrypi-linux
