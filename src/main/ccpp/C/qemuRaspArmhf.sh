@@ -28,7 +28,7 @@ echo 0 | sudo -S qemu-system-arm \
   -drive if=sd,format=raw,file=ubuntu-22.04.5-preinstalled-server-armhf+raspi.img \
   -dtb fromUbuntuImage/bcm2709-rpi-2-b.dtb \
   -kernel fromUbuntuImage/vmlinuz \
-  -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" -no-reboot -nographic
+  -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" #-no-reboot -nographic
 
 # echo 0 | sudo -S qemu-system-aarch64 \
 #   -machine raspi3b \
