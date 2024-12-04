@@ -94,7 +94,7 @@ echo 0 | sudo -S apt install -y valgrind
 echo 0 | sudo -S apt install -y xfslibs-dev
 echo 0 | sudo -S apt install -y libnfs-dev
 echo 0 | sudo -S apt install -y libiscsi-dev
-echo 0 | sudo -S apt install libarchive-tools
+echo 0 | sudo -S apt install -y libarchive-tools
 
 pipx install sphinx_rtd_theme --include-deps
 pipx ensurepath
