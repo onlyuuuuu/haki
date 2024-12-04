@@ -13,18 +13,35 @@ echo 0 | sudo -S qemu-system-arm \
   -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" -no-reboot -nographic
 
 # From image
+# No keyboard
 echo 0 | sudo -S qemu-system-arm \
   -machine raspi2b \
-  -usb -device usb-host,hostbus=1,hostaddr=4 \
   -drive if=sd,format=raw,file=2024-11-19-raspios-bookworm-armhf-lite.img \
   -dtb fromRaspiOSImage/bcm2709-rpi-2-b.dtb \
   -kernel fromRaspiOSImage/kernel7.img \
-  -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" -no-reboot -nographic
-
-# From image (Ubuntu Server)
+  -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" #-no-reboot -nographic
+# With keyboard
 echo 0 | sudo -S qemu-system-arm \
   -machine raspi2b \
-  -usb -device usb-host,hostbus=1,hostaddr=4 \
+  -usb \
+  -device usb-host,hostbus=1,hostaddr=4 \
+  -drive if=sd,format=raw,file=2024-11-19-raspios-bookworm-armhf-lite.img \
+  -dtb fromRaspiOSImage/bcm2709-rpi-2-b.dtb \
+  -kernel fromRaspiOSImage/kernel7.img \
+  -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" #-no-reboot -nographic
+
+# From image (Ubuntu Server)
+# No keyboard
+echo 0 | sudo -S qemu-system-arm \
+  -machine raspi2b \
+  -drive if=sd,format=raw,file=ubuntu-22.04.5-preinstalled-server-armhf+raspi.img \
+  -dtb fromUbuntuImage/bcm2709-rpi-2-b.dtb \
+  -kernel fromUbuntuImage/vmlinuz \
+  -append "rw earlyprintk loglevel=8 root=/dev/mmcblk0p2 rootwait" #-no-reboot -nographic
+# With keyboard
+echo 0 | sudo -S qemu-system-arm \
+  -machine raspi2b \
+  -device usb-host,hostbus=1,hostaddr=4 \
   -drive if=sd,format=raw,file=ubuntu-22.04.5-preinstalled-server-armhf+raspi.img \
   -dtb fromUbuntuImage/bcm2709-rpi-2-b.dtb \
   -kernel fromUbuntuImage/vmlinuz \
