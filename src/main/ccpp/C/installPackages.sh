@@ -95,6 +95,19 @@ echo 0 | sudo -S apt install -y xfslibs-dev
 echo 0 | sudo -S apt install -y libnfs-dev
 echo 0 | sudo -S apt install -y libiscsi-dev
 echo 0 | sudo -S apt install -y libarchive-tools
+echo 0 | sudo -S apt install -y libxcb-cursor0
+echo 0 | sudo -S apt install -y libxcb-xinerama0
+echo 0 | sudo -S apt install -y liblzf1
+echo 0 | sudo -S apt install -y libqt6core6t64
+echo 0 | sudo -S apt install -y libqt6dbus6t64
+echo 0 | sudo -S apt install -y libqt6gui6t64
+echo 0 | sudo -S apt install -y libqt6help6
+echo 0 | sudo -S apt install -y libqt6printsupport6t64
+echo 0 | sudo -S apt install -y libqt6statemachine6
+echo 0 | sudo -S apt install -y libqt6widgets6t64
+echo 0 | sudo -S apt install -y libqt6xml6t64
+echo 0 | sudo -S apt install -y libaio
+echo 0 | sudo -S apt install -y libaio1
 
 pipx install sphinx_rtd_theme --include-deps
 pipx ensurepath
