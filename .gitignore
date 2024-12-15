@@ -18,6 +18,8 @@ build/
 **/build.ninja
 src/main/ccpp/C/test
 src/main/ccpp/C/*.img
+src/main/ccpp/C/*.qcow2
+src/main/ccpp/C/*.iso
 src/main/ccpp/C/*.xz
 src/main/ccpp/C/*.zip
 src/main/ccpp/C/*.tar.gz
@@ -32,6 +34,8 @@ src/main/ccpp/C/mnt
 src/main/ccpp/C/rootfs.ext4
 src/main/ccpp/C/fromRaspiOSImage
 src/main/ccpp/C/fromUbuntuImage
+src/main/ccpp/C/installer-initrd.gz
+src/main/ccpp/C/installer-vmlinuz
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

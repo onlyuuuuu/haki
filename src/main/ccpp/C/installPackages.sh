@@ -108,6 +108,15 @@ echo 0 | sudo -S apt install -y libqt6widgets6t64
 echo 0 | sudo -S apt install -y libqt6xml6t64
 echo 0 | sudo -S apt install -y libaio
 echo 0 | sudo -S apt install -y libaio1
+echo 0 | sudo -S apt install -y guestfs-tools
+echo 0 | sudo -S apt install -y p7zip-full
+echo 0 | sudo -S apt install -y meson
+echo 0 | sudo -S apt install -y libslirp-dev
+echo 0 | sudo -S apt install -y net-tools
+echo 0 | sudo -S apt install -y bridge-utils
+echo 0 | sudo -S apt install -y uml-utilities
+echo 0 | sudo -S apt install -y isc-dhcp-client
+echo 0 | sudo -S apt install -y isc-dhcp-client-ddns
 
 pipx install sphinx_rtd_theme --include-deps
 pipx ensurepath

@@ -27,6 +27,9 @@ cp -rf /tools/2024-11-19-raspios-bookworm-armhf-lite.img 2024-11-19-raspios-book
 cp -rf /tools/2024-11-19-raspios-bookworm-armhf-lite.img 2024-11-19-raspios-bookworm-armhf-lite-manual-kernel.img
 cp -rf /tools/ubuntu-22.04.5-preinstalled-server-armhf+raspi.img ubuntu-22.04.5-preinstalled-server-armhf+raspi.img
 
+cp -rf cmdline.raspios.updated.txt fromRaspiOSImage/cmdline.raspios.updated.txt
+cp -rf cmdline.ubuntu.updated.txt fromUbuntuImage/cmdline.ubuntu.updated.txt
+
 # 32 bit - Raspberry Pi OS - Bookworm
 # This is for updating the image with the latest kernel
 # This requires ./buildRaspKernel.sh to be run before this script
@@ -49,7 +52,7 @@ echo 0 | sudo -S echo 'arm_64bit=0' | sudo tee -a mnt/boot/config.txt
 echo 0 | sudo -S umount mnt/boot
 echo 0 | sudo -S umount mnt/root 2> /dev/null
 echo 0 | sudo -S mount -o loop,offset=541065216 2024-11-19-raspios-bookworm-armhf-lite-manual-kernel.img mnt/root
-echo 0 | sudo -S make -j30 O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
+echo 0 | sudo -S make -j$(nproc) O=$BASE_DIR/kernel/raspberrypi/armhf -C $BASE_DIR/raspberrypi-linux ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
 echo 0 | sudo -S umount mnt/root
 qemu-img resize -f raw 2024-11-19-raspios-bookworm-armhf-lite-manual-kernel.img 4G
 
@@ -82,6 +85,7 @@ echo 0 | sudo -S rm -rf mnt/boot/*
 echo 0 | sudo -S rm -rf mnt/root/*
 echo 0 | sudo -S umount mnt/boot 2> /dev/null
 echo 0 | sudo -S mount -o loop,offset=1048576 ubuntu-22.04.5-preinstalled-server-armhf+raspi.img mnt/boot
+echo 0 | sudo -S cp -rf $BASE_DIR/mnt/boot/cmdline.txt $BASE_DIR/fromUbuntuImage/cmdline.ubuntu.org.txt
 echo 0 | sudo -S cp -rf $BASE_DIR/fromUbuntuImage/cmdline.ubuntu.updated.txt $BASE_DIR/mnt/boot/cmdline.txt
 echo 0 | sudo -S cp -rf $BASE_DIR/mnt/boot/bcm2709-rpi-2-b.dtb $BASE_DIR/fromUbuntuImage/bcm2709-rpi-2-b.dtb
 echo 0 | sudo -S cp -rf $BASE_DIR/mnt/boot/vmlinuz $BASE_DIR/fromUbuntuImage/vmlinuz
@@ -108,6 +112,6 @@ qemu-img resize -f raw ubuntu-22.04.5-preinstalled-server-armhf+raspi.img 8G
 # echo 0 | sudo -S umount mnt/boot
 # echo 0 | sudo -S umount mnt/root 2> /dev/null
 # echo 0 | sudo -S mount -o loop,offset=541065216 2024-10-22-raspios-bookworm-arm64-lite.img mnt/root
-# echo 0 | sudo -S make -j30 O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
+# echo 0 | sudo -S make -j$(nproc) O=$BASE_DIR/kernel/raspberrypi/arm64 -C $BASE_DIR/raspberrypi-linux INSTALL_MOD_PATH=$BASE_DIR/mnt/root modules_install
 # echo 0 | sudo -S umount mnt/root
 # qemu-img resize -f raw 2024-10-22-raspios-bookworm-arm64-lite.img 8G
