@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 echo 0 | sudo -S cp -rf qemu-ifup /etc/
 echo 0 | sudo -S cp -rf qemu-ifdown /etc/
 
