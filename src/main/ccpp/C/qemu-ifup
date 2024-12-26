@@ -12,54 +12,8 @@ echo 0 | sudo -S ip tuntap add "$tap_if" mode tap user zero group zero
 echo 0 | sudo -S ip link set "$tap_if" up
 echo 0 | sudo -S ip link add "$brd_if" type bridge nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0
 echo 0 | sudo -S ip link set "$brd_if" up
-echo 0 | sudo -S dhclient -v -r ens33
-echo 0 | sudo -S ip addr flush ens33
-echo 0 | sudo -S ip link set ens33 master "$brd_if"
 echo 0 | sudo -S ip link set "$tap_if" master "$brd_if"
-echo 0 | sudo -S ip link set ens33 promisc on
 echo 0 | sudo -S ip link set "$tap_if" promisc on
 echo 0 | sudo -S dhclient -v "$brd_if"
-
-# Enable forwarding, this is needed
+# Enable forwarding in netfilter, this is needed
 echo 0 | sudo -S iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
-
-# Script to bring a network (tap) device for qemu up.
-# The idea is to add the tap device to the same bridge
-# as we have default routing to.
-
-# in order to be able to find brctl
-# PATH=$PATH:/sbin:/usr/sbin
-# ip=$(command -v ip)
-
-# if [ -n "$ip" ]; then
-#    echo 0 | sudo -S ip link set "$1" up
-# else
-#    brctl=$(command -v brctl)
-#    if [ -z "$ip$brctl" ]; then
-#      echo "W: $0: not doing any bridge processing: neither ip nor brctl utility not found" >&2
-#      exit 0
-#    fi
-#    echo 0 | sudo -S ifconfig "$1" 0.0.0.0 up
-# fi
-
-# switch=$(echo 0 | sudo -S ip route ls | \
-#     awk '/^default / {
-#           for(i=0;i<NF;i++) { if ($i == "dev") { print $(i+1); next; } }
-#          }'
-#         )
-
-# # only add the interface to default-route bridge if we
-# # have such interface (with default route) and if that
-# # interface is actually a bridge.
-# # It is possible to have several default routes too
-# for br in $switch; do
-#     if [ -d /sys/class/net/$br/bridge/. ]; then
-#         if [ -n "$ip" ]; then
-#           exec echo 0 | sudo -S ip link set "$1" master "$br"
-#         else
-#           exec echo 0 | sudo -S brctl addif $br "$1"
-#         fi
-#     fi
-# done
-
-# echo "W: $0: no bridge for guest interface found" >&2

@@ -36,6 +36,8 @@ src/main/ccpp/C/fromRaspiOSImage
 src/main/ccpp/C/fromUbuntuImage
 src/main/ccpp/C/installer-initrd.gz
 src/main/ccpp/C/installer-vmlinuz
+!src/main/ccpp/C/old.d/
+!src/main/ccpp/C/tools.d/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
