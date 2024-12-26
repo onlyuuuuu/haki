@@ -2,18 +2,26 @@
 
 tap_if="$1"
 brd_if="$2"
+host_if="$3"
 if [[ -z "$tap_if" ]]; then
     tap_if="tap0"
 fi
 if [[ -z "$brd_if" ]]; then
     brd_if="br0"
 fi
+if [[ -z "$host_if" ]]; then
+    host_if="ens37"
+fi
 echo 0 | sudo -S ip tuntap add "$tap_if" mode tap user zero group zero
 echo 0 | sudo -S ip link set "$tap_if" up
 echo 0 | sudo -S ip link add "$brd_if" type bridge nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0
 echo 0 | sudo -S ip link set "$brd_if" up
+echo 0 | sudo -S dhclient -v -r "$host_if"
+echo 0 | sudo -S ip addr flush "$host_if"
+echo 0 | sudo -S ip link set "$host_if" master "$brd_if"
 echo 0 | sudo -S ip link set "$tap_if" master "$brd_if"
+echo 0 | sudo -S ip link set "$host_if" promisc on
 echo 0 | sudo -S ip link set "$tap_if" promisc on
 echo 0 | sudo -S dhclient -v "$brd_if"
-# Enable forwarding in netfilter, this is needed
+# Enable forwarding, this is needed
 echo 0 | sudo -S iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT

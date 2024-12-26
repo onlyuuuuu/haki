@@ -4,16 +4,26 @@
 # for example, accounting info here.
 tap_if="$1"
 brd_if="$2"
+host_if="$3"
 if [[ -z "$tap_if" ]]; then
     tap_if="tap0"
 fi
 if [[ -z "$brd_if" ]]; then
     brd_if="br0"
 fi
+if [[ -z "$host_if" ]]; then
+    host_if="ens37"
+fi
+echo 0 | sudo -S dhclient -v -r "$host_if"
+echo 0 | sudo -S ip addr flush "$host_if"
 echo 0 | sudo -S dhclient -v -r "$brd_if"
 echo 0 | sudo -S ip addr flush "$brd_if"
+echo 0 | sudo -S ip link set "$host_if" down
 echo 0 | sudo -S ip link set "$tap_if" down
 echo 0 | sudo -S ip link set "$brd_if" down
+echo 0 | sudo -S ip link set "$host_if" nomaster
 echo 0 | sudo -S ip link set "$tap_if" nomaster
 echo 0 | sudo -S ip link delete "$tap_if"
 echo 0 | sudo -S ip link delete "$brd_if"
+echo 0 | sudo -S ip link set "$host_if" up
+echo 0 | sudo -S dhclient -v "$host_if"
