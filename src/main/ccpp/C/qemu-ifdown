@@ -1,0 +1,28 @@
+#! /bin/bash
+# Script to shut down a network (tap) device for qemu.
+# Initially this script is empty, but you can configure,
+# for example, accounting info here.
+tap_if="$1"
+brd_if="$2"
+if [[ -z "$tap_if" ]]; then
+    tap_if="tap0"
+fi
+if [[ -z "$brd_if" ]]; then
+    brd_if="br0"
+fi
+
+# Just in case
+echo 0 | sudo -S dhclient -v -r ens33
+echo 0 | sudo -S ip addr flush ens33
+
+echo 0 | sudo -S dhclient -v -r "$brd_if"
+echo 0 | sudo -S ip addr flush "$brd_if"
+echo 0 | sudo -S ip link set ens33 down
+echo 0 | sudo -S ip link set "$tap_if" down
+echo 0 | sudo -S ip link set "$brd_if" down
+echo 0 | sudo -S ip link set ens33 nomaster
+echo 0 | sudo -S ip link set "$tap_if" nomaster
+echo 0 | sudo -S ip link delete "$tap_if"
+echo 0 | sudo -S ip link delete "$brd_if"
+echo 0 | sudo -S ip link set ens33 up
+echo 0 | sudo -S dhclient -v ens33
