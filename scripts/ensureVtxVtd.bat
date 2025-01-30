@@ -14,7 +14,7 @@
 :: https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/configure?tabs=reg#disable-credential-guard
 
 :: Run these in Admin PS
-cd C:\dev\dgreadiness_v3.6
+cd dgreadiness_v3.6
 .\DG_Readiness_Tool_v3.6.ps1 -Disable
 
 :: Run these commands line by line
