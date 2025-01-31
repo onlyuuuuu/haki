@@ -37,6 +37,7 @@ src/main/ccpp/C/fromUbuntuImage
 src/main/ccpp/C/installer-initrd.gz
 src/main/ccpp/C/installer-vmlinuz
 src/main/ccpp/C/tools.dir/hda.img
+src/main/ccpp/C/tools.dir/mnt/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

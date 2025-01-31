@@ -33,8 +33,8 @@ echo 0 | sudo -S echo "Gained root access... Starting up VM now..."
 
 # echo 0 | sudo -S qemu-system-arm \
 #   -machine virt -cpu cortex-a15 -smp 8 -m 8192 \
-#   -kernel tools.dir/postnetinst-boot-vmlinuz-6.1.0-28-armmp-lpae -append 'root=/dev/vda2' \
-#   -initrd tools.dir/postnetinst-boot-initrd.img-6.1.0-28-armmp-lpae \
+#   -kernel tools.dir/vmlinuz -append 'root=/dev/vda2' \
+#   -initrd tools.dir/initrd.img \
 #   -drive if=none,format=raw,file=tools.dir/hda.img,media=disk,id=hd0 \
 #   -device virtio-blk-device,drive=hd0 \
 #   -netdev tap,id=net0,ifname=tap0 \
@@ -48,10 +48,17 @@ echo 0 | sudo -S echo "Gained root access... Starting up VM now..."
 
 echo 0 | sudo -S qemu-system-arm \
   -machine virt -cpu cortex-a15 -smp 8 -m 8192 \
-  -kernel tools.dir/postnetinst-boot-vmlinuz-6.1.0-28-armmp-lpae -append 'root=/dev/vda2' \
-  -initrd tools.dir/postnetinst-boot-initrd.img-6.1.0-28-armmp-lpae \
+  -kernel tools.dir/vmlinuz -append 'root=/dev/vda2' \
+  -initrd tools.dir/initrd.img \
   -drive if=none,format=raw,file=tools.dir/hda.img,media=disk,id=hd0 \
   -device virtio-blk-device,drive=hd0 \
   -netdev tap,id=net0,ifname=tap0 \
   -device virtio-net-device,netdev=net0 \
   -monitor stdio
+
+# To inspect hda.img
+# fdisk -l hda.img
+# echo 0 | sudo -S mount -o loop,offset=1048576 hda.img mnt/boot
+# echo 0 | sudo -S mount -o loop,offset=511705088 hda.img mnt/root
+# echo 0 | sudo -S umount mnt/boot
+# echo 0 | sudo -S umount mnt/root
