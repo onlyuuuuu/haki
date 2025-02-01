@@ -117,6 +117,16 @@ echo 0 | sudo -S apt install -y bridge-utils
 echo 0 | sudo -S apt install -y uml-utilities
 echo 0 | sudo -S apt install -y isc-dhcp-client
 echo 0 | sudo -S apt install -y isc-dhcp-client-ddns
+echo 0 | sudo -S apt install -y git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
+echo 0 | sudo -S apt install -y git-email
+echo 0 | sudo -S apt install -y libaio-dev libbluetooth-dev libcapstone-dev libbrlapi-dev libbz2-dev
+echo 0 | sudo -S apt install -y libcap-ng-dev libcurl4-gnutls-dev libgtk-3-dev
+echo 0 | sudo -S apt install -y libibverbs-dev libjpeg8-dev libncurses5-dev libnuma-dev
+echo 0 | sudo -S apt install -y librbd-dev librdmacm-dev
+echo 0 | sudo -S apt install -y libsasl2-dev libsdl2-dev libseccomp-dev libsnappy-dev libssh-dev
+echo 0 | sudo -S apt install -y libvde-dev libvdeplug-dev libvte-2.91-dev libxen-dev liblzo2-dev
+echo 0 | sudo -S apt install -y valgrind xfslibs-dev
+echo 0 | sudo -S apt install -y libnfs-dev libiscsi-dev
 
 pipx install sphinx_rtd_theme --include-deps
 pipx ensurepath
