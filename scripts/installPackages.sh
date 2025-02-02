@@ -44,6 +44,7 @@ echo 0 | sudo -S apt install -y python3-full
 echo 0 | sudo -S apt install -y python3-sphinx
 echo 0 | sudo -S apt install -y python3-pip
 echo 0 | sudo -S apt install -y python-is-python3
+echo 0 | sudo -S apt install -y python3-sphinx-rtd-theme
 echo 0 | sudo -S apt install -y pipx
 echo 0 | sudo -S apt install -y java
 echo 0 | sudo -S apt install -y perl
