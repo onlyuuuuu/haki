@@ -7,3 +7,4 @@ cd /tools/qemu/bin/debug/native
 make -j${nproc}
 echo 0 | sudo -S chown -R zero:zero /tools/qemu
 echo 0 | sudo -S make install -j${nproc}
+echo 0 | sudo -S chown -R zero:zero /tools/qemu

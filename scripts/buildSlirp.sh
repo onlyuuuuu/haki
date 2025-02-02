@@ -6,4 +6,4 @@ git pull
 meson build
 echo 0 | sudo -S chown -R zero:zero /tools/libslirp/
 echo 0 | sudo -S ninja -C build install
-
+echo 0 | sudo -S chown -R zero:zero /tools/libslirp/
