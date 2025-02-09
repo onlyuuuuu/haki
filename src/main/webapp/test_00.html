@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -7,13 +7,53 @@
         <link rel="shortcut icon" href="favicon.png">
         <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
         <script type="text/javascript" src="jquery-3.7.1.min.js"></script>
+        <style>
+            @namespace "http://www.w3.org/1999/xhtml";
+            @namespace svg "http://www.w3.org/2000/svg";
+            * { font-size: 16px; }
+            h1 { font-size: 30px; }
+            button:hover { color: red; }
+            #btn0:hover { color: green }
+            p::first-line { color: red }
+            p::first-letter { color: blue; font-size: 30px }
+            h1::before { content: " ...Before header... " }
+            h1::after { content: " ...After header... " }
+            div p { font-style: italic }
+            #d0 > p { color: purple }
+            div ~ button { border-style: solid; border-width: 10px; border-color: red; padding: 10px }
+            div + button { border-color: green }
+            button, h1 { font-style: italic }
+            svg|text { font-style: italic }
+            text { font-weight: bold }
+        </style>
     </head>
     <body>
         <main>
             <h1>Hello World!</h1>
-            <div>
+            <div id="d0">
+                <div></div>
                 <button id="btn0" class="button">I'm active!</button>
                 <button id="btn1" class="button" disabled>I'm disabled!</button>
+                <p>It's not only writers who can benefit from this free online tool. If you're a programmer who's working on a project where blocks of text are needed, this tool can be a great way to get that. It's a good way to test your programming and that the tool being created is working well. Above are a few examples of how the random paragraph generator can be beneficial. The best way to see if this random paragraph picker will be useful for your intended purposes is to give it a try. Generate a number of paragraphs to see if they are beneficial to your current project. If you do find this paragraph tool useful, please do us a favor and let us know how you're using it. It's greatly beneficial for us to know the different ways this tool is being used so we can improve it with updates. This is especially true since there are times when the generators we create get used in completely unanticipated ways from when we initially created them. If you have the time, please send us a quick note on what you'd like to see changed or added to make it better in the future.</p>
+                <div id="d1" style="top-margin: 10px">
+                    <p>
+                        A week ago a friend invited a couple of other couples over for dinner. Eventually, the food (but not the wine) was cleared off the table for what turned out to be some fierce Scrabbling. Heeding the strategy of going for the shorter, more valuable word over the longer cheaper word, our final play was “Bon,” which–as luck would have it!–happens to be a Japanese Buddhist festival, and not, as I had originally asserted while laying the tiles on the board, one half of a chocolate-covered cherry treat. Anyway, the strategy worked. My team only lost by 53 points instead of 58.
+
+                        Just the day before, our host had written of the challenges of writing short. In journalism–my friend’s chosen trade, and mostly my own, too–Mark Twain’s observation undoubtedly applies: “I didn’t have time to write a short letter, so I wrote a long one instead.” The principle holds across genres, in letters, reporting, and other writing. It’s harder to be concise than to blather. (Full disclosure, this blog post will clock in at a blather-esque 803 words.) Good writing is boiled down, not baked full of air like a souffl??. No matter how yummy souffl??s may be. Which they are. Yummy like a Grisham novel.
+
+                        Lately, I’ve been noticing how my sentences have a tendency to keep going when I write them onscreen. This goes for concentrated writing as well as correspondence. (Twain probably believed that correspondence, in an ideal world, also demands concentration. But he never used email.) Last week I caught myself packing four conjunctions into a three-line sentence in an email. That’s inexcusable. Since then, I have tried to eschew conjunctions whenever possible. Gone are the commas, the and’s, but’s, and so’s; in are staccato declaratives. Better to read like bad Hemingway than bad Faulkner.
+                    </p>
+                </div>
+            </div>
+            <text>Text in XHTML namespace</text>
+            <div>
+                <svg height="280" width="360" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon points="150,15 258,77 258,202 150,265 42,202 42,77"
+                             style="fill:lime;stroke:purple;stroke-width:3" />
+                    <a xlink:href= "https://www.w3schools.com/" xlink:title="The link leads to an example page that is of little interest">
+                        <text x="80" y="150">Text in SVG namespace</text>
+                    </a>
+                </svg>
             </div>
         </main>
     </body>
