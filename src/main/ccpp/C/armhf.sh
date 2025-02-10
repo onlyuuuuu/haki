@@ -32,8 +32,8 @@ echo 0 | sudo -S echo "Gained root access... Starting up VM now..."
 
 # echo 0 | sudo -S qemu-system-arm \
 #   -machine virt -cpu cortex-a15 -smp 16 -m 30G \
-#   -kernel tools.dir/vmlinuz -append 'root=/dev/vda2' \
-#   -initrd tools.dir/initrd.img \
+#   -kernel tools.dir/vmlinuz-6.1.0-30-armmp-lpae -append 'root=/dev/vda2' \
+#   -initrd tools.dir/initrd.img-6.1.0-30-armmp-lpae \
 #   -drive if=none,format=raw,file=tools.dir/hda.img,media=disk,id=hd0 \
 #   -device virtio-blk-device,drive=hd0 \
 #   -netdev tap,id=net0,ifname=tap0 \
@@ -47,8 +47,8 @@ echo 0 | sudo -S echo "Gained root access... Starting up VM now..."
 
 echo 0 | sudo -S qemu-system-arm \
   -machine virt -cpu cortex-a15 -smp 16 -m 30G \
-  -kernel tools.dir/vmlinuz -append 'root=/dev/vda2' \
-  -initrd tools.dir/initrd.img \
+  -kernel tools.dir/vmlinuz-6.1.0-30-armmp-lpae -append 'root=/dev/vda2' \
+  -initrd tools.dir/initrd.img-6.1.0-30-armmp-lpae \
   -drive if=none,format=raw,file=tools.dir/hda.img,media=disk,id=hd0 \
   -device virtio-blk-device,drive=hd0 \
   -netdev tap,id=net0,ifname=tap0 \
