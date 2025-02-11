@@ -44,14 +44,28 @@
             background-color: blanchedalmond;
             height: 76%;
         }
-        #div1 div {
+        .box {
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: mediumspringgreen;
-            height: 200px;
-            width: 200px;
-            margin: 0px;
+            height: 100px;
+            width: 100px;
+            border: 5px solid red;
+            padding: 10px;
+            margin: 10px;
+        }
+        .boxers {
+            height: 100%;
+        }
+        #first-box {
+            /*height: 100%;*/
+            height: 300px;
+            width: 50%;
+        }
+        #second-box:hover {
+            border-color: blue;
+            color: blue;
         }
     </style>
 </head>
@@ -67,11 +81,14 @@
                 <li>Set the first box back to a more reasonable height of 300px and set its width to 50%.</li>
                 <li>Position the two boxes next to each other.</li>
                 <li>"Hide" box number 1 and see how that changes the page.</li>
-                <li>Add a hover effect to the the LAST <code>div</code> element. Use pseudo-classes for that.</li>
+                <li>Add a hover effect to the LAST <code>div</code> element. Use pseudo-classes for that.</li>
             </ol>
         </div>
     </div><div id="div1" class="outer-div">
-        <div>I'm a box</div>
+        <div class="boxers">
+            <div id="first-box" class="box">I'm a box</div>
+            <div id="second-box" class="box">I'm a box</div>
+        </div>
     </div>
 </body>
 </html>
