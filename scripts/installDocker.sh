@@ -24,7 +24,7 @@ echo \
 echo 0 | sudo -S apt-get update -y
 
 # Install
-echo 0 | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+echo 0 | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
 
 # Grant docker to all users
 echo 0 | sudo -S groupadd docker
