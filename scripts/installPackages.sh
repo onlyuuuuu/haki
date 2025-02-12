@@ -48,6 +48,7 @@ echo 0 | sudo -S apt install -y python3-sphinx-rtd-theme
 echo 0 | sudo -S apt install -y pipx
 echo 0 | sudo -S apt install -y java
 echo 0 | sudo -S apt install -y perl
+echo 0 | sudo -S apt install -y alien
 
 echo 0 | sudo -S apt install -y libglib2.0-dev
 echo 0 | sudo -S apt install -y libgcrypt20-dev

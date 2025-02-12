@@ -6,9 +6,12 @@ services:
       ORACLE_PWD: "123456789"
     volumes:
       - oradata:/opt/oracle/oradata
+      - ./db-sample-schemas-21.1:/home/oracle/db-sample-schemas:rw
+      - ./startup:/opt/oracle/scripts/startup:rw
     ports:
       - "1521:1521"
       - "5500:5500"
+    restart: "always"
 
 volumes:
   oradata:
