@@ -1,4 +1,7 @@
 # ================================ Aliases ================================
+alias vim='vim -c startinsert'
+alias vi='vim -c startinsert'
+
 # https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 ## Colorize the ls output ##
 alias ls='ls --color=auto'
