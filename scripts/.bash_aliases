@@ -1,6 +1,8 @@
 # ================================ Aliases ================================
 alias vim='vim -c startinsert'
 alias vi='vim -c startinsert'
+alias port='echo 0 | sudo -S port'
+alias cls='clear'
 
 # https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 ## Colorize the ls output ##
