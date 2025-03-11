@@ -74,7 +74,7 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store### MetaProgrammingSystem template
+**/.DS_Store
 workspace.xml
 junitvmwatcher*.properties
 build.properties
