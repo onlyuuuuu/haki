@@ -1,9 +1,7 @@
 # ================================ Aliases ================================
-#alias vim='vim -c startinsert'
-#alias vi='vim -c startinsert'
-
 alias vi='nvim'
 alias vim='nvim'
+alias bat='batcat'
 alias port='echo 0 | sudo -S port'
 alias cls='clear'
 

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cp -rf aliases.zsh2 ~/
+cp -rf .bash_aliases2 ~/
+cp -rf .config ~/
+cp -rf .tmux.conf ~/
+cp -rf .vimrc ~/
+cp -rf .warp ~/
+cp -rf .zprofile2 ~/
+cp -rf .zshrc2 ~/
+
