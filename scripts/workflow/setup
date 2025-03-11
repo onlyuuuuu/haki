@@ -8,4 +8,5 @@ cp -rf .vimrc ~/
 cp -rf .warp ~/
 cp -rf .zprofile2 ~/
 cp -rf .zshrc2 ~/
+cp -rf .warp/themes/* ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 
