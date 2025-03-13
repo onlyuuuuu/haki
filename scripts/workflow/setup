@@ -22,6 +22,10 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
     sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
+if [[ "$(which z)" == *"not"*"found"* ]]; then
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+
 cd $SCRIPT_DIR
 
 cp -rf aliases.zsh2 ~/
@@ -35,12 +39,16 @@ cp -rf .zshrc2 ~/
 mkdir -p ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 cp -rf .warp/themes/* ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 
-echo "" >> ~/.zshrc
-echo ". ~/.zprofile2 > /dev/null 2>&1" >> ~/.zshrc
-echo "" >> ~/.zshrc
+if [[ -z "$(grep -i '. ~/.zprofile2 > /dev/null 2>&1' ~/.zshrc)" ]]; then
+    echo "" >> ~/.zshrc
+    echo ". ~/.zprofile2 > /dev/null 2>&1" >> ~/.zshrc
+    echo "" >> ~/.zshrc
+    echo "Sourcing entry on ~/.zprofile2 has been added to ~/.zshrc"
+else
+    echo "Sourcing entry on ~/.zprofile2 has already been added, skipping further writes..."
+fi
 
 batcat cache --build
 
 #source ~/.zprofile > /dev/null 2>&1
 #source ~/.zshrc
-

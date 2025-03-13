@@ -4,6 +4,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias port='echo 0 | sudo -S port'
 alias cls='clear'
+alias cd='z'
 
 # https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 ## Colorize the ls output ##
@@ -19,15 +20,15 @@ alias ls='exa'
 alias ll='exa -la'
 
 ## get rid of command not found ##
-alias cd..='cd ..'
+alias cd..='z ..'
  
 ## a quick way to get out of current directory ##
-alias ..='cd ..'
-alias ...='cd ../../../'
-alias ....='cd ../../../../'
-alias .....='cd ../../../../'
-alias .4='cd ../../../../'
-alias .5='cd ../../../../..'
+alias ..='z ..'
+alias ...='z ../../../'
+alias ....='z ../../../../'
+alias .....='z ../../../../'
+alias .4='z ../../../../'
+alias .5='z ../../../../..'
 
 ## Colorize the grep command output for ease of use (good for log files)##
 alias grep='grep --color=auto'

@@ -14,6 +14,8 @@ if [ -f /etc/zshrc2 ]; then
     . /etc/zshrc2
 fi
 
+export PATH="$PATH:$HOME/.local/bin"
+
 export BAT_THEME="Catppuccin Latte"
 
 if [[ "$(uname -a)" == *"Linux"*"Ubuntu"* ]]; then
@@ -41,3 +43,4 @@ if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
   eval "$(starship init zsh)"
 fi
 
+eval "$(zoxide init zsh)"
