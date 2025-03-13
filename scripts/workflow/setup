@@ -1,5 +1,29 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+echo "Location of [$(basename "${BASH_SOURCE[0]}")] is: $SCRIPT_DIR"
+
+echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 exa -y
+
+#mkdir -p ~/.config/catppuccin
+#cd ~/.config/catppuccin
+
+if [[ ! -d ~/.config/catppuccin/nerd-fonts ]]; then
+    git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+    cd nerd-fonts/
+    ./install.sh
+fi
+
+if [[ "$(which starship)" == *"not"*"found"* ]]; then
+    curl -sS https://starship.rs/install.sh | sh    
+fi
+
+if [[ ! -d ~/.oh-my-zsh ]]; then
+    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+cd $SCRIPT_DIR
+
 cp -rf aliases.zsh2 ~/
 cp -rf .bash_aliases2 ~/
 cp -rf .config ~/
@@ -8,5 +32,15 @@ cp -rf .vimrc ~/
 cp -rf .warp ~/
 cp -rf .zprofile2 ~/
 cp -rf .zshrc2 ~/
+mkdir -p ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 cp -rf .warp/themes/* ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
+
+echo "" >> ~/.zshrc
+echo ". ~/.zprofile2 > /dev/null 2>&1" >> ~/.zshrc
+echo "" >> ~/.zshrc
+
+batcat cache --build
+
+#source ~/.zprofile > /dev/null 2>&1
+#source ~/.zshrc
 
