@@ -5,6 +5,8 @@ alias bat='batcat'
 alias port='echo 0 | sudo -S port'
 alias cls='clear'
 alias cd='z'
+alias shutdown='echo 0 | sudo -S shutdown -h now'
+alias reboot='echo 0 | sudo -S reboot'
 
 # https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 ## Colorize the ls output ##

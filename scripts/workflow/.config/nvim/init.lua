@@ -1,5 +1,6 @@
 require("onlyu")
 require("lazyvim")
+require("config.lazy")
 
 -- Set tab width to 2 spaces
 vim.opt.tabstop = 2        -- Width of tab character
@@ -11,4 +12,6 @@ vim.opt.expandtab = true   -- Use spaces instead of tabs
 vim.opt.smartindent = true -- Automatically indent new lines
 vim.opt.autoindent = true  -- Copy indent from current line when starting a new line
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:block"
+
+vim.cmd.colorscheme "catppuccin-latte"
 

@@ -3,6 +3,10 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo "Location of [$(basename "${BASH_SOURCE[0]}")] is: $SCRIPT_DIR"
 
+echo 0 | sudo -S mkdir -p /tools
+echo 0 | sudo -S chown -R $USER:$USER /tools
+mkdir -p ~/.config/catppuccin
+
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
     brew update && brew upgrade
     brew install zsh
@@ -12,31 +16,58 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
     brew install tmux
     brew install bat
     brew install lua
-    brew install exa
+    brew install exa 
+    if [[ ! -d ~/.config/Terminal.app ]]; then
+      echo "Installing themes for Terminal.app"
+      cd ~/.config/catppuccin/
+      git clone --depth 1 https://github.com/catppuccin/Terminal.app.git
+      echo "Catppuccin Terminal.app themes have been downloaded at ~/.config/catppuccin/Terminal.app, install your favorite theme if you wish to."
+      echo "For more details, please visit https://github.com/catppuccin/Terminal.app"
+    fi
 else
-    echo 0 | sudo -S apt update -y && echo 0 | sudo -S apt upgrade -y && echo 0 | sudo -S apt autoremove -y
-    echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 exa -y
+    echo 0 | sudo -S apt update -y
+    echo 0 | sudo -S apt -o APT::Get::Always-Include-Phased-Updates=true upgrade -y
+    echo 0 | sudo -S apt autoremove -y
+    echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 eza -y
+    if [[ -d  ~/.config/catppuccin/.gnome-themes-installed ]]; then
+      curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v1.0.0/install.py | python3 - && touch ~/.config/catppuccin/.gnome-themes-installed && echo "Themes installed..." > ~/.config/catppuccin/.gnome-themes-installed 
+    fi
+    if [[ ! -d /tools/neovim ]]; then
+      echo "Compiling and installing NeoVim from source"
+      cd /tools/
+      git clone --depth 1 https://github.com/neovim/neovim.git
+      cd neovim/
+      make CMAKE_BUILD_TYPE=Release
+      echo 0 | sudo -S make install
+      rm -rf build/  # clear the CMake cache
+      make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim"
+      make install 
+    fi
 fi
 
-#mkdir -p ~/.config/catppuccin
-#cd ~/.config/catppuccin
+cd ~/.config/catppuccin
 
 if [[ ! -d ~/.config/catppuccin/nerd-fonts ]]; then
+    echo "Installing Nerd Fonts"
     git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
     cd nerd-fonts/
     ./install.sh
 fi
 
 if [[ "$(which starship)" == *"not"*"found"* ]]; then
+    echo "Installing Starship"
     curl -sS https://starship.rs/install.sh | sh    
 fi
 
 if [[ ! -d ~/.oh-my-zsh ]]; then
+    echo "Installing Oh My Zsh"
     sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 if [[ "$(which z)" == *"not"*"found"* ]]; then
+    echo "Installing Zoxide"
     curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    echo -e "\nIf Zoxide is still not installed you might want to run this manually \$[ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh ]\n"
 fi
 
 cd $SCRIPT_DIR
@@ -51,6 +82,10 @@ cp -rf .zprofile2 ~/
 cp -rf .zshrc2 ~/
 mkdir -p ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 cp -rf .warp/themes/* ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
+echo 0 | sudo -S mkdir -p /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes
+echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes/
+echo 0 | sudo -S mkdir -p /c/Users/onlyu/AppData/Roaming/warp/Warp/data/themes
+echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/onlyu/AppData/Roaming/warp/Warp/data/themes/
 
 if [[ -z "$(grep -i '. ~/.zprofile2 > /dev/null 2>&1' ~/.zshrc)" ]]; then
     echo "" >> ~/.zshrc
@@ -63,5 +98,5 @@ fi
 
 batcat cache --build
 
-#source ~/.zprofile > /dev/null 2>&1
-#source ~/.zshrc
+echo -e "\nYou should now run this command \$[ source ~/.zshrc ]\n"
+
