@@ -3,7 +3,20 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo "Location of [$(basename "${BASH_SOURCE[0]}")] is: $SCRIPT_DIR"
 
-echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 exa -y
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+    brew update && brew upgrade
+    brew install zsh
+    brew install vim
+    brew install neovim
+    brew install fzf
+    brew install tmux
+    brew install bat
+    brew install lua
+    brew install exa
+else
+    echo 0 | sudo -S apt update -y && echo 0 | sudo -S apt upgrade -y && echo 0 | sudo -S apt autoremove -y
+    echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 exa -y
+fi
 
 #mkdir -p ~/.config/catppuccin
 #cd ~/.config/catppuccin
