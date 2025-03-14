@@ -16,7 +16,8 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
     brew install tmux
     brew install bat
     brew install lua
-    brew install exa 
+    brew install exa > /dev/null 2>&1
+    brew install eza > /dev/null 2>&1
     if [[ ! -d ~/.config/Terminal.app ]]; then
       echo "Installing themes for Terminal.app"
       cd ~/.config/catppuccin/
@@ -28,7 +29,9 @@ else
     echo 0 | sudo -S apt update -y
     echo 0 | sudo -S apt -o APT::Get::Always-Include-Phased-Updates=true upgrade -y
     echo 0 | sudo -S apt autoremove -y
-    echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 eza -y
+    echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 -y
+    echo 0 | sudo -S apt install eza -y > /dev/null 2>&1
+    echo 0 | sudo -S apt install exa -y > /dev/null 2>&1
     if [[ -d  ~/.config/catppuccin/.gnome-themes-installed ]]; then
       curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v1.0.0/install.py | python3 - && touch ~/.config/catppuccin/.gnome-themes-installed && echo "Themes installed..." > ~/.config/catppuccin/.gnome-themes-installed 
     fi
@@ -82,8 +85,8 @@ cp -rf .zprofile2 ~/
 cp -rf .zshrc2 ~/
 mkdir -p ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 cp -rf .warp/themes/* ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
-echo 0 | sudo -S mkdir -p /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes
-echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes/
+echo 0 | sudo -S mkdir -p /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes > /dev/null 2>&1
+echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes/ > /dev/null 2>&1
 echo 0 | sudo -S mkdir -p /c/Users/onlyu/AppData/Roaming/warp/Warp/data/themes
 echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/onlyu/AppData/Roaming/warp/Warp/data/themes/
 

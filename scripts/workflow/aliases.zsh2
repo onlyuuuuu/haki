@@ -19,7 +19,16 @@ alias reboot='echo 0 | sudo -S reboot'
 #alias l.='ls -d .* --color=auto'
 
 alias ls='exa'
-alias ll='exa -la'
+alias ll='exa -lha'
+alias tree='exa --tree'
+
+if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
+  alias tail='tail ---disable-inotify -s 1 -f -n +1'
+  alias t='tail ---disable-inotify -s 1 -f -n +1'
+else
+  alias tail='tail -f -n +1'
+  alias t='tail -f -n +1'
+fi
 
 ## get rid of command not found ##
 alias cd..='z ..'
