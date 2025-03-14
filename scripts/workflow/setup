@@ -42,8 +42,8 @@ else
       cd neovim/
       make CMAKE_BUILD_TYPE=Release
       echo 0 | sudo -S make install
-      rm -rf build/  # clear the CMake cache
-      make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim"
+      echo 0 | sudo -S rm -rf build/ .deps/  # clear the CMake cache
+      make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/tools/neovim"
       make install 
     fi
 fi

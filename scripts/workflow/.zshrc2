@@ -15,7 +15,8 @@ if [ -f /etc/zshrc2 ]; then
 fi
 
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:/tools/neovim/bin"
+export PATH="$PATH:$HOME/neovim/bin"
+export PATH="$PATH:/tools/neovim/build/bin"
 
 export BAT_THEME="Catppuccin Latte"
 
