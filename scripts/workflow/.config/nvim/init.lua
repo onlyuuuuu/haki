@@ -3,6 +3,7 @@ require("lazyvim")
 require("config.lazy")
 
 -- Set tab width to 2 spaces
+vim.opt.number = true
 vim.opt.tabstop = 2        -- Width of tab character
 vim.opt.softtabstop = 2    -- Fine tunes the amount of whitespace to be added
 vim.opt.shiftwidth = 2     -- Size of an indent
