@@ -1,22 +1,10 @@
-if [ -f ~/.bash_aliases2 ]; then
-    . ~/.bash_aliases2
-fi
+. ~/.bash_aliases2 > /dev/null 2>&1
+. ~/aliases.zsh2 > /dev/null 2>&1
+. /etc/bashrc2 > /dev/null 2>&1
+. /etc/zshrc2 > /dev/null 2>&1
 
-if [ -f /etc/bashrc2 ]; then
-    . /etc/bashrc2
-fi
-
-if [ -f ~/aliases.zsh2 ]; then
-    . ~/aliases.zsh2
-fi
-
-if [ -f /etc/zshrc2 ]; then
-    . /etc/zshrc2
-fi
-
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/neovim/bin"
-export PATH="$PATH:/tools/neovim/build/bin"
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+export PATH="$PATH:$HOME/neovim/bin:/tools/neovim/build/bin"
 
 export BAT_THEME="Catppuccin Latte"
 

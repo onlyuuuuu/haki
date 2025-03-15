@@ -1,5 +1,11 @@
 # ================================ Aliases ================================
-alias bat='batcat'
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  alias bat='bat'
+  alias sed='gsed'
+else
+  alias bat='batcat'
+fi
+
 alias vim='nvim'
 alias vi='nvim'
 alias port='echo 0 | sudo -S port'
@@ -18,9 +24,15 @@ alias reboot='echo 0 | sudo -S reboot'
 ## Show hidden files ##
 #alias l.='ls -d .* --color=auto'
 
-alias ls='exa'
-alias ll='exa -lha'
-alias tree='exa --tree'
+if [[ "$(which exa)" == *"not"*"found"* ]]; then
+  alias ls='eza'
+  alias ll='eza -lha'
+  alias tree='eza --tree'
+else
+  alias ls='exa'
+  alias ll='exa -lha'
+  alias tree='exa --tree'
+fi
 
 if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
   alias tail='tail ---disable-inotify -s 1 -f -n +1'
@@ -79,7 +91,11 @@ alias iptlistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'
 alias firewall=iptlist
 
 # do not delete / or prompt if deleting more than 3 files at a time #
-alias rm='rm -I --preserve-root'
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  alias rm='rm'
+else
+  alias rm='rm -I --preserve-root'
+fi
  
 # Parenting changing perms on / #
 alias chown='chown --preserve-root'
