@@ -35,11 +35,11 @@ else
 fi
 
 if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
-  alias tail='tail ---disable-inotify -s 1 -f -n +1'
-  alias t='tail ---disable-inotify -s 1 -f -n +1'
+  alias tail='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
+  alias t='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
 else
-  alias tail='tail -f -n +1'
-  alias t='tail -f -n +1'
+  alias tail='/usr/bin/tail -f -n +1'
+  alias t='/usr/bin/tail -f -n +1'
 fi
 
 ## get rid of command not found ##
