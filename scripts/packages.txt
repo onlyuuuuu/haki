@@ -150,4 +150,9 @@ xfslibs-dev
 libnfs-dev
 libiscsi-dev
 gnu-sed
+procps
+htop
+btop
+neofetch
+tlrc
 

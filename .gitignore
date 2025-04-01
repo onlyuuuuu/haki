@@ -429,10 +429,10 @@ fabric.properties
 bin/**
 tmp/**
 tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
+**/*.tmp
+**/*.bak
+**/*.swp
+**/*~.nib
 local.properties
 .settings/
 .loadpath
