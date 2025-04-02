@@ -79,6 +79,16 @@ else
   #echo -e "\nIf Zoxide is still not installed you might want to run this manually \$[ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh ]\n"
 fi
 
+if [[ ! -d ~/.config/btop-catppuccin ]]; then
+  echo "Installing themes for Btop++"
+  cd ~/.config/
+  mv btop btop-old
+  git clone --depth 1 https://github.com/catppuccin/btop.git btop-catppuccin
+  unlink btop > /dev/null 2>&1
+  ln -sf ~/.config/btop-catppuccin btop
+  cp -rf btop-configs/btop.conf btop/
+fi
+
 cd $SCRIPT_DIR
 
 cp -rf aliases.zsh2 ~/
