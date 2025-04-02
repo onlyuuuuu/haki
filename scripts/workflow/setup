@@ -88,6 +88,11 @@ if [[ ! -d ~/.config/btop-catppuccin ]]; then
   ln -sf ~/.config/btop-catppuccin btop
 fi
 
+if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
+  echo "Installing nvim-lspconfig"
+  git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
+fi
+
 cd $SCRIPT_DIR
 
 cp -rf aliases.zsh2 ~/

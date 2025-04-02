@@ -1,6 +1,10 @@
 require("onlyu")
+require("onlyu.remap")
 require("lazyvim")
 require("config.lazy")
+require("autoclose").setup()
+require("nvim-java").setup()
+
 
 -- Set tab width to 2 spaces
 vim.opt.number = true
