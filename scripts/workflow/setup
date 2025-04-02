@@ -86,7 +86,6 @@ if [[ ! -d ~/.config/btop-catppuccin ]]; then
   git clone --depth 1 https://github.com/catppuccin/btop.git btop-catppuccin
   unlink btop > /dev/null 2>&1
   ln -sf ~/.config/btop-catppuccin btop
-  cp -rf btop-configs/btop.conf btop/
 fi
 
 cd $SCRIPT_DIR
