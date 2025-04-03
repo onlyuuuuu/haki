@@ -43,11 +43,12 @@ if [[ ! -d /tools/neovim ]]; then
   cd /tools/
   git clone --depth 1 https://github.com/neovim/neovim.git
   cd neovim/
-  make CMAKE_BUILD_TYPE=Release
+  git pull
+  echo 0 | sudo -S make CMAKE_BUILD_TYPE=RelWithDebInfo
   echo 0 | sudo -S make install
   echo 0 | sudo -S rm -rf build/ .deps/
-  make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/tools/neovim"
-  make install
+  echo 0 | sudo -S make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/tools/neovim"
+  echo 0 | sudo -S make install
 fi
 
 cd ~/.config/catppuccin

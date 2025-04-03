@@ -5,23 +5,32 @@ if command -v brew > /dev/null 2>&1; then
 else
   echo "Installing Brew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  echo >> ~/.zshrc
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  if [[ "$(uname -a)" == *"Darwin"* ]]; then
+    echo "Nothing for MacOS yet..."
+  else
+    echo >> ~/.zshrc
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
 fi
 
 if grep 'brew' ~/.zshrc; then
   echo "Brew seems to be sourced, no further actions..."
 else
   echo "Sourcing brew by writing into ~/.zshrc now..."
-  echo >> ~/.zshrc
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  if [[ "$(uname -a)" == *"Darwin"* ]]; then
+    echo "Nothing for MacOS yet..."
+  else
+    echo >> ~/.zshrc
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
 fi
 
 brew update
 brew upgrade
-brew cleanup
+echo 0 | sudo -S brew cleanup > /dev/null 2>&1
+brew clean > /dev/null 2>&1
 
 brew install tlrc
 
