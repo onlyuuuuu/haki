@@ -20,5 +20,9 @@ if command -v sdk > /dev/null 2>&1; then
   sdk selfupdate
 fi
 
+cd workflow/
+./setup
+
+cd $SCRIPT_DIR
 ./buildNeovim.sh
 

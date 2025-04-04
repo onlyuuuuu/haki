@@ -80,6 +80,13 @@ else
   #echo -e "\nIf Zoxide is still not installed you might want to run this manually \$[ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh ]\n"
 fi
 
+if command -v sdk > /dev/null 2>&1; then
+  echo "SDKMAN is already installed, skipping further operations..."
+else
+  echo "Installing SDKMAN now..."
+  curl -s "https://get.sdkman.io" | bash 
+fi
+
 if [[ ! -d ~/.config/btop-catppuccin ]]; then
   echo "Installing themes for Btop++"
   cd ~/.config/
@@ -93,6 +100,17 @@ if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
   echo "Installing nvim-lspconfig"
   git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
 fi
+
+if [[ ! -d /tools/eclipse.jdt.ls ]]; then
+  echo "Installing Eclipse Java Language Server..."
+  cd /tools/
+  git clone --depth 1 https://github.com/eclipse-jdtls/eclipse.jdt.ls.git
+fi
+
+cd /tools/eclipse.jdt.ls/
+git pull
+./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
+ln -sf "$(pwd)"/org.eclipse.jdt.ls.product/target/repository /tools/eclipse-java-ls
 
 cd $SCRIPT_DIR
 
