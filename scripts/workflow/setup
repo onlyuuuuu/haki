@@ -118,6 +118,7 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
   echo 0 | sudo -S -u onlyu nice -20 JAVA_HOME="$HOME/.sdkman/candidates/java/current"; ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true &
   pid=$!
   echo 0 | sudo -S taskpolicy -b -p $pid
+  wait $pid
 else
   echo 0 | sudo -S -u zero nice -20 JAVA_HOME="$HOME/.sdkman/candidates/java/current"; ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
 fi
