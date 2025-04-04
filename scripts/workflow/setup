@@ -109,6 +109,9 @@ fi
 
 cd /tools/eclipse.jdt.ls/
 git pull
+echo Y | sdk install java 24-open
+export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
+export PATH="$PATH:$JAVA_HOME/bin"
 ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
 ln -sf "$(pwd)"/org.eclipse.jdt.ls.product/target/repository /tools/eclipse-java-ls
 
