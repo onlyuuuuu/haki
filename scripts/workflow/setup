@@ -72,6 +72,9 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
   sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
+eval "$(zoxide init zsh)" > /dev/null 2>&1
+source "$HOME/.sdkman/bin/sdkman-init.sh" > /dev/null 2>&1
+
 if command -v z > /dev/null 2>&1; then
   echo "Zoxide already installed, skipping further operations..."
 else
@@ -112,11 +115,12 @@ git pull
 echo Y | sdk install java 24-open
 export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
 export PATH="$PATH:$JAVA_HOME/bin"
-if [[ "$(nproc)" == 10 && "$(uname -a)" == *"Darwin"* ]]; then
-  ./mvnw -T 8 clean verify -U -DskipTests=true
-else 
-  ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
-fi
+#if [[ "$(nproc)" == 10 && "$(uname -a)" == *"Darwin"* ]]; then
+#  ./mvnw clean verify -U -DskipTests=true
+#else 
+#  ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
+#fi
+./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
 ln -sf "$(pwd)"/org.eclipse.jdt.ls.product/target/repository /tools/eclipse-java-ls
 
 cd $SCRIPT_DIR

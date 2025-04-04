@@ -1,0 +1,33 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "Script dir: $SCRIPT_DIR"
+cd $SCRIPT_DIR
+
+cd /tools/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository
+
+config_dir=config_linux
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  config_dir=config_mac_arm
+elif [[ "$(uname -a)" == *"Linux"*"aarch64"* ]]; then
+  config_dir=config_linux_arm
+fi
+
+mkdir -p /tools/java-lang-server-data
+
+jar="$(find ./plugins/ -type f -name "org.eclipse.equinox.launcher_*.jar" -print)"
+
+java \
+	-Declipse.application=org.eclipse.jdt.ls.core.id1 \
+	-Dosgi.bundles.defaultStartLevel=4 \
+	-Declipse.product=org.eclipse.jdt.ls.core.product \
+	-Dlog.level=ALL \
+	-Xmx32G \
+	--add-modules=ALL-SYSTEM \
+	--add-opens java.base/java.util=ALL-UNNAMED \
+	--add-opens java.base/java.lang=ALL-UNNAMED \
+	--add-opens java.base/java.time=ALL-UNNAMED \
+  -jar $jar \
+	-configuration ./$config_dir \
+	-data /tools/java-lang-server-data
+
