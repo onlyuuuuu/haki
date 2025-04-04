@@ -40,5 +40,9 @@ eval "$(zoxide init zsh)"
 
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  echo ""
+else
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
