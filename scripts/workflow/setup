@@ -113,14 +113,14 @@ fi
 cd /tools/eclipse.jdt.ls/
 git pull
 echo Y | sdk install java 24-open
-export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
-export PATH="$PATH:$JAVA_HOME/bin"
-#if [[ "$(nproc)" == 10 && "$(uname -a)" == *"Darwin"* ]]; then
-#  ./mvnw clean verify -U -DskipTests=true
-#else 
-#  ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
-#fi
-./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
+echo Y | sdk default java 24-open
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  echo 0 | sudo -S -u onlyu nice -20 JAVA_HOME="$HOME/.sdkman/candidates/java/current"; ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true &
+  pid=$!
+  echo 0 | sudo -S taskpolicy -b -p $pid
+else
+  echo 0 | sudo -S -u zero nice -20 JAVA_HOME="$HOME/.sdkman/candidates/java/current"; ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true
+fi
 ln -sf "$(pwd)"/org.eclipse.jdt.ls.product/target/repository /tools/eclipse-java-ls
 
 cd $SCRIPT_DIR
