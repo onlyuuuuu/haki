@@ -4,6 +4,11 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Script dir: $SCRIPT_DIR"
 cd $SCRIPT_DIR
 
+cd workflow/
+./setup
+
+cd $SCRIPT_DIR
+
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   echo "Nothing to do on MacOS..."
 else
@@ -20,9 +25,5 @@ if command -v sdk > /dev/null 2>&1; then
   sdk selfupdate
 fi
 
-cd workflow/
-./setup
-
-cd $SCRIPT_DIR
 ./buildNeovim.sh
 
