@@ -56,9 +56,11 @@ cd ~/.config/catppuccin
 if [[ ! -d ~/.config/catppuccin/nerd-fonts ]]; then
   echo "Installing Nerd Fonts"
   git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-  cd nerd-fonts/
-  ./install.sh
 fi
+
+cd ~/.config/catppuccin/nerd-fonts
+git pull
+./install.sh
 
 if command -v starship > /dev/null 2>&1; then
   echo "Starship already installed, skipping further operations..."
@@ -98,6 +100,24 @@ if [[ ! -d ~/.config/btop-catppuccin ]]; then
   unlink btop > /dev/null 2>&1
   ln -sf ~/.config/btop-catppuccin btop
 fi
+
+cd ~/.config/btop-catppuccin
+git pull
+
+if [[ ! -d  ~/.config/tmux/plugins/catppuccin/tmux ]]; then
+  mkdir -p ~/.config/tmux/plugins/catppuccin/
+  git clone --depth 1 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
+fi
+
+cd ~/.config/tmux/plugins/catppuccin/tmux
+git pull origin main
+
+if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+  git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
+cd ~/.tmux/plugins/tpm
+git pull
 
 if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
   echo "Installing nvim-lspconfig"

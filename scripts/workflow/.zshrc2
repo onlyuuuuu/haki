@@ -32,6 +32,8 @@ export FZF_DEFAULT_OPTS=" \
 --color=border:#ccd0da,label:#4c4f69"
 fi
 
+tmux source ~/.tmux.conf
+
 if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
   eval "$(starship init zsh)"
 fi
