@@ -17,7 +17,6 @@ crossbuild-essential-i386
 crossbuild-essential-amd64
 git
 flex
-bison
 bc
 libncurses-dev
 exuberant-ctags
@@ -154,4 +153,7 @@ procps
 htop
 btop
 neofetch
-
+libevent-dev
+ncurses-term
+build-essential
+pkg-config

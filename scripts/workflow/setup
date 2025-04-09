@@ -51,6 +51,19 @@ if [[ ! -d /tools/neovim ]]; then
   echo 0 | sudo -S make install
 fi
 
+if [[ ! -d /tools/tmux ]]; then
+  echo "Compiling and installing TMUX from source"
+  cd /tools/
+  git clone --depth 1 https://github.com/tmux/tmux.git
+fi
+
+cd /tools/tmux
+git pull
+sh autogen.sh
+./configure
+make -j$(nproc)
+echo 0 | sudo -S make -j$(nproc) install
+
 cd ~/.config/catppuccin
 
 if [[ ! -d ~/.config/catppuccin/nerd-fonts ]]; then
