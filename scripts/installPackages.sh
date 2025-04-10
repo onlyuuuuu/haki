@@ -15,7 +15,7 @@ else
   echo 0 | sudo -S apt -o APT::Get::Always-Include-Phased-Updates=true upgrade -y
   echo 0 | sudo -S apt autoremove -y
   while IFS= read -r package; do
-    echo "Installing [ $package ]"i
+    echo "Installing [ $package ]"
     if [[ "$1" == "--quiet" ]]; then
       echo 0 | sudo -S apt install -y $package > /dev/null 2>&1
     else

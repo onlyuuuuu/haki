@@ -162,7 +162,11 @@ cd $SCRIPT_DIR
 cp -rf aliases.zsh2 ~/
 cp -rf .bash_aliases2 ~/
 cp -rf .config ~/
-cp -rf .tmux.conf ~/
+if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
+  cp -rf .tmux.wsl.conf ~/.tmux.conf
+else
+  cp -rf .tmux.conf ~/
+fi
 cp -rf .vimrc ~/
 cp -rf .warp ~/
 cp -rf .zprofile2 ~/
