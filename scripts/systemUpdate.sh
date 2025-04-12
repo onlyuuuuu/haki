@@ -4,6 +4,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Script dir: $SCRIPT_DIR"
 cd $SCRIPT_DIR
 
+./installPackages.sh
+
 cd workflow/
 ./setup
 
