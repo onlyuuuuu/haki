@@ -157,4 +157,7 @@ libevent-dev
 ncurses-term
 build-essential
 pkg-config
+tmux-mem-cpu-load
+jq
+pcre
 

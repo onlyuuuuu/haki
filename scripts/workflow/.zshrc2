@@ -9,6 +9,25 @@ export PATH="$PATH:$HOME/neovim/bin:/tools/neovim/build/bin"
 export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
 export PATH="$JAVA_HOME/bin:$PATH"
 
+export PATH="$PATH:$HOME/.tmux/plugins/tmux-mem-cpu-load"
+
+# Shell detection functions
+shell_is_linux() {
+  [[ "$(uname)" = "Linux" ]]
+}
+
+shell_is_osx() {
+  [[ "$(uname)" = "Darwin" ]]
+}
+
+shell_is_bsd() {
+  [[ "$(uname)" = "Darwin" ]] || [[ "$(uname)" = "FreeBSD" ]] || [[ "$(uname)" = "NetBSD" ]] || [[ "$(uname)" = "OpenBSD" ]]
+}
+
+export -f shell_is_linux
+export -f shell_is_osx
+export -f shell_is_bsd
+
 export BAT_THEME="Catppuccin Latte"
 
 if [[ "$(uname -a)" == *"Linux"*"Ubuntu"* ]]; then
