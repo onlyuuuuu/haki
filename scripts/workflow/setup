@@ -64,6 +64,19 @@ sh autogen.sh
 make -j$(nproc)
 echo 0 | sudo -S make -j$(nproc) install
 
+if [[ ! -d /tools/tmux-3.5a ]]; then
+  echo "Compiling and installing TMUX 3.5a from source"
+  cd /tools/
+  git clone -b tmux-3.5a --depth 1 https://github.com/tmux/tmux.git tmux-3.5a
+fi
+
+cd /tools/tmux-3.5a
+git pull
+sh autogen.sh
+./configure
+make -j$(nproc)
+echo 0 | sudo -S make -j$(nproc) install
+
 if [[ ! -d /tools/rainbarf ]]; then
   cd /tools/
   git clone --depth 1 https://github.com/creaktive/rainbarf.git
@@ -151,6 +164,19 @@ if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
   echo "Installing nvim-lspconfig"
   git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
 fi
+
+mkdir -p ~/.config/tmux-powerline
+if [[ ! -d ~/.config/tmux/plugins/tmux-powerline ]]; then
+  mkdir -p ~/.config/tmux/plugins/
+  cd ~/.config/tmux/plugins/
+  git clone --depth 1 https://github.com/erikw/tmux-powerline.git
+fi
+
+cd ~/.config/tmux/plugins/tmux-powerline
+git pull
+chmod +x generate_config.sh
+./generate_config.sh
+mv ~/.config/tmux-powerline/config.sh.default ~/.config/tmux-powerline/config.sh
 
 if [[ ! -d /tools/eclipse.jdt.ls ]]; then
   echo "Installing Eclipse Java Language Server..."
