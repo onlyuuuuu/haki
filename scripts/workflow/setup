@@ -64,6 +64,21 @@ sh autogen.sh
 make -j$(nproc)
 echo 0 | sudo -S make -j$(nproc) install
 
+if [[ ! -d /tools/rainbarf ]]; then
+  cd /tools/
+  git clone --depth 1 https://github.com/creaktive/rainbarf.git
+fi
+
+cd /tools/rainbarf/
+git pull
+cpan --version
+cpan Module::Build
+cpan App::cpanminus
+cpanm git://github.com/creaktive/rainbarf.git
+perl Build.PL
+./Build test
+./Build install
+
 cd ~/.config/catppuccin
 
 if [[ ! -d ~/.config/catppuccin/nerd-fonts ]]; then
@@ -167,6 +182,7 @@ if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
 else
   cp -rf .tmux.conf ~/
 fi
+cp -rf .rainbarf.conf ~/
 cp -rf .vimrc ~/
 cp -rf .warp ~/
 cp -rf .zprofile2 ~/
