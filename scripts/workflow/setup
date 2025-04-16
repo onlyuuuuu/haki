@@ -181,28 +181,28 @@ fi
 
 cd ~/.config/catppuccin/nerd-fonts
 # Compare the local and remote HEAD commits
-$SCRIPT_DIR/checkForUpdates.sh ~/.config/catppuccin/nerd-fonts
-status_code=$?
-if [[ "$status_code" == 0 && $first_pull == false ]]; then
-  echo "Catppuccin Nerd Fonts is up-to-date. No need to pull or build."
-else
-  echo "Pulling in latest changes from Catppuccin and installing it now..."
-  git pull
-  ./install.sh
-fi
+#$SCRIPT_DIR/checkForUpdates.sh ~/.config/catppuccin/nerd-fonts
+#status_code=$?
+#if [[ "$status_code" == 0 && $first_pull == false ]]; then
+#  echo "Catppuccin Nerd Fonts is up-to-date. No need to pull or build."
+#else
+#  echo "Pulling in latest changes from Catppuccin and installing it now..."
+#  git pull
+#  ./install.sh
+#fi
 
 first_install=false
 if command -v starship > /dev/null 2>&1; then
   echo "Starship already installed, skipping further operations..."
 else  
   echo "Installing Starship"
-  curl -sS https://starship.rs/install.sh | sh
+  echo y | curl -sS https://starship.rs/install.sh | sh
   first_install=true
 fi
 
 if [[ $first_install == false && $1 == "--force" ]]; then
   echo "Force installing Starship"
-  curl -sS https://starship.rs/install.sh | sh  
+  echo y | curl -sS https://starship.rs/install.sh | sh  
 fi
 
 if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -265,30 +265,30 @@ if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
   git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
 fi
 
-mkdir -p ~/.config/tmux-powerline
-if [[ ! -d ~/.config/tmux/plugins/tmux-powerline ]]; then
-  mkdir -p ~/.config/tmux/plugins/
-  cd ~/.config/tmux/plugins/
-  git clone --depth 1 https://github.com/erikw/tmux-powerline.git
-fi
+#mkdir -p ~/.config/tmux-powerline
+#if [[ ! -d ~/.config/tmux/plugins/tmux-powerline ]]; then
+#  mkdir -p ~/.config/tmux/plugins/
+#  cd ~/.config/tmux/plugins/
+#  git clone --depth 1 https://github.com/erikw/tmux-powerline.git
+#fi
 
 # TMUX Powerline config
-cd ~/.config/tmux/plugins/tmux-powerline
-git pull
-chmod +x generate_config.sh
-./generate_config.sh
-if [[ ! -f ~/.config/tmux-powerline/config.sh ]]; then
-  echo "TMUX Powerline configuration is already present, not overwritting anything..."
-  mv ~/.config/tmux-powerline/config.sh.default ~/.config/tmux-powerline/config.sh
-  chmod +x ~/.config/tmux-powerline/config.sh
-fi
+#cd ~/.config/tmux/plugins/tmux-powerline
+#git pull
+#chmod +x generate_config.sh
+#./generate_config.sh
+#if [[ ! -f ~/.config/tmux-powerline/config.sh ]]; then
+#  echo "TMUX Powerline configuration is already present, not overwritting anything..."
+#  mv ~/.config/tmux-powerline/config.sh.default ~/.config/tmux-powerline/config.sh
+#  chmod +x ~/.config/tmux-powerline/config.sh
+#fi
 
 # TMUX Powerline theme
-if [[ ! -f ~/.config/tmux-powerline/themes/my-theme.sh ]]; then
-  mkdir -p ~/.config/tmux-powerline/themes
-  cp ~/.config/tmux/plugins/tmux-powerline/themes/default.sh ~/.config/tmux-powerline/themes/my-theme.sh
-  chmod +x ~/.config/tmux-powerline/themes/my-theme.sh
-fi
+#if [[ ! -f ~/.config/tmux-powerline/themes/my-theme.sh ]]; then
+#  mkdir -p ~/.config/tmux-powerline/themes
+#  cp ~/.config/tmux/plugins/tmux-powerline/themes/default.sh ~/.config/tmux-powerline/themes/my-theme.sh
+#  chmod +x ~/.config/tmux-powerline/themes/my-theme.sh
+#fi
 
 first_pull=false
 if [[ ! -d /tools/eclipse.jdt.ls ]]; then
@@ -328,7 +328,8 @@ cp -rf aliases.zsh2 ~/
 cp -rf .bash_aliases2 ~/
 cp -rf .config ~/
 if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
-  cp -rf .tmux.wsl.conf ~/.tmux.conf
+  #cp -rf .tmux.wsl.conf ~/.tmux.conf
+  cp -rf .tmux.conf ~/
 else
   cp -rf .tmux.conf ~/
 fi
