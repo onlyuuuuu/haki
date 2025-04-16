@@ -11,23 +11,6 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 export PATH="$PATH:$HOME/.tmux/plugins/tmux-mem-cpu-load"
 
-# Shell detection functions
-shell_is_linux() {
-  [[ "$(uname)" = "Linux" ]]
-}
-
-shell_is_osx() {
-  [[ "$(uname)" = "Darwin" ]]
-}
-
-shell_is_bsd() {
-  [[ "$(uname)" = "Darwin" ]] || [[ "$(uname)" = "FreeBSD" ]] || [[ "$(uname)" = "NetBSD" ]] || [[ "$(uname)" = "OpenBSD" ]]
-}
-
-export -f shell_is_linux
-export -f shell_is_osx
-export -f shell_is_bsd
-
 export BAT_THEME="Catppuccin Latte"
 
 if [[ "$(uname -a)" == *"Linux"*"Ubuntu"* ]]; then
@@ -67,3 +50,12 @@ else
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  perl_version=$(/opt/homebrew/bin/perl --version | grep -o "v[0-9]\.[0-9]\+\.[0-9]\+" | tr -d 'v')
+  #echo "Detected Perl version: $perl_version"
+  PATH="/opt/homebrew/Cellar/perl/$perl_version/bin${PATH:+:${PATH}}"; export PATH;
+  PERL5LIB="/opt/homebrew/Cellar/perl/$perl_version/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+  PERL_LOCAL_LIB_ROOT="/opt/homebrew/Cellar/perl/$perl_version${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+  PERL_MB_OPT="--install_base \"/opt/homebrew/Cellar/perl/$perl_version\""; export PERL_MB_OPT;
+  PERL_MM_OPT="INSTALL_BASE=/opt/homebrew/Cellar/perl/$perl_version"; export PERL_MM_OPT;
+fi

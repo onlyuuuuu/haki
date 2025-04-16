@@ -160,4 +160,5 @@ pkg-config
 tmux-mem-cpu-load
 jq
 pcre
+cpanminus
 

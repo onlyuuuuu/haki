@@ -68,8 +68,8 @@
 
 # date_week.sh {
 	# Symbol for calendar week.
-	# export TMUX_POWERLINE_SEG_DATE_WEEK_SYMBOL="󰨳"
-	# export TMUX_POWERLINE_SEG_DATE_WEEK_SYMBOL_COLOUR="255"
+	export TMUX_POWERLINE_SEG_DATE_WEEK_SYMBOL="󰨳"
+	export TMUX_POWERLINE_SEG_DATE_WEEK_SYMBOL_COLOUR="255"
 # }
 
 # disk_usage.sh {
@@ -104,27 +104,27 @@
 	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_TOKEN=""
 	# Include available notification reasons (https://docs.github.com/en/rest/activity/notifications?apiVersion=2022-11-28#about-notification-reasons),
 	# in the format "REASON:SEPARATOR"
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_REASONS="approval_requested:-󰴄 |assign:-󰎔 |author:-󰔗 |comment:- |ci_activity:-󰙨 |invitation:- |manual:-󱥃 |mention:- |review_requested:- |security_alert:-󰒃 |state_change:-󱇯 |subscribed:- |team_mention:- "
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_REASONS="approval_requested:-󰴄 |assign:-󰎔 |author:-󰔗 |comment:- |ci_activity:-󰙨 |invitation:- |manual:-󱥃 |mention:- |review_requested:- |security_alert:-󰒃 |state_change:-󱇯 |subscribed:- |team_mention:- "
 	# Or if you don't like so many symbols, try the abbreviation variant
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_REASONS="approval_requested:areq|assign:as|author:au|comment:co|ci_activity:ci|invitation:in|manual:ma|mention:me|review_requested:rreq|security_alert:sec|state_change:st|subscribed:sub|team_mention:team"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_REASONS="approval_requested:areq|assign:as|author:au|comment:co|ci_activity:ci|invitation:in|manual:ma|mention:me|review_requested:rreq|security_alert:sec|state_change:st|subscribed:sub|team_mention:team"
 	# Use symbol mode (ignored if you set TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_REASONS yourself)
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SYMBOL_MODE="yes"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SYMBOL_MODE="yes"
 	# Summarize all notifications
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SUMMARIZE="no"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SUMMARIZE="no"
 	# Hide if no notifications
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_HIDE_NO_NOTIFICATIONS="yes"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_HIDE_NO_NOTIFICATIONS="yes"
 	# Only show new notifications since date (default: today) (takes up to UPDATE_INTERVAL time to take effect)
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SINCE="$(date +%Y-%m-%dT00:00:00Z)"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SINCE="$(date +%Y-%m-%dT00:00:00Z)"
 	# Enable show only notifications since date (takes up to UPDATE_INTERVAL time to take effect)
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SINCE_ENABLE="no"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_SINCE_ENABLE="no"
 	# Maximum notifications to retreive per page (upstream github default per_page, 50)
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_PER_PAGE="50"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_PER_PAGE="50"
 	# Maximum pages to retreive
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_MAX_PAGES="10"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_MAX_PAGES="10"
 	# Update interval to pull latest state from github api
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_UPDATE_INTERVAL="60"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_UPDATE_INTERVAL="60"
 	# Enable Test Mode (to test how the segment will look like when you have notifications for all types/reasons)
-	# export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_TEST_MODE="no"
+	export TMUX_POWERLINE_SEG_GITHUB_NOTIFICATIONS_TEST_MODE="no"
 # }
 
 # hostname.sh {
@@ -134,42 +134,42 @@
 
 # ifstat.sh {
 	# Symbol for Download.
-	# export TMUX_POWERLINE_SEG_IFSTAT_DOWN_SYMBOL="⇊"
+	export TMUX_POWERLINE_SEG_IFSTAT_DOWN_SYMBOL="⇊"
 	# Symbol for Upload.
-	# export TMUX_POWERLINE_SEG_IFSTAT_UP_SYMBOL="⇈"
+	export TMUX_POWERLINE_SEG_IFSTAT_UP_SYMBOL="⇈"
 	# Symbol for Ethernet.
-	# export TMUX_POWERLINE_SEG_IFSTAT_ETHERNET_SYMBOL="󰈀"
+	export TMUX_POWERLINE_SEG_IFSTAT_ETHERNET_SYMBOL="󰈀"
 	# Symbol for WLAN.
-	# export TMUX_POWERLINE_SEG_IFSTAT_WLAN_SYMBOL="󱚻"
+	export TMUX_POWERLINE_SEG_IFSTAT_WLAN_SYMBOL="󱚻"
 	# Symbol for WWAN.
-	# export TMUX_POWERLINE_SEG_IFSTAT_WWAN_SYMBOL=""
+	export TMUX_POWERLINE_SEG_IFSTAT_WWAN_SYMBOL=""
 	# Separator for Interfaces.
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_SEPARATOR=" | "
+	export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_SEPARATOR=" | "
 	# Space separated list of interface names to be excluded. substring match, regexp can be used.
 	# Examples:
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="tun" # will exclude 'tun0', 'utun0', 'itun', 'tun08127387'
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="tun0 tuntun" # will exclude 'tun0', 'utun0', 'tuntun'
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="^tun0$ ^tun1$" # excludes exactly 'tun0' and 'tun1'
+	export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="tun" # will exclude 'tun0', 'utun0', 'itun', 'tun08127387'
+	export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="tun0 tuntun" # will exclude 'tun0', 'utun0', 'tuntun'
+	export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="^tun0$ ^tun1$" # excludes exactly 'tun0' and 'tun1'
 	# Default:
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="^u?tun[0-9]+$"
+	export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="^u?tun[0-9]+$"
 # }
 
 # kubernetes_context.sh {
 	# Kubernetes config context display mode {"name_namespace", "name", "namespace"}.
-	# export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_DISPLAY_MODE="name_namespace"
+	export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_DISPLAY_MODE="name_namespace"
 	# Kubernetes config context symbol.
-	# export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_SYMBOL="󱃾"
+	export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_SYMBOL="󱃾"
 	# Kubernetes config context symbol colour.
-	# export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_SYMBOL_COLOUR="255"
+	export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_SYMBOL_COLOUR="255"
 	# Separator for display mode "name_namespace"
 	# TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_SEPARATOR="󰿟"
 # }
 
 # lan_ip.sh {
 	# Symbol for LAN IP.
-	# export TMUX_POWERLINE_SEG_LAN_IP_SYMBOL="ⓛ "
+	export TMUX_POWERLINE_SEG_LAN_IP_SYMBOL="ⓛ "
 	# Symbol colour for LAN IP
-	# export TMUX_POWERLINE_SEG_LAN_IP_SYMBOL_COLOUR="255"
+	export TMUX_POWERLINE_SEG_LAN_IP_SYMBOL_COLOUR="255"
 # }
 
 # macos_notification_count.sh {
@@ -246,15 +246,15 @@
 	# Characters per second to roll if rolling trim method is used.
 	export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_SPEED="2"
 	# Mode of roll text {"space", "repeat"}. space: fill up with empty space; repeat: repeat text from beginning
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_MODE="repeat"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_MODE="repeat"
 	# Separator for "repeat" roll mode
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_SEPARATOR="   "
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_SEPARATOR="   "
 	# If set to 'true', 'yes', 'on' or '1', played tracks will be logged to a file.
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_ENABLE="false"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_ENABLE="false"
 	# If enabled, log played tracks to the following file:
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_FILEPATH="/Users/onlyu/.now_playing.log"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_FILEPATH="/Users/onlyu/.now_playing.log"
 	# Maximum number of logged song entries. Set to "unlimited" for unlimited entries.
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_MAX_ENTRIES="100"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_MAX_ENTRIES="100"
 	
 	# Hostname for MPD server in the format "[password@]host"
 	export TMUX_POWERLINE_SEG_NOW_PLAYING_MPD_HOST="localhost"
@@ -305,13 +305,13 @@
 	export TMUX_POWERLINE_SEG_TIME_FORMAT="%H:%M"
 	# Change this to display a different timezone than the system default.
 	# Use TZ Identifier like "America/Los_Angeles"
-	# export TMUX_POWERLINE_SEG_TIME_TZ=""
+	export TMUX_POWERLINE_SEG_TIME_TZ="Asia/Ho_Chi_Minh"
 # }
 
 # tmux_mem_cpu_load.sh {
 	# Arguments passed to tmux-mem-cpu-load.
 	# See https://github.com/thewtex/tmux-mem-cpu-load for all available options.
-	# export TMUX_POWERLINE_SEG_TMUX_MEM_CPU_LOAD_ARGS="-v"
+	export TMUX_POWERLINE_SEG_TMUX_MEM_CPU_LOAD_ARGS="--colors --powerline-right --interval 1"
 # }
 
 # tmux_session_info.sh {
@@ -329,15 +329,15 @@
 	# Max length of the branch name.
 	export TMUX_POWERLINE_SEG_VCS_BRANCH_MAX_LEN=""
 	# Symbol when branch length exceeds max length
-	# export TMUX_POWERLINE_SEG_VCS_BRANCH_TRUNCATE_SYMBOL="…"
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_TRUNCATE_SYMBOL="…"
 	# Default branch symbol
 	export TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL=""
 	# Branch symbol for git repositories
-	# export TMUX_POWERLINE_SEG_VCS_BRANCH_GIT_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_GIT_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
 	# Branch symbol for hg/mercurial repositories
-	# export TMUX_POWERLINE_SEG_VCS_BRANCH_HG_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_HG_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
 	# Branch symbol for SVN repositories
-	# export TMUX_POWERLINE_SEG_VCS_BRANCH_SVN_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_SVN_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
 	# Branch symbol colour for git repositories
 	export TMUX_POWERLINE_SEG_VCS_BRANCH_GIT_SYMBOL_COLOUR="5"
 	# Branch symbol colour for hg/mercurial repositories
@@ -348,59 +348,59 @@
 
 # vcs_compare.sh {
 	# Symbol if local branch is behind.
-	# export TMUX_POWERLINE_SEG_VCS_COMPARE_AHEAD_SYMBOL="↑ "
+	export TMUX_POWERLINE_SEG_VCS_COMPARE_AHEAD_SYMBOL="↑ "
 	# Symbol colour if local branch is ahead. Defaults to "current segment foreground colour"
-	# export TMUX_POWERLINE_SEG_VCS_COMPARE_AHEAD_SYMBOL_COLOUR=""
+	export TMUX_POWERLINE_SEG_VCS_COMPARE_AHEAD_SYMBOL_COLOUR=""
 	# Symbol if local branch is ahead.
-	# export TMUX_POWERLINE_SEG_VCS_COMPARE_BEHIND_SYMBOL="↓ "
+	export TMUX_POWERLINE_SEG_VCS_COMPARE_BEHIND_SYMBOL="↓ "
 	# Symbol colour if local branch is behind. Defaults to "current segment foreground colour"
-	# export TMUX_POWERLINE_SEG_VCS_COMPARE_BEHIND_SYMBOL_COLOUR=""
+	export TMUX_POWERLINE_SEG_VCS_COMPARE_BEHIND_SYMBOL_COLOUR=""
 # }
 
 # vcs_modified.sh {
 	# Symbol for count of modified vcs files.
-	# export TMUX_POWERLINE_SEG_VCS_MODIFIED_SYMBOL="± "
+	export TMUX_POWERLINE_SEG_VCS_MODIFIED_SYMBOL="± "
 # }
 
 # vcs_others.sh {
 	# Symbol for count of untracked vcs files.
-	# export TMUX_POWERLINE_SEG_VCS_OTHERS_SYMBOL="⋯"
+	export TMUX_POWERLINE_SEG_VCS_OTHERS_SYMBOL="⋯"
 # }
 
 # vcs_rootpath.sh {
 	# Display mode for vcs_rootpath.
 	# Example: (name: folder name only; path: full path, w/o expansion; user_path: full path, w/ tilde expansion)
-	# export TMUX_POWERLINE_SEG_VCS_ROOTPATH_MODE="name"
+	export TMUX_POWERLINE_SEG_VCS_ROOTPATH_MODE="name"
 # }
 
 # vcs_staged.sh {
 	# Symbol for count of staged vcs files.
-	# export TMUX_POWERLINE_SEG_VCS_STAGED_SYMBOL="⊕ "
+	export TMUX_POWERLINE_SEG_VCS_STAGED_SYMBOL="⊕ "
 # }
 
 # vpn.sh {
 	# Mode for VPN segment {"both", "ip", "name"}. both: Show NIC/IP; ip: Show only IP; name: Show only NIC name
-	# export TMUX_POWERLINE_SEG_VPN_DISPLAY_MODE="both"
+	export TMUX_POWERLINE_SEG_VPN_DISPLAY_MODE="both"
 	# Space separated list of tunnel interface names. First match is being used. substring match, regexp can be used.
 	# Examples:
 	# export TMUX_POWERLINE_SEG_VPN_NICS="tun" # will match 'tun0', 'utun0', 'itun', 'tun08127387'
 	# export TMUX_POWERLINE_SEG_VPN_NICS="tun0 tuntun" # will match 'tun0', 'utun0', 'tuntun'
 	# export TMUX_POWERLINE_SEG_VPN_NICS="^tun0$ ^tun1$" # exactly 'tun0' and 'tun1'
 	# Default:
-	# export TMUX_POWERLINE_SEG_VPN_NICS='^u?tun[0-9]+$'
+	export TMUX_POWERLINE_SEG_VPN_NICS='^u?tun[0-9]+$'
 	# Symbol to use for vpn tunnel.
-	# export TMUX_POWERLINE_SEG_VPN_SYMBOL="󱠾 "
+	export TMUX_POWERLINE_SEG_VPN_SYMBOL="󱠾 "
 	# Colour for vpn tunnel symbol
-	# export TMUX_POWERLINE_SEG_VPN_SYMBOL_COLOUR="255"
+	export TMUX_POWERLINE_SEG_VPN_SYMBOL_COLOUR="255"
 	# Symbol for separator
-	# export TMUX_POWERLINE_SEG_VPN_DISPLAY_SEPARATOR="󰿟"
+	export TMUX_POWERLINE_SEG_VPN_DISPLAY_SEPARATOR="󰿟"
 # }
 
 # wan_ip.sh {
 	# Symbol for WAN IP
-	# export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL="ⓦ "
+	export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL="ⓦ "
 	# Symbol colour for WAN IP
-	# export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL_COLOUR="255"
+	export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL_COLOUR="255"
 # }
 
 # weather.sh {
@@ -417,8 +417,8 @@
 	# Your location
 	# Latitude and Longtitude for use with yr.no
 	# Set both to "auto" to detect automatically based on your IP address
-	TMUX_POWERLINE_SEG_WEATHER_LAT=""
-	TMUX_POWERLINE_SEG_WEATHER_LON=""
+	TMUX_POWERLINE_SEG_WEATHER_LAT="10.78859358275871"
+	TMUX_POWERLINE_SEG_WEATHER_LON="106.74412865717858"
 # }
 
 # xkb_layout.sh {

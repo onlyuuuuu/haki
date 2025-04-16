@@ -38,11 +38,22 @@ else
     fi
 fi
 
+first_pull=false
 if [[ ! -d /tools/neovim ]]; then
   echo "Compiling and installing NeoVim from source"
   cd /tools/
   git clone --depth 1 https://github.com/neovim/neovim.git
-  cd neovim/
+  first_pull=true
+fi
+
+cd /tools/neovim/
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh /tools/neovim
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "NeoVim source is at the latest, no need to do anything..."
+else
+  echo "Pulling in latest changes from NeoVim and installing it now..."
   git pull
   echo 0 | sudo -S make CMAKE_BUILD_TYPE=RelWithDebInfo
   echo 0 | sudo -S make install
@@ -51,67 +62,128 @@ if [[ ! -d /tools/neovim ]]; then
   echo 0 | sudo -S make install
 fi
 
+first_pull=false
 if [[ ! -d /tools/tmux ]]; then
   echo "Compiling and installing TMUX from source"
   cd /tools/
   git clone --depth 1 https://github.com/tmux/tmux.git
+  first_pull=true
 fi
 
 cd /tools/tmux
-git pull
-sh autogen.sh
-if [[ "$(uname -a)" == *"Darwin"* ]]; then
-  ./configure --enable-utf8proc
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh /tools/tmux
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "TMUX source is at the latest, no need to do anything..."
 else
-  ./configure
+  echo "Pulling in latest changes from TMUX and installing it now..."
+  git pull
+  sh autogen.sh
+  if [[ "$(uname -a)" == *"Darwin"* ]]; then
+    ./configure --enable-utf8proc
+  else
+    ./configure
+  fi
+  make -j$(nproc)
+  echo 0 | sudo -S make -j$(nproc) install
 fi
-make -j$(nproc)
-echo 0 | sudo -S make -j$(nproc) install
 
+first_pull=false
 if [[ ! -d /tools/tmux-3.5a ]]; then
   echo "Compiling and installing TMUX 3.5a from source"
   cd /tools/
   git clone -b tmux-3.5a --depth 1 https://github.com/tmux/tmux.git tmux-3.5a
+  first_pull=true
 fi
 
 cd /tools/tmux-3.5a
-git pull
-sh autogen.sh
-if [[ "$(uname -a)" == *"Darwin"* ]]; then
-  ./configure --enable-utf8proc
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh /tools/tmux-3.5a
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "TMUX 3.5a source is at the latest, no need to do anything..."
 else
-  ./configure
+  echo "Pulling in latest changes from TMUX 3.5a and installing it now..."
+  git pull
+  sh autogen.sh
+  if [[ "$(uname -a)" == *"Darwin"* ]]; then
+    ./configure --enable-utf8proc
+  else
+    ./configure
+  fi
+  make -j$(nproc)
+  echo 0 | sudo -S make -j$(nproc) install
 fi
-make -j$(nproc)
-echo 0 | sudo -S make -j$(nproc) install
 
+first_pull=false
+if [[ ! -d /tools/perl-source ]]; then
+  echo "Installing Perl from source"
+  cd /tools/
+  git clone --depth 1 https://github.com/Perl/perl5.git perl-source
+  first_pull=true
+fi
+
+cd /tools/perl-source
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh /tools/perl-source
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "Perl source is at the latest, no need to do anything..."
+else
+  echo "Pulling in latest changes from Perl and installing it now..."
+  #git pull
+  #./Configure -des -Dprefix=$HOME/perl5dev -Dusedevel
+  #make -j$(nproc) test
+  #echo 0 | sudo -S make -j$(nproc) install
+fi
+
+#PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
+#PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+#PERL_LOCAL_LIB_ROOT="$HOME/perl5dev${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+#PERL_MB_OPT="--install_base \"$HOME/perl5dev\""; export PERL_MB_OPT;
+#PERL_MM_OPT="INSTALL_BASE=$HOME/perl5dev"; export PERL_MM_OPT;
+
+first_pull=false
 if [[ ! -d /tools/rainbarf ]]; then
   cd /tools/
   git clone --depth 1 https://github.com/creaktive/rainbarf.git
+  first_pull=true
 fi
 
 cd /tools/rainbarf/
-git pull
-cpan --version
-cpan Module::Build
-cpan App::cpanminus
-cpanm git://github.com/creaktive/rainbarf.git
-perl Build.PL
-./Build test
-./Build install
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh /tools/rainbarf
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "Rainbarf source is at the latest, no need to do anything..."
+else
+  echo "Pulling in latest changes from Rainbarf and installing it now..."
+  git pull
+  cpan --version
+  cpan Module::Build
+  cpan App::cpanminus
+  cpanm git://github.com/creaktive/rainbarf.git
+  perl Build.PL
+  ./Build test
+  ./Build install
+  echo 0 | sudo -S ./Build install
+fi
 
 cd ~/.config/catppuccin
 
+first_pull=false
 if [[ ! -d ~/.config/catppuccin/nerd-fonts ]]; then
   echo "Installing Nerd Fonts"
   git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+  first_pull=true
 fi
 
 cd ~/.config/catppuccin/nerd-fonts
 # Compare the local and remote HEAD commits
 $SCRIPT_DIR/checkForUpdates.sh ~/.config/catppuccin/nerd-fonts
 status_code=$?
-if [[ "$status_code" == 0 ]]; then
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
   echo "Catppuccin Nerd Fonts is up-to-date. No need to pull or build."
 else
   echo "Pulling in latest changes from Catppuccin and installing it now..."
@@ -206,17 +278,19 @@ if [[ ! -f ~/.config/tmux-powerline/themes/my-theme.sh ]]; then
   chmod +x ~/.config/tmux-powerline/themes/my-theme.sh
 fi
 
+first_pull=false
 if [[ ! -d /tools/eclipse.jdt.ls ]]; then
   echo "Installing Eclipse Java Language Server..."
   cd /tools/
   git clone --depth 1 https://github.com/eclipse-jdtls/eclipse.jdt.ls.git
+  first_pull=true
 fi
 
 cd /tools/eclipse.jdt.ls/
 # Compare the local and remote HEAD commits
 $SCRIPT_DIR/checkForUpdates.sh /tools/eclipse.jdt.ls
 status_code=$?
-if [[ "$status_code" == 0 ]]; then
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
   echo "Eclipse JDT LS is up-to-date. No need to pull or build."
 else
   echo "Updates available for Eclipse JDT LS. Pull and build recommended."
