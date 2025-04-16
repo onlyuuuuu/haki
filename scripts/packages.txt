@@ -161,4 +161,6 @@ tmux-mem-cpu-load
 jq
 pcre
 cpanminus
+gparted
+zoxide
 

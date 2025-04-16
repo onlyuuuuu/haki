@@ -191,11 +191,18 @@ else
   ./install.sh
 fi
 
+first_install=false
 if command -v starship > /dev/null 2>&1; then
   echo "Starship already installed, skipping further operations..."
 else  
   echo "Installing Starship"
-  curl -sS https://starship.rs/install.sh | sh    
+  curl -sS https://starship.rs/install.sh | sh
+  first_install=true
+fi
+
+if [[ $first_install == false && $1 == "--force" ]]; then
+  echo "Force installing Starship"
+  curl -sS https://starship.rs/install.sh | sh  
 fi
 
 if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -206,12 +213,17 @@ fi
 eval "$(zoxide init zsh)" > /dev/null 2>&1
 source "$HOME/.sdkman/bin/sdkman-init.sh" > /dev/null 2>&1
 
+first_install=false
 if command -v z > /dev/null 2>&1; then
   echo "Zoxide already installed, skipping further operations..."
 else
   echo "Installing Zoxide"
   curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-  #echo -e "\nIf Zoxide is still not installed you might want to run this manually \$[ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh ]\n"
+  first_install=true
+fi
+
+if [[ $first_install == false && $1 == "--force" ]]; then
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh  
 fi
 
 if command -v sdk > /dev/null 2>&1; then
