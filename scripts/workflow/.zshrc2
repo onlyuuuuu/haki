@@ -42,7 +42,9 @@ fi
 
 eval "$(zoxide init zsh)"
 
-source "$HOME/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh" > /dev/null 2>&1
+source "$HOME/.sdkman/bin/sdkman-init.sh" > /dev/null 2>&1
 
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   echo ""
