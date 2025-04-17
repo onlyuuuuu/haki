@@ -2,19 +2,6 @@
 # Prints the current weather in Celsius, Fahrenheits or lord Kelvins. The forecast is cached and updated with a period.
 # To configure your location, set TMUX_POWERLINE_SEG_WEATHER_LOCATION in the tmux-powerline config file.
 
-# Shell detection functions
-shell_is_linux() {
-  [[ "$(uname)" = "Linux" ]]
-}
-
-shell_is_osx() {
-  [[ "$(uname)" = "Darwin" ]]
-}
-
-shell_is_bsd() {
-  [[ "$(uname)" = "Darwin" ]] || [[ "$(uname)" = "FreeBSD" ]] || [[ "$(uname)" = "NetBSD" ]] || [[ "$(uname)" = "OpenBSD" ]]
-}
-
 TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER_DEFAULT="yrno"
 TMUX_POWERLINE_SEG_WEATHER_JSON_DEFAULT="jq"
 TMUX_POWERLINE_SEG_WEATHER_UNIT_DEFAULT="c"
@@ -90,8 +77,6 @@ __process_settings() {
 }
 
 __yrno() {
-  set -x
-  exec > /tmp/tmux-powerline-weather.log 2> /tmp/tmux-powerline-weather-errs.log
 	degree=""
 	if [ -f "$tmp_file" ]; then
 		if shell_is_osx || shell_is_bsd; then
@@ -110,7 +95,6 @@ __yrno() {
 	if [ -z "$degree" ]; then
 		if weather_data=$(curl --max-time 4 -s "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${TMUX_POWERLINE_SEG_WEATHER_LAT}&lon=${TMUX_POWERLINE_SEG_WEATHER_LON}"); then
 			grep=$TMUX_POWERLINE_SEG_WEATHER_GREP
-      #echo "Using grep tool: $grep"
 			error=$(echo "$weather_data" | $grep -i "error")
 			if [ -n "$error" ]; then
 				echo "error"
@@ -136,7 +120,6 @@ __yrno() {
 		condition_symbol=$(__get_yrno_condition_symbol "$condition")
 		echo "${condition_symbol} ${degree}°$(echo "$TMUX_POWERLINE_SEG_WEATHER_UNIT" | tr '[:lower:]' '[:upper:]')" | tee "${tmp_file}"
 	fi
-  set +x
 }
 
 # Get symbol for condition. Available symbol names: https://api.met.no/weatherapi/weathericon/2.0/documentation#List_of_symbols
