@@ -1,7 +1,11 @@
 # Default configuration file for tmux-powerline.
 
+# For visability
 mkdir -p "$HOME/.config/tmux-powerline/.tmp.d"
 export TMUX_POWERLINE_DIR_TEMPORARY="$HOME/.config/tmux-powerline/.tmp.d"
+
+# 'stat' command needs to be from /usr/bin/stat in other for weather.sh to work
+export PATH="/usr/bin:$PATH"
 
 # General {
 	# Show which segment fails and its exit code.
@@ -425,10 +429,10 @@ export TMUX_POWERLINE_DIR_TEMPORARY="$HOME/.config/tmux-powerline/.tmp.d"
 	# Your location
 	# Latitude and Longtitude for use with yr.no
 	# Set both to "auto" to detect automatically based on your IP address
-	#export TMUX_POWERLINE_SEG_WEATHER_LAT="10.78859358275871"
-	#export TMUX_POWERLINE_SEG_WEATHER_LON="106.74412865717858"
-  export TMUX_POWERLINE_SEG_WEATHER_LAT="auto"
-	export TMUX_POWERLINE_SEG_WEATHER_LON="auto"
+	export TMUX_POWERLINE_SEG_WEATHER_LAT="10.78859358275871"
+	export TMUX_POWERLINE_SEG_WEATHER_LON="106.74412865717858"
+  #export TMUX_POWERLINE_SEG_WEATHER_LAT="auto"
+	#export TMUX_POWERLINE_SEG_WEATHER_LON="auto"
 # }
 
 # xkb_layout.sh {

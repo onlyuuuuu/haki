@@ -15,7 +15,7 @@ fi
 
 generate_segmentrc() {
 	read -r -d '' rccontents <<EORC
-# The data provider to use. Currently only "yahoo" is supported.
+# The data provider to use. Currently only "yrno" is supported.
 export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER="${TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER_DEFAULT}"
 # What unit to use. Can be any of {c,f,k}.
 export TMUX_POWERLINE_SEG_WEATHER_UNIT="${TMUX_POWERLINE_SEG_WEATHER_UNIT_DEFAULT}"
@@ -80,7 +80,7 @@ __yrno() {
 	degree=""
 	if [ -f "$tmp_file" ]; then
 		if shell_is_osx || shell_is_bsd; then
-			last_update=$(/usr/bin/stat -f "%m" "${tmp_file}")
+			last_update=$(stat -f "%m" "${tmp_file}")
 		elif shell_is_linux; then
 			last_update=$(stat -c "%Y" "${tmp_file}")
 		fi
