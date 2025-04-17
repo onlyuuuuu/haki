@@ -1,8 +1,11 @@
 # Default configuration file for tmux-powerline.
 
+mkdir -p "$HOME/.config/tmux-powerline/.tmp.d"
+export TMUX_POWERLINE_DIR_TEMPORARY="$HOME/.config/tmux-powerline/.tmp.d"
+
 # General {
 	# Show which segment fails and its exit code.
-	export TMUX_POWERLINE_DEBUG_MODE_ENABLED="false"
+	export TMUX_POWERLINE_DEBUG_MODE_ENABLED="true"
 	# Use patched font symbols.
 	export TMUX_POWERLINE_PATCHED_FONT_IN_USE="true"
 
@@ -403,6 +406,7 @@
 	export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL_COLOUR="255"
 # }
 
+# curl "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=10.78859358275871&lon=106.74412865717858"
 # weather.sh {
 	# The data provider to use. Currently only "yahoo" is supported.
 	export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER="yrno"
@@ -411,7 +415,11 @@
 	# How often to update the weather in seconds.
 	export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="600"
 	# Name of GNU grep binary if in PATH, or path to it.
-	export TMUX_POWERLINE_SEG_WEATHER_GREP="grep"
+  if [[ "$(uname -a)" == *"Darwin"* ]]; then
+	  export TMUX_POWERLINE_SEG_WEATHER_GREP="ggrep"
+  else
+    export TMUX_POWERLINE_SEG_WEATHER_GREP="grep"
+  fi
 	# Location of the JSON parser, jq
 	export TMUX_POWERLINE_SEG_WEATHER_JSON="jq"
 	# Your location

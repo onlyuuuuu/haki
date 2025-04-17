@@ -104,7 +104,7 @@ if [ -z "$TMUX_POWERLINE_LEFT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 		"hostname 33 255"
 	  "pwd 89 211"
-    "ifstat 30 255"
+    #"ifstat 30 255"
 		"ifstat_sys 30 255"
 		"lan_ip 24 255"
 		"vpn 24 255"
