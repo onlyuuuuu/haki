@@ -13,6 +13,8 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 export PATH="$PATH:$HOME/.tmux/plugins/tmux-mem-cpu-load"
 
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+
 export BAT_THEME="Catppuccin Latte"
 
 if [[ "$(uname -a)" == *"Linux"*"Ubuntu"* ]]; then

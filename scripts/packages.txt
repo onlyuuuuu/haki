@@ -164,4 +164,5 @@ cpanminus
 gparted
 zoxide
 grep
+curl-openssl
 
