@@ -165,4 +165,5 @@ gparted
 zoxide
 grep
 curl-openssl
+coreutils
 
