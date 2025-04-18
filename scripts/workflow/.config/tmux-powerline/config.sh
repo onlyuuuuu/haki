@@ -429,10 +429,10 @@ export PATH="/usr/bin:$PATH"
 	# Your location
 	# Latitude and Longtitude for use with yr.no
 	# Set both to "auto" to detect automatically based on your IP address
-	export TMUX_POWERLINE_SEG_WEATHER_LAT="10.78859358275871"
-	export TMUX_POWERLINE_SEG_WEATHER_LON="106.74412865717858"
-  #export TMUX_POWERLINE_SEG_WEATHER_LAT="auto"
-	#export TMUX_POWERLINE_SEG_WEATHER_LON="auto"
+	#export TMUX_POWERLINE_SEG_WEATHER_LAT="10.78859358275871"
+	#export TMUX_POWERLINE_SEG_WEATHER_LON="106.74412865717858"
+  export TMUX_POWERLINE_SEG_WEATHER_LAT="auto"
+	export TMUX_POWERLINE_SEG_WEATHER_LON="auto"
 # }
 
 # xkb_layout.sh {
