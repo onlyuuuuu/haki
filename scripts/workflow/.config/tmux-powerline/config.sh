@@ -419,15 +419,15 @@ export PATH="/usr/bin:$PATH"
 	# How often to update the weather in seconds.
 	#export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="600"
 	#export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="3600"
-  # For troubleshooting
-  export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="600"
-	export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="3600"
-  # Name of GNU grep binary if in PATH, or path to it.
-  if [[ "$(uname -a)" == *"Darwin"* ]]; then
-	  export TMUX_POWERLINE_SEG_WEATHER_GREP="ggrep"
-  else
-    export TMUX_POWERLINE_SEG_WEATHER_GREP="grep"
-  fi
+	# For troubleshooting/debugging
+	export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="5"
+	export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="10"
+	# Name of GNU grep binary if in PATH, or path to it.
+	if [[ "$(uname -a)" == *"Darwin"* ]]; then
+		export TMUX_POWERLINE_SEG_WEATHER_GREP="ggrep"
+	else
+		export TMUX_POWERLINE_SEG_WEATHER_GREP="grep"
+	fi
 	# Location of the JSON parser, jq
 	export TMUX_POWERLINE_SEG_WEATHER_JSON="jq"
 	# Your location
@@ -435,7 +435,7 @@ export PATH="/usr/bin:$PATH"
 	# Set both to "auto" to detect automatically based on your IP address
 	#export TMUX_POWERLINE_SEG_WEATHER_LAT="10.78859358275871"
 	#export TMUX_POWERLINE_SEG_WEATHER_LON="106.74412865717858"
-  export TMUX_POWERLINE_SEG_WEATHER_LAT="auto"
+  	export TMUX_POWERLINE_SEG_WEATHER_LAT="auto"
 	export TMUX_POWERLINE_SEG_WEATHER_LON="auto"
 # }
 
