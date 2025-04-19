@@ -6,6 +6,7 @@ TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER_DEFAULT="yrno"
 TMUX_POWERLINE_SEG_WEATHER_JSON_DEFAULT="jq"
 TMUX_POWERLINE_SEG_WEATHER_UNIT_DEFAULT="c"
 TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD_DEFAULT="600"
+TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD_DEFAULT="86400" # 24 hours
 
 if shell_is_bsd && [ -f /user/local/bin/grep ]; then
 	TMUX_POWERLINE_SEG_WEATHER_GREP_DEFAULT="/usr/local/bin/grep"
@@ -21,6 +22,8 @@ export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER="${TMUX_POWERLINE_SEG_WEATHER_DA
 export TMUX_POWERLINE_SEG_WEATHER_UNIT="${TMUX_POWERLINE_SEG_WEATHER_UNIT_DEFAULT}"
 # How often to update the weather in seconds.
 export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="${TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD_DEFAULT}"
+# How often to update the weather location in seconds (this is only used when latitude and longitude settings are set to "auto")
+export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="${TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD_DEFAULT}"
 # Location of the JSON parser, jq
 export TMUX_POWERLINE_SEG_WEATHER_JSON="${TMUX_POWERLINE_SEG_WEATHER_JSON_DEFAULT}"
 # Your location
@@ -33,9 +36,10 @@ EORC
 }
 
 run_segment() {
-	__process_settings
 	local tmp_file="${TMUX_POWERLINE_DIR_TEMPORARY}/temp_weather_file.txt"
+	local cache_file="${TMUX_POWERLINE_DIR_TEMPORARY}/weather_location_cache.txt"
 	local weather
+	__process_settings
 	case "$TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER" in
 	"yrno") weather=$(__yrno) ;;
 	*)
@@ -58,6 +62,9 @@ __process_settings() {
 	if [ -z "$TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD" ]; then
 		export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="${TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD_DEFAULT}"
 	fi
+	if [ -z "$TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD" ]; then
+		export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="${TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD_DEFAULT}"
+	fi
 	if [ -z "$TMUX_POWERLINE_SEG_WEATHER_GREP" ]; then
 		export TMUX_POWERLINE_SEG_WEATHER_GREP="${TMUX_POWERLINE_SEG_WEATHER_GREP_DEFAULT}"
 	fi
@@ -75,21 +82,28 @@ __process_settings() {
 }
 
 __yrno() {
-  set -x
-  exec 2>/tmp/tmux-powerline.log
+	#set -x
+	#exec 2> /tmp/tmux-weather-yrno.log 
+	#exec > /tmp/tmux-weather-yrno.log 2>&1 
 	degree=""
 	if [ -f "$tmp_file" ]; then
-    last_update=$(__read_file_last_update $tmp_file)
+		last_update=$(__read_file_last_update $tmp_file)
 		time_now=$(date +%s)
 
 		up_to_date=$(echo "(${time_now}-${last_update}) < ${TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD}" | bc)
 		if [ "$up_to_date" -eq 1 ]; then
 			__read_file_content $tmp_file
-      exit
+			exit
 		fi
 	fi
 
 	if [ -z "$degree" ]; then
+		# There's a chance that you will get rate limited or both location APIs are not working
+		# Then long and lat will be null
+		if [ -z $TMUX_POWERLINE_SEG_WEATHER_LAT -o -z $TMUX_POWERLINE_SEG_WEATHER_LON -o $TMUX_POWERLINE_SEG_WEATHER_LAT == null -o $TMUX_POWERLINE_SEG_WEATHER_LON == null ]; then
+			__read_file_content $tmp_file
+			exit 1
+		fi
 		if weather_data=$(curl --max-time 4 -s "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${TMUX_POWERLINE_SEG_WEATHER_LAT}&lon=${TMUX_POWERLINE_SEG_WEATHER_LON}"); then
 			grep=$TMUX_POWERLINE_SEG_WEATHER_GREP
 			error=$(echo "$weather_data" | $grep -i "error")
@@ -102,8 +116,8 @@ __yrno() {
 			degree=$(echo "$weather_data" | $jsonparser -r '.properties.timeseries | .[0].data.instant.details.air_temperature')
 			condition=$(echo "$weather_data" | $jsonparser -r '.properties.timeseries | .[0].data.next_1_hours.summary.symbol_code')
 		elif [ -f "${tmp_file}" ]; then
-      __read_file_content $tmp_file
-      exit
+			__read_file_content $tmp_file
+			exit
 		fi
 	fi
 
@@ -116,10 +130,15 @@ __yrno() {
 		fi
 		# condition_symbol=$(__get_yrno_condition_symbol "$condition" "$sunrise" "$sunset")
 		condition_symbol=$(__get_yrno_condition_symbol "$condition")
-    # Write the <content @ date>, separated by 2 spaces and @, so we can fetch it later on without having to call 'stat'
-		echo "${condition_symbol} ${degree}°$(echo "$TMUX_POWERLINE_SEG_WEATHER_UNIT" | tr '[:lower:]' '[:upper:]') @ $(date +%s)" | tee "${tmp_file}"
+		# Write the <content @ date>, separated by 2 spaces and @, so we can fetch it later on without having to call 'stat'
+		echo "${condition_symbol} ${degree}°$(echo "$TMUX_POWERLINE_SEG_WEATHER_UNIT" | tr '[:lower:]' '[:upper:]')@$(date +%s)" > $tmp_file
+		__read_file_content $tmp_file
+		exit
 	fi
-  set +x
+
+	__read_file_content $tmp_file
+	exit 1
+	#set +x
 }
 
 # Get symbol for condition. Available symbol names: https://api.met.no/weatherapi/weathericon/2.0/documentation#List_of_symbols
@@ -179,31 +198,40 @@ __get_yrno_condition_symbol() {
 
 __read_file_content() {
 	if [ ! -f "$1" ]; then
+		echo "N/A"
 		return
 	fi
-  local -a tmp_file_arr
-  IFS=' @ ' read -ra tmp_file_arr <<< "$(cat "${tmp_file}")"
-  echo ${tmp_file_arr[0]}
+	local -a file_arr
+	IFS='@' read -ra file_arr <<< "$(cat $1)"
+	if [ -z ${file_arr[0]} ]; then
+		echo "N/A"
+		return
+	fi
+	echo ${file_arr[0]}
 }
 
 __read_file_last_update() {
 	if [ ! -f "$1" ]; then
+		echo 0
 		return
 	fi
-  local -a tmp_file_arr
-  IFS=' @ ' read -ra tmp_file_arr <<< "$(cat "${tmp_file}")"
-  echo ${tmp_file_arr[1]}
+	local -a file_arr
+	IFS='@' read -ra file_arr <<< "$(cat $1)"
+	if [ -z ${file_arr[1]} ]; then
+		echo 0
+		return
+	fi
+	echo ${file_arr[1]}
 }
 
 get_auto_location() {
-	  set -x
-    exec 2>/tmp/tmux-powerline.log
-    local cache_file="${TMUX_POWERLINE_DIR_TEMPORARY}/weather_location_cache.txt"
-    local max_cache_age=86400  # 24 hours
+    #set -x
+    #exec 2> /tmp/tmux-weather-location.log
+    #exec > /tmp/tmux-weather-location.log 2>&1
+    local max_cache_age=$TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD
     local -a lat_lon_arr
 
     if [[ -f "$cache_file" ]]; then
-        echo "Cache file $cache_file last update: $(__read_file_last_update $cache_file 2>/dev/null || echo 0)"
         local cache_age=$(($(date +%s) - $(__read_file_last_update $cache_file 2>/dev/null || echo 0)))
         if (( cache_age < max_cache_age )); then
             IFS=' ' read -ra lat_lon_arr <<< "$(__read_file_content $cache_file)"
@@ -232,11 +260,16 @@ get_auto_location() {
             esac
             if [[ -n "$TMUX_POWERLINE_SEG_WEATHER_LAT" && -n "$TMUX_POWERLINE_SEG_WEATHER_LON" ]]; then
                 mkdir -p "$(dirname "$cache_file")"
-                echo "$TMUX_POWERLINE_SEG_WEATHER_LAT $TMUX_POWERLINE_SEG_WEATHER_LON @ $(date +%s)" > $cache_file
+				# If we couldn't find out the lat and long, then don't write to the file. We don't want to overwrite the previous actual coordinates
+				if [[ $TMUX_POWERLINE_SEG_WEATHER_LAT == null || $TMUX_POWERLINE_SEG_WEATHER_LON == null || $TMUX_POWERLINE_SEG_WEATHER_LAT == '' || $TMUX_POWERLINE_SEG_WEATHER_LON == '' ]]; then
+					return 1
+				fi
+                echo "$TMUX_POWERLINE_SEG_WEATHER_LAT $TMUX_POWERLINE_SEG_WEATHER_LON@$(date +%s)" > $cache_file
                 return 0
             fi
         fi
     done
+
     if [[ -f "$cache_file" ]]; then
         echo "Warning: Using stale location data (failed to refresh)" >&2
         IFS=' ' read -ra lat_lon_arr <<< "$(__read_file_content $cache_file)"
@@ -249,6 +282,5 @@ get_auto_location() {
 
     echo "Could not detect location automatically" >&2
     return 1
-    set +x
+    #set +x
 }
-
