@@ -172,6 +172,16 @@ else
   ./Build test
   ./Build install
   echo 0 | sudo -S ./Build install
+  
+  # Retry with root, just in case
+  cpan --version
+  echo 0 | sudo -S cpan Module::Build
+  echo 0 | sudo -S cpan -i App::cpanminus
+  echo 0 | sudo -S cpan -i App::rainbarf
+  echo 0 | sudo -S cpanm git://github.com/creaktive/rainbarf.git
+  echo 0 | sudo -S perl Build.PL
+  echo 0 | sudo -S ./Build test
+  echo 0 | sudo -S ./Build install
 fi
 
 cd ~/.config/catppuccin
