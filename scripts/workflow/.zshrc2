@@ -13,9 +13,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 export PATH="$PATH:$HOME/.tmux/plugins/tmux-mem-cpu-load"
 
-if [[ "$(uname -a)" == *"aarch64"* ]]; then
-  export PATH="/usr/bin:/bin:/usr/local/bin:$PATH"
-else
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
   export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 fi
 
