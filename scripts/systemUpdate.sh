@@ -4,7 +4,11 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Script dir: $SCRIPT_DIR"
 cd $SCRIPT_DIR
 
-./installPackages.sh --quiet --linux-brew
+if [[ "$(uname -a)" == *"amd64"* || "$(uname -a)" == *"x86_64"* ]]; then
+  ./installPackages.sh --quiet --linux-brew
+else
+  ./installPackages.sh --quiet
+fi
 
 cd workflow/
 ./setup
