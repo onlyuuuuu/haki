@@ -197,13 +197,13 @@ if command -v starship > /dev/null 2>&1; then
   echo "Starship already installed, skipping further operations..."
 else  
   echo "Installing Starship"
-  echo y | curl -sS https://starship.rs/install.sh | sh
+  yes | curl -sS https://starship.rs/install.sh | sh
   first_install=true
 fi
 
 if [[ $first_install == false && $1 == "--force" ]]; then
   echo "Force installing Starship"
-  echo y | curl -sS https://starship.rs/install.sh | sh  
+  yes | curl -sS https://starship.rs/install.sh | sh  
 fi
 
 if [[ ! -d ~/.oh-my-zsh ]]; then
