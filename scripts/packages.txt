@@ -166,4 +166,5 @@ zoxide
 grep
 curl-openssl
 coreutils
-
+ripgrep
+ack
