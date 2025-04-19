@@ -5,7 +5,7 @@ mkdir -p "$HOME/.config/tmux-powerline/.tmp.d"
 export TMUX_POWERLINE_DIR_TEMPORARY="$HOME/.config/tmux-powerline/.tmp.d"
 
 # 'stat' command needs to be from /usr/bin/stat in other for weather.sh to work
-export PATH="/usr/bin:$PATH"
+#export PATH="/usr/bin:$PATH"
 
 # General {
 	# Show which segment fails and its exit code.
