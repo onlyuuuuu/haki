@@ -417,11 +417,11 @@ export TMUX_POWERLINE_DIR_TEMPORARY="$HOME/.config/tmux-powerline/.tmp.d"
 	# What unit to use. Can be any of {c,f,k}.
 	export TMUX_POWERLINE_SEG_WEATHER_UNIT="c"
 	# How often to update the weather in seconds.
-	#export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="600"
-	#export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="3600"
+	export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="600"
+	export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="3600"
 	# For troubleshooting/debugging
-	export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="5"
-	export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="10"
+	#export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="5"
+	#export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="10"
 	# Name of GNU grep binary if in PATH, or path to it.
 	if [[ "$(uname -a)" == *"Darwin"* ]]; then
 		export TMUX_POWERLINE_SEG_WEATHER_GREP="ggrep"
