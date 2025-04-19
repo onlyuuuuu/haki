@@ -3,6 +3,9 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo "Location of [$(basename "${BASH_SOURCE[0]}")] is: $SCRIPT_DIR"
 
+echo 0 | sudo -S mkdir -p /usr/local/bin/
+echo 0 | sudo -S chmod -R 777 /usr/local/bin/
+
 echo 0 | sudo -S mkdir -p /tools > /dev/null 2>&1
 echo 0 | sudo -S chown -R $USER:"$(id -g -n)" /tools > /dev/null 2>&1
 mkdir -p ~/.config/catppuccin
