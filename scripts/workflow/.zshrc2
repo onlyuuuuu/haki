@@ -57,7 +57,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh" > /dev/null 2>&1
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   echo "" > /dev/null 2>&1
 else
-  if [[ "$(uname -a)" == *"Linux"*"Ubuntu"*"aarch64" ]]; then
+  if [[ "$(uname -a)" == *"aarch64"* ]]; then
     echo "" > /dev/null 2>&1
   else
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -73,3 +73,4 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
   PERL_MB_OPT="--install_base \"/opt/homebrew/Cellar/perl/$perl_version\""; export PERL_MB_OPT;
   PERL_MM_OPT="INSTALL_BASE=/opt/homebrew/Cellar/perl/$perl_version"; export PERL_MM_OPT;
 fi
+
