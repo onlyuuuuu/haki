@@ -168,3 +168,5 @@ curl-openssl
 coreutils
 ripgrep
 ack
+tlrc
+
