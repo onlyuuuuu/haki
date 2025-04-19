@@ -1,13 +1,15 @@
 #!/bin/bash
 
+export NONINTERACTIVE=1
+
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   brew update && brew upgrade
   while IFS= read -r package; do
     echo "Installing [ $package ]"
     if [[ "$1" == "--quiet" || "$2" == "--quiet" ]]; then
-      brew install $package --force > /dev/null 2>&1
+      yes | brew install $package --force > /dev/null 2>&1
     else
-      brew install $package --force
+      yes | brew install $package --force
     fi
   done < "packages.txt"
 else
@@ -27,9 +29,9 @@ else
     while IFS= read -r package; do
       echo "Installing [ $package ]"
       if [[ "$1" == "--quiet" || "$2" == "--quiet" ]]; then
-        brew install $package --force > /dev/null 2>&1
+        yes | brew install $package --force > /dev/null 2>&1
       else
-        brew install $package --force
+        yes | brew install $package --force
       fi
     done < "packages.txt"
   fi
@@ -38,3 +40,4 @@ fi
 pipx install sphinx_rtd_theme --include-deps
 pipx ensurepath
 pip install sphinx_rtd_theme --break-system-packages
+

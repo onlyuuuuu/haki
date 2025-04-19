@@ -162,7 +162,8 @@ else
   git pull
   cpan --version
   cpan Module::Build
-  cpan App::cpanminus
+  cpan -i App::cpanminus
+  cpan -i App::rainbarf
   cpanm git://github.com/creaktive/rainbarf.git
   perl Build.PL
   ./Build test
