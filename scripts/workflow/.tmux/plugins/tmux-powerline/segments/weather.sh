@@ -31,31 +31,36 @@ EORC
 run_segment() {
 	local cache_weather_file="${TMUX_POWERLINE_DIR_TEMPORARY}/weather_cache_data.txt"
 	local cache_location_file="${TMUX_POWERLINE_DIR_TEMPORARY}/weather_cache_location.txt"
-	local weather
+	local weather=""
 
 	# Check if the weather data is still a valid cache hit
 	if [ -f "$cache_weather_file" ]; then
 		last_update=$(__read_file_last_update "$cache_weather_file")
 		time_now=$(date +%s)
-
 		up_to_date=$(echo "(${time_now}-${last_update}) < ${TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD}" | bc)
 		if [ "$up_to_date" -eq 1 ]; then
-			__read_file_content "$cache_weather_file"
-			return
+			weather=$(__read_file_content "$cache_weather_file")
 		fi
 	fi
-
-	__process_settings
-	case "$TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER" in
-	"yrno") weather=$(__yrno) ;;
-	*)
-		echo "Unknown weather provider [$TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER]"
-		return 1
-		;;
-	esac
-	if [ -n "$weather" ]; then
-		echo "$weather"
+	
+	# Fetch from provider if empty
+	# If a new provider is implemented, please set the $weather variable!
+	if [ -z "$weather" ]; then
+		__process_settings
+		case "$TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER" in
+		"yrno")
+			weather=$(__yrno)
+			;;
+		*)
+			# Just read the stale cache, default to empty/blank
+			# Better not overwriting the previous healthy content
+			weather=$(__read_file_content "$cache_weather_file")
+			;;
+		esac
+		echo "$weather" > "$cache_weather_file"
 	fi
+
+	echo "$weather"
 }
 
 __process_settings() {
@@ -71,9 +76,6 @@ __process_settings() {
 	if [ -z "$TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD" ]; then
 		export TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD="${TMUX_POWERLINE_SEG_WEATHER_LOCATION_UPDATE_PERIOD_DEFAULT}"
 	fi
-	if [ -z "$TMUX_POWERLINE_SEG_WEATHER_GREP" ]; then
-		export TMUX_POWERLINE_SEG_WEATHER_GREP="${TMUX_POWERLINE_SEG_WEATHER_GREP_DEFAULT}"
-	fi
 	if [ "$TMUX_POWERLINE_SEG_WEATHER_LAT" = "auto" ] || [ "$TMUX_POWERLINE_SEG_WEATHER_LON" = "auto" ] || [ -z "$TMUX_POWERLINE_SEG_WEATHER_LON" ] || [ -z "$TMUX_POWERLINE_SEG_WEATHER_LAT" ]; then
 		if ! get_auto_location; then
 			exit 8
@@ -81,47 +83,42 @@ __process_settings() {
 	fi
 }
 
+# An implementation of a weather provider, just need to echo the result, run_segment() will take care of the rest
 __yrno() {
-	degree=""
+	local degree=""
+
+	# There's a chance that you will get rate limited or both location APIs are not working
+	# Then long and lat will be "null", as literal string
+	if [ -z "$TMUX_POWERLINE_SEG_WEATHER_LAT" ] || [ -z "$TMUX_POWERLINE_SEG_WEATHER_LON" ]; then
+		echo "Err: Unable to auto-detect your location"
+		return 1
+	fi
+
+	if weather_data=$(curl --max-time 4 -s "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${TMUX_POWERLINE_SEG_WEATHER_LAT}&lon=${TMUX_POWERLINE_SEG_WEATHER_LON}"); then
+		error=$(echo "$weather_data" | grep -i "error")
+		if [ -n "$error" ]; then
+			echo "error"
+			return 1
+		fi
+		degree=$(echo "$weather_data" | jq -r '.properties.timeseries | .[0].data.instant.details.air_temperature')
+		condition=$(echo "$weather_data" | jq -r '.properties.timeseries | .[0].data.next_1_hours.summary.symbol_code')
+	fi
 
 	if [ -z "$degree" ]; then
-		# There's a chance that you will get rate limited or both location APIs are not working
-		# Then long and lat will be "null", as literal string
-		if [ -z "$TMUX_POWERLINE_SEG_WEATHER_LAT" ] || [ -z "$TMUX_POWERLINE_SEG_WEATHER_LON" ] || [ "$TMUX_POWERLINE_SEG_WEATHER_LAT" == null ] || [ "$TMUX_POWERLINE_SEG_WEATHER_LON" == null ]; then
-			__read_file_content "$cache_weather_file"
-			return
-		fi
-		if weather_data=$(curl --max-time 4 -s "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${TMUX_POWERLINE_SEG_WEATHER_LAT}&lon=${TMUX_POWERLINE_SEG_WEATHER_LON}"); then
-			error=$(echo "$weather_data" | grep -i "error")
-			if [ -n "$error" ]; then
-				echo "error"
-				return 1
-			fi
-			degree=$(echo "$weather_data" | jq -r '.properties.timeseries | .[0].data.instant.details.air_temperature')
-			condition=$(echo "$weather_data" | jq -r '.properties.timeseries | .[0].data.next_1_hours.summary.symbol_code')
-		elif [ -f "${cache_weather_file}" ]; then
-			__read_file_content "$cache_weather_file"
-			return
-		fi
+		echo "yr.no err: unable to fetch weather data"
+		return 1
 	fi
 
-	if [ -n "$degree" ]; then
-		if [ "$TMUX_POWERLINE_SEG_WEATHER_UNIT" == "k" ]; then
-			degree=$(echo "${degree} + 273.15" | bc)
-		fi
-		if [ "$TMUX_POWERLINE_SEG_WEATHER_UNIT" == "f" ]; then
-			degree=$(echo "${degree} * 9 / 5 + 32" | bc)
-		fi
-		# condition_symbol=$(__get_yrno_condition_symbol "$condition" "$sunrise" "$sunset")
-		condition_symbol=$(__get_yrno_condition_symbol "$condition")
-		# Write the <content @ date>, separated by 2 spaces and @, so we can fetch it later on without having to call 'stat'
-		echo "${condition_symbol} ${degree}°$(echo "$TMUX_POWERLINE_SEG_WEATHER_UNIT" | tr '[:lower:]' '[:upper:]')@$(date +%s)" > "$cache_weather_file"
-		__read_file_content "$cache_weather_file"
-		return
+	if [ "$TMUX_POWERLINE_SEG_WEATHER_UNIT" == "k" ]; then
+		degree=$(echo "${degree} + 273.15" | bc)
 	fi
-
-	__read_file_content "$cache_weather_file"
-	return
+	if [ "$TMUX_POWERLINE_SEG_WEATHER_UNIT" == "f" ]; then
+		degree=$(echo "${degree} * 9 / 5 + 32" | bc)
+	fi
+	# condition_symbol=$(__get_yrno_condition_symbol "$condition" "$sunrise" "$sunset")
+	condition_symbol=$(__get_yrno_condition_symbol "$condition")
+	# Write the <content@date>, separated by a @ character, so we can fetch it later on without having to call 'stat'
+	echo "${condition_symbol} ${degree}°$(echo "$TMUX_POWERLINE_SEG_WEATHER_UNIT" | tr '[:lower:]' '[:upper:]')@$(date +%s)"
 }
 
 # Get symbol for condition. Available symbol names: https://api.met.no/weatherapi/weathericon/2.0/documentation#List_of_symbols
@@ -180,23 +177,28 @@ __get_yrno_condition_symbol() {
 }
 
 __read_file_split() {
-	if [ ! -f "$1" ]; then
-		echo "$3"
+	file_to_read="$1"
+	lookup_index="$2"
+	fallback_value="$3"
+	if [ ! -f "$file_to_read" ]; then
+		echo "$fallback_value"
 		return
 	fi
 	local -a file_arr
-	IFS='@' read -ra file_arr <<< "$(cat "$1")"
-	if [ -z "${file_arr[$2]}" ]; then
-		echo "$3"
+	IFS='@' read -ra file_arr <<< "$(cat "$file_to_read")"
+	if [ -z "${file_arr[$lookup_index]}" ]; then
+		echo "$fallback_value"
 		return
 	fi
-	echo "${file_arr[$2]}"
+	echo "${file_arr[$lookup_index]}"
 }
 
+# Default to empty/blank
 __read_file_content() {
-	__read_file_split "$1" 0 "N/A"
+	__read_file_split "$1" 0 ""
 }
 
+# Default to 0
 __read_file_last_update() {
 	__read_file_split "$1" 1 0
 }
