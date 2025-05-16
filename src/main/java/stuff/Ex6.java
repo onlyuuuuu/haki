@@ -69,7 +69,6 @@ public class Ex6
         }
 
         Movie[] movies = new Movie[moviesNo + 1];
-        Member[] members = new Member[membersNo];
         
         TreeSet<Integer> movieTree = new TreeSet<>(new Comparator<Integer>()
         {
@@ -86,17 +85,6 @@ public class Ex6
             }
         });
 
-        TreeSet<Integer> memberTree = new TreeSet<>(new Comparator<Integer>()
-        {
-            @Override
-            public int compare(Integer i, Integer j)
-            {
-                if (members[i].getAvailableTime() == members[j].getAvailableTime())
-                    return Integer.compare(i, j);
-                return Integer.compare(members[i].getAvailableTime(), members[j].getAvailableTime());
-            }
-        });
-
         movies[0] = new Movie(0, 0);
         for (int i = 1; i <= moviesNo; i++)
         {
@@ -104,52 +92,30 @@ public class Ex6
             movieTree.add(i);
         }
 
-        members[0] = new Member(1);
-        for (int i = 1; i <= membersNo; i++)
-            members[i] = new Member(1);
+        int total = 0;
 
-        Movie mov = movies[movieTree.pollFirst()];
-        members[1].setAvailableTime(mov.getEndTime());
-        memberTree.add(1);
+        Movie mov;
+        Integer ceilingIndex;
 
-        int total = 1;
-
-        while (!movieTree.isEmpty())
+        for (int i = 1; i <= membersNo && !movieTree.isEmpty(); i++)
         {
             mov = movies[movieTree.pollFirst()];
-            if (mov.getStartTime() < members[memberTree.getFirst()].getAvailableTime())
+            while (mov != null)
             {
-                if (memberTree.size() < membersNo)
+                ++total;
+                movies[0].setStartTime(mov.getEndTime());
+                movies[0].setEndTime(mov.getEndTime() + 1);
+                ceilingIndex = movieTree.ceiling(0);
+                while (ceilingIndex != null && movies[ceilingIndex].getStartTime() < mov.getEndTime())
                 {
-                    members[memberTree.size() + 1].setAvailableTime(mov.getEndTime());
-                    memberTree.add(memberTree.size() + 1);
-                    ++total;
-                    continue;
+                    movies[0].setStartTime(mov.getEndTime());
+                    movies[0].setEndTime(movies[ceilingIndex].getEndTime());
+                    ceilingIndex = movieTree.ceiling(0);
                 }
-                break;
-            }
-            int memi = memberTree.pollFirst();
-            members[memi].setAvailableTime(mov.getEndTime());
-            memberTree.add(memi);
-            ++total;
-        }
-
-        if (movieTree.isEmpty())
-        {
-            System.out.print(total);
-            return;
-        }
-
-        while (true)
-        {
-            movies[0].setStartTime(members[memberTree.getFirst()].getAvailableTime());
-            movies[0].setEndTime(movies[0].getStartTime() + 1);
-            Integer ceiling = movieTree.ceiling(0);
-            if (ceiling == null)
-                break;
-            while (true)
-            {
-                
+                if (ceilingIndex == null)
+                    break;
+                movieTree.remove(ceilingIndex);
+                mov = movies[ceilingIndex];
             }
         }
  
