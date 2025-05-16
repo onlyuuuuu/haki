@@ -49,7 +49,6 @@ public class Ex5
                 @Override
                 public int compare(Integer i1, Integer i2)
                 {
-
                     return Integer.compare(movies[i1].getStartTime(), movies[i2].getStartTime());
                 }
             }
@@ -61,7 +60,6 @@ public class Ex5
                 @Override
                 public int compare(Integer i1, Integer i2)
                 {
-
                     return Integer.compare(movies[i1].getEndTime(), movies[i2].getEndTime());
                 }
             }
