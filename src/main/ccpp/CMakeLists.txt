@@ -32,5 +32,5 @@ file(GLOB_RECURSE
 
 #add_executable(ccpp C/test.c)
 #add_executable(ccpp ds/red_black_tree.cpp)
-#add_executable(ccpp sandbox12.cpp)
+#add_executable(ccpp sandbox0.cpp)
 add_executable(ccpp 04_2/ex1.cpp)

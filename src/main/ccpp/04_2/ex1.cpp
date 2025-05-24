@@ -22,16 +22,11 @@ int main()
     cin >> mov;
     cin >> mem;
     if (mov <= mem)
-        return mov;
-    Movie movies[mov + 1];
-    int start, end;
-    movies[0] = Movie();
-    for (int i = 1; i <= mov; i++)
     {
-        cin >> start;
-        cin >> end;
-        movies[i] = Movie(start, end);
+        cout << mov << endl;
+        return 0;
     }
+    Movie movies[mov + 1];
     auto compare = [&movies](int i, int j)
     {
         if (movies[i].end == movies[j].end)
@@ -42,15 +37,46 @@ int main()
         }
         return movies[i].end < movies[j].end;
     };
-    set<int, decltype(compare)> t1(compare);
-    set<int> t2;
-    int total = 0;
-    for (int i = 1; i <= mem && !t1.empty(); i++)
+    set<int, decltype(compare)> tree(compare);
+    set<int, decltype(compare)>::iterator next;
+    int start = 0, end = 0, total = 0;
+    movies[0] = Movie();
+    for (int i = 1; i <= mov; i++)
     {
-        Movie first = movies[*t1.cbegin()];
-        t1.erase(t1.cbegin());
-        t2.insert(first.end);
-        ++total;
-
+        cin >> start;
+        cin >> end;
+        movies[i] = Movie(start, end);
+        tree.insert(i);
     }
+
+    for (next = tree.cbegin(); next != tree.cend(); next++)
+        cout << "Movie " << *next << ": " << movies[*next].start << " - " << movies[*next].end << endl;
+
+    for (int i = 1; i <= mem && !tree.empty(); i++)
+    {
+        Movie movie = movies[*tree.cbegin()];
+        tree.erase(tree.cbegin());
+        ++total;
+        movies[0].start = movie.end;
+        movies[0].end = movies[0].start + 1;
+        next = tree.lower_bound(0);
+        while (next != tree.cend())
+        {
+            if (movies[*next].start < movie.start)
+            {
+                movies[0].start = movie.end;
+                movies[0].end = movies[*next].end;
+                next = tree.lower_bound(0);
+                continue;
+            }
+            movie = movies[*next];
+            tree.erase(next);
+            ++total;
+            movies[0].start = movie.end;
+            movies[0].end = movies[0].start + 1;
+            next = tree.lower_bound(0);
+        }
+    }
+    cout << total << endl;
+    return 0;
 }
