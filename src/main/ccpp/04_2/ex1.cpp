@@ -37,8 +37,11 @@ int main()
         }
         return movies[i].end < movies[j].end;
     };
-    set<int, decltype(compare)> tree(compare);
-    set<int, decltype(compare)>::iterator next;
+    set<int, decltype(compare)> tree1(compare);
+    set<int, decltype(compare)>::iterator tree1it;
+    set<int> tree2;
+    set<int>::iterator tree2it;
+    Movie m1, m2;
     int start = 0, end = 0, total = 0;
     movies[0] = Movie();
     for (int i = 1; i <= mov; i++)
@@ -46,37 +49,27 @@ int main()
         cin >> start;
         cin >> end;
         movies[i] = Movie(start, end);
-        tree.insert(i);
+        tree1.insert(i);
     }
 
-    for (next = tree.cbegin(); next != tree.cend(); next++)
-        cout << "Movie " << *next << ": " << movies[*next].start << " - " << movies[*next].end << endl;
-
-    for (int i = 1; i <= mem && !tree.empty(); i++)
+    tree1it = tree1.cbegin();
+    m1 = movies[*tree1it];
+    tree2.insert(m1.end);
+    tree1.erase(tree1it);
+    while (!tree1.empty() && tree2.size() > mem)
     {
-        Movie movie = movies[*tree.cbegin()];
-        tree.erase(tree.cbegin());
-        ++total;
-        movies[0].start = movie.end;
+        movies[0].start = *tree2.cbegin();
         movies[0].end = movies[0].start + 1;
-        next = tree.lower_bound(0);
-        while (next != tree.cend())
+        tree1it = tree1.lower_bound(0);
+        if (tree1it == tree1.cend())
         {
-            if (movies[*next].start < movie.start)
-            {
-                movies[0].start = movie.end;
-                movies[0].end = movies[*next].end;
-                next = tree.lower_bound(0);
-                continue;
-            }
-            movie = movies[*next];
-            tree.erase(next);
-            ++total;
-            movies[0].start = movie.end;
-            movies[0].end = movies[0].start + 1;
-            next = tree.lower_bound(0);
+            tree1it = tree1.cbegin();
+            m1 = movies[*tree1it];
+            tree2.insert(m1.end);
+            tree1.erase(tree1it);
         }
     }
+
     cout << total << endl;
     return 0;
 }
