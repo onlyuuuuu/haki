@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [[ "$(uname -a)" == *"Linux"*"armv7l"* || "$1" == "--just-do-it" || "$1" == "--normal"* ]]; then
     gcc test.c -o test -g -Og
