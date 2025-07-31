@@ -36,7 +36,7 @@ else
     echo 0 | sudo -S apt install zsh vim neovim fzf tmux bat lua5.4 -y
     echo 0 | sudo -S apt install eza -y > /dev/null 2>&1
     echo 0 | sudo -S apt install exa -y > /dev/null 2>&1
-    if [[ ! -f ~/.config/catppuccin/.gnome-themes-installed ]]; then
+    if [[ ! -f ~/.config/catppuccin/.gnome-themes-installed && "$(uname -a)" != *WSL* ]]; then
       curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v1.0.0/install.py | python3 - && touch ~/.config/catppuccin/.gnome-themes-installed && echo "Themes installed..." > ~/.config/catppuccin/.gnome-themes-installed 
     fi
 fi
@@ -394,3 +394,4 @@ fi
 
 echo -e "\nYou should now run this command \$[ source ~/.zshrc ]\n"
 
+echo -e "\nFor TMUX, you might want to hit [prefix + I], then [prefix + U] (prefix is usually Ctrl + B, unless if you set it something else). For more info, visit [https://github.com/tmux-plugins/tpm]\n"
