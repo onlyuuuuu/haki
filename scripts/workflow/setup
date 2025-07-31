@@ -323,8 +323,8 @@ else
   echo "Local HEAD:  $LOCAL_HEAD"
   echo "Remote HEAD: $REMOTE_HEAD"
   git pull
-  echo Y | sdk install java 24-open
-  echo Y | sdk default java 24-open
+  echo Y | sdk install java 24.0.2-open
+  echo Y | sdk default java 24.0.2-open
   if [[ "$(uname -a)" == *"Darwin"* ]]; then
     echo 0 | sudo -S -u onlyu nice -20 JAVA_HOME="$HOME/.sdkman/candidates/java/current"; ./mvnw -T "$(nproc)" clean verify -U -DskipTests=true &
     pid=$!
