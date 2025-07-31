@@ -1,4 +1,4 @@
-﻿# Script to find out if machine is Device Guard compliant
+# Script to find out if machine is Device Guard compliant
 # requires driver verifier on system.
 param([switch]$Capable, [switch]$Ready, [switch]$Enable, [switch]$Disable, $SIPolicyPath, [switch]$AutoReboot, [switch]$DG, [switch]$CG, [switch]$HVCI, [switch]$HLK, [switch]$Clear, [switch]$ResetVerifier)
 
