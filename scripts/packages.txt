@@ -170,3 +170,4 @@ ripgrep
 ack
 tlrc
 unzip
+dos2unix
