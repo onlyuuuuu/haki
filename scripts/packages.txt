@@ -169,4 +169,4 @@ coreutils
 ripgrep
 ack
 tlrc
-
+unzip
