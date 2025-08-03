@@ -20,6 +20,7 @@ require("mason").setup()
 -- Load my own configs
 require("onlyu")
 require("onlyu.remap")
+require("onlyu.tree")
 require("onlyu.telescope")
 require("onlyu.commentary")
 require("onlyu.completion")

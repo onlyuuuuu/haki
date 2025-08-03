@@ -7,6 +7,12 @@ public class TestLSP
       System.out.println("Hi there! from " + InnerStaticClass.class);
       return;
     }
+    
+    public static void saySomething()
+    {
+      System.out.println("Something...");
+      return;
+    }
   }
 
   public static void main(String[] args)

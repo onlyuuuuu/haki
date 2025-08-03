@@ -1,9 +1,12 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader><Tab>", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>pwd", vim.cmd.Ex)
+-- vim.keymap.set("n", "<leader>pwd", vim.cmd.Ex)
 
 -- Lazy
 vim.keymap.set('n', '<C-l>', vim.cmd.Lazy, { desc = 'Open Lazy plugin manager' })
+
+-- Tree
+vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<CR>', { desc = "Toggle File Tree" })
 
 -- TELESCOPE
 local builtin = require('telescope.builtin')
