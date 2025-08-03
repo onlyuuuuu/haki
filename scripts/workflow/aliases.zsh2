@@ -33,6 +33,7 @@ else
   alias tree='exa --tree'
 fi
 
+## Tail ##
 if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
   alias tail='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
   alias t='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
@@ -40,6 +41,9 @@ else
   alias tail='/usr/bin/tail -f -n +1'
   alias t='/usr/bin/tail -f -n +1'
 fi
+
+## Fuzzy Finder ##
+alias vfzf='fzf --bind "enter:execute(nvim {+})+abort"'
 
 ## get rid of command not found ##
 alias cd..='z ..'

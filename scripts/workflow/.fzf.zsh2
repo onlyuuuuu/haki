@@ -1,0 +1,11 @@
+# Contains FZF configs and bindings
+
+hfzf()
+{
+  # grab the last 100 history entries (commands only, no numbers)
+  # pipe them into fzf; when you hit ENTER, fzf prints the line and exits
+  local cmd
+  cmd="$(fc -lnr -100 | fzf)"
+  echo "Chosen command is \$[ $cmd ]"
+  eval "$cmd"
+}

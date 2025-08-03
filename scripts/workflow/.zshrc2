@@ -19,27 +19,6 @@ fi
 
 export BAT_THEME="Catppuccin Latte"
 
-if [[ "$(uname -a)" == *"Linux"*"Ubuntu"* ]]; then
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
---color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
---color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
---color=border:#ccd0da,label:#4c4f69"
-elif [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
---color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
---color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
---color=border:#ccd0da"
-else
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
---color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
---color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
---color=selected-bg:#bcc0cc \
---color=border:#ccd0da,label:#4c4f69"
-fi
-
 tmux source ~/.tmux.conf
 
 if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
@@ -72,3 +51,38 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
   PERL_MM_OPT="INSTALL_BASE=/opt/homebrew/Cellar/perl/$perl_version"; export PERL_MM_OPT;
 fi
 
+if [[ "$(uname -a)" == *"Linux"*"Ubuntu"* ]]; then
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=border:#ccd0da,label:#4c4f69"
+elif [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=border:#ccd0da"
+elif [[ "$(uname -a)" == *"WSL"* ]]; then
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=border:#ccd0da"
+else
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=selected-bg:#bcc0cc \
+--color=border:#ccd0da,label:#4c4f69"
+fi
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --height 50% --layout=reverse --border"
+export FZF_DEFAULT_COMMAND="/usr/bin/fdfind . --hidden --exclude .git"
+
+source ~/.fzf.zsh > /dev/null 2>&1
+source ~/.fzf.zsh2 > /dev/null 2>&1
+source <(fzf --zsh)
+
+export PATH="$HOME/.fzf/bin:$PATH"
+export PATH="/tools/.fzf/bin:$PATH"

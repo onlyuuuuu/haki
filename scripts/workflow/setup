@@ -338,6 +338,32 @@ else
   ln -sf "$(pwd)"/org.eclipse.jdt.ls.product/target/repository /tools/eclipse-java-ls
 fi
 
+# Install fzf manually
+first_pull=false
+if [[ ! -d ~/.fzf ]]; then
+  echo "Installing Fuzzy Finder from scratch..."
+  cd ~
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
+  first_pull=true
+fi
+
+cd ~
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh ~/.fzf
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "Fuzzy Finder is up-to-date. No need to pull or build."
+else
+  echo "Updates available for Fuzzy Finder. Pull and build recommended."
+  echo "Local HEAD:  $LOCAL_HEAD"
+  echo "Remote HEAD: $REMOTE_HEAD"
+  git pull
+  ~/.fzf/install
+fi
+
+ln -sf ~/.fzf/ /tools/.fzf
+
 cd $SCRIPT_DIR
 
 cp -rf aliases.zsh2 ~/
@@ -355,6 +381,7 @@ cp -rf .vimrc ~/
 cp -rf .warp ~/
 cp -rf .zprofile2 ~/
 cp -rf .zshrc2 ~/
+cp -rf .fzf.zsh2 ~/
 mkdir -p ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 cp -rf .warp/themes/* ${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/
 echo 0 | sudo -S mkdir -p /c/Users/duyan/AppData/Roaming/warp/Warp/data/themes > /dev/null 2>&1

@@ -171,3 +171,5 @@ ack
 tlrc
 unzip
 dos2unix
+fd-find
+
