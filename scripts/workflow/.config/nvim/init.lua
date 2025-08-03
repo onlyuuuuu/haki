@@ -1,7 +1,25 @@
 require("lazyvim")
 require("config.lazy")
 require("autoclose").setup()
-require("Comment").setup()
+require("Comment").setup
+{
+    -- LHS of toggle mappings in NORMAL mode
+    toggler =
+    {
+        ---Line-comment toggle keymap
+        line = '<C-m>',
+        ---Block-comment toggle keymap
+        block = '<C-n>',
+    },
+    -- LHS of operator-pending mappings in NORMAL and VISUAL mode
+    opleader =
+    {
+        ---Line-comment keymap
+        line = '<C-m>',
+        ---Block-comment keymap
+        block = '<C-n>',
+    },
+}
 
 -- TELESCOPE
 -- You dont need to set any of these options. These are the default ones. Only
