@@ -1,0 +1,12 @@
+bash-language-server
+vscode-langservers-extracted
+css-variables-language-server
+cssmodules-language-server
+@ast-grep/cli
+@biomejs/biome
+dockerfile-language-server-nodejs
+@angular/language-server
+@ansible/ansible-language-server
+brighterscript
+gh-actions-language-server
+graphql-language-service-cli

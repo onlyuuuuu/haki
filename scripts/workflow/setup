@@ -206,6 +206,71 @@ cd ~/.config/catppuccin/nerd-fonts
 #fi
 
 first_install=false
+if command -v nvm > /dev/null 2>&1; then
+  echo "Node Version Manager is already installed, skipping further operations..."
+else  
+  echo "Installing Node Version Manager"
+  first_install=true
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+
+if [[ $first_install == false && $1 == "--force" ]]; then
+  echo "Force installing Node Version Manager"
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+first_install=false
+if command -v npm > /dev/null 2>&1; then
+  echo "Node is already installed, skipping further operations..."
+else  
+  echo "Installing Node"
+  first_install=true
+  nvm install node
+fi
+
+if [[ $first_install == false && $1 == "--force" ]]; then
+  echo "Force installing Node"
+  nvm install node
+fi
+
+while IFS= read -r package; do
+  echo "Processing [ $package ]"
+  npm i -g $package
+done < "$SCRIPT_DIR/node-packages.txt"
+
+# pkg="bash-language-server"
+# first_install=false
+# if npm ls -g --depth=0 "$pkg" >/dev/null 2>&1; then
+#   echo "$pkg is installed globally. Skipping further operaions..."
+# else
+#   echo "$pkg is NOT installed globally."
+#   first_install=true
+#   npm i -g $pkg
+# fi
+# if [[ $first_install == false && $1 == "--force" ]]; then
+#   echo "Force installing $pkg"
+#   npm i -g $pkg
+# fi
+#
+# pkg="vscode-langservers-extracted"
+# first_install=false
+# if npm ls -g --depth=0 "$pkg" >/dev/null 2>&1; then
+#   echo "$pkg is installed globally. Skipping further operaions..."
+# else
+#   echo "$pkg is NOT installed globally."
+#   first_install=true
+#   npm i -g $pkg
+# fi
+# if [[ $first_install == false && $1 == "--force" ]]; then
+#   echo "Force installing $pkg"
+#   npm i -g $pkg
+# fi
+
+first_install=false
 if command -v starship > /dev/null 2>&1; then
   echo "Starship already installed, skipping further operations..."
 else  
@@ -393,7 +458,11 @@ cd $SCRIPT_DIR
 
 cp -rf aliases.zsh2 ~/
 cp -rf .bash_aliases2 ~/
+
+# Remove first
+rm -rf ~/.config/nvim/lua/plugins/
 cp -rf .config ~/
+
 cp -rf .tmux ~/
 if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
   #cp -rf .tmux.wsl.conf ~/.tmux.conf
@@ -449,3 +518,4 @@ fi
 echo -e "\nYou should now run this command \$[ source ~/.zshrc ]\n"
 
 echo -e "\nFor TMUX, you might want to hit [prefix + I], then [prefix + U] (prefix is usually Ctrl + B, unless if you set it something else). For more info, visit [https://github.com/tmux-plugins/tpm]\n"
+

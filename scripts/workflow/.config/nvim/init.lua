@@ -1,51 +1,28 @@
 require("lazyvim")
 require("config.lazy")
 require("autoclose").setup()
-require("Comment").setup
-{
-    -- LHS of toggle mappings in NORMAL mode
-    toggler =
-    {
-        ---Line-comment toggle keymap
-        line = '<C-m>',
-        ---Block-comment toggle keymap
-        block = '<C-n>',
-    },
-    -- LHS of operator-pending mappings in NORMAL and VISUAL mode
-    opleader =
-    {
-        ---Line-comment keymap
-        line = '<C-m>',
-        ---Block-comment keymap
-        block = '<C-n>',
-    },
-}
 
--- TELESCOPE
--- You dont need to set any of these options. These are the default ones. Only
--- the loading is important
-require('telescope').setup
-{
-  extensions =
-  {
-    fzf =
-    {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                       -- the default case_mode is "smart_case"
-    }
-  }
-}
--- To get fzf loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
-require('telescope').load_extension('fzf')
+vim.lsp.enable('jdtls') -- Java Language Server
+vim.lsp.enable('bashls')
+--vim.lsp.enable('biome') -- { "astro", "css", "graphql", "html", "javascript", "javascriptreact", "json", "jsonc", "svelte", "typescript", "typescript.tsx", "typescriptreact", "vue" }
+--vim.lsp.enable('ast_grep') -- { "c", "cpp", "rust", "go", "java", "python", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "html", "css", "kotlin", "dart", "lua" }
+vim.lsp.enable('html')
+vim.lsp.enable('css_variables')
+vim.lsp.enable('cssls')
+vim.lsp.enable('cssmodules_ls')
+vim.lsp.enable('jsonls')
+vim.lsp.enable('dockerls')
+vim.lsp.enable('bright_script')
+
+-- Mason NeoVim package manager
+require("mason").setup()
 
 -- Load my own configs
 require("onlyu")
 require("onlyu.remap")
 require("onlyu.telescope")
+require("onlyu.commentary")
+require("onlyu.completion")
 
 -- Set tab width to 2 spaces
 vim.opt.number = true
@@ -60,4 +37,3 @@ vim.opt.autoindent = true  -- Copy indent from current line when starting a new 
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:block"
 
 vim.cmd.colorscheme "catppuccin-latte"
-
