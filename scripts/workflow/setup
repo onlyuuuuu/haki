@@ -344,11 +344,10 @@ if [[ ! -d ~/.fzf ]]; then
   echo "Installing Fuzzy Finder from scratch..."
   cd ~
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install
   first_pull=true
 fi
 
-cd ~
+cd ~/.fzf
 # Compare the local and remote HEAD commits
 $SCRIPT_DIR/checkForUpdates.sh ~/.fzf
 status_code=$?
@@ -363,6 +362,32 @@ else
 fi
 
 ln -sf ~/.fzf/ /tools/.fzf
+
+# Install NeoVim Telescope FZF Plugin manually
+first_pull=false
+if [[ ! -d ~/.local/share/nvim/lazy/telescope-fzf-native.nvim ]]; then
+  echo "Installing NeoVim Telescope FZF Plugin from scratch..."
+  cd ~/.local/share/nvim/lazy/
+  git clone --depth 1 https://github.com/nvim-telescope/telescope-fzf-native.nvim.git
+  first_pull=true
+fi
+
+cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim
+git pull
+rm -rf build/
+make
+# # Compare the local and remote HEAD commits
+# $SCRIPT_DIR/checkForUpdates.sh ~/.local/share/nvim/lazy/telescope-fzf-native.nvim
+# status_code=$?
+# if [[ "$status_code" == 0 && $first_pull == false ]]; then
+#   echo "NeoVim Telescope FZF Plugin is up-to-date. No need to pull."
+# else
+#   echo "Updates available for NeoVim Telescope FZF Plugin. Pull and build recommended."
+#   echo "Local HEAD:  $LOCAL_HEAD"
+#   echo "Remote HEAD: $REMOTE_HEAD"
+#   git pull
+#   make
+# fi
 
 cd $SCRIPT_DIR
 
