@@ -483,6 +483,10 @@ echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/duyan/AppData/Roaming/warp/Warp/
 echo 0 | sudo -S mkdir -p /c/Users/onlyu/AppData/Roaming/warp/Warp/data/themes > /dev/null 2>&1
 echo 0 | sudo -S cp -rf .warp/themes/* /c/Users/onlyu/AppData/Roaming/warp/Warp/data/themes/ > /dev/null 2>&1
 
+# Do stuff for NeoVim LSP
+mv -f ~/.cache/jdtls/config ~/.cache/jdtls/config-OLD
+mv -f ~/.cache/jdtls/workspace ~/.cache/jdtls/workspace-OLD
+
 if [[ ! -f ~/.bash_profile ]]; then
   touch ~/.bash_profile
   echo ". ~/.bashrc > /dev/null 2>&1" > ~/.bash_profile
