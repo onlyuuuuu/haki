@@ -40,7 +40,7 @@ vim.opt.guicursor = "n-v-c:block,i-ci-ve:block"
 -- Autocommands for specific filetypes
 vim.api.nvim_create_autocmd("FileType",
 {
-  pattern = { "java", "jsp" },
+  pattern = { "java", "jsp", "c", "h", "cpp" },
   callback = function()
     vim.bo.tabstop = 4
     vim.bo.softtabstop = 4
@@ -50,17 +50,7 @@ vim.api.nvim_create_autocmd("FileType",
 
 vim.api.nvim_create_autocmd("FileType",
 {
-  pattern = { "sh" },
-  callback = function()
-    vim.bo.tabstop = 2
-    vim.bo.softtabstop = 2
-    vim.bo.shiftwidth = 2
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType",
-{
-  pattern = { "html", "css", "javascript" },
+  pattern = { "sh", "html", "css", "javascript" },
   callback = function()
     vim.bo.tabstop = 2
     vim.bo.softtabstop = 2
