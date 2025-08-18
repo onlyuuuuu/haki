@@ -61,7 +61,7 @@ cmp.setup.cmdline(':', {
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
 
--- lspconfig['jdtls'].setup { capabilities = capabilities }
+lspconfig['jdtls'].setup { capabilities = capabilities }
 lspconfig['bashls'].setup { capabilities = capabilities }
 lspconfig['html'].setup { capabilities = capabilities }
 lspconfig['css_variables'].setup { capabilities = capabilities }
