@@ -407,6 +407,9 @@ else
   mv -f ~/.cache/jdtls/workspace ~/.cache/jdtls/workspace-OLD
 fi
 
+# C/C++ Language Server (Clangd)
+./installClangd
+
 # Install fzf manually
 first_pull=false
 if [[ ! -d ~/.fzf ]]; then
