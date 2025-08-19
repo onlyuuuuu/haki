@@ -17,7 +17,7 @@ cd $LLVM_ROOT
 # Compare the local and remote HEAD commits
 $SCRIPT_DIR/checkForUpdates.sh $LLVM_ROOT
 status_code=$?
-if [[ "$status_code" == 0 && $first_pull == false ]]; then
+if [[ "$status_code" == 0 && $first_pull == false && $1 != "--force" ]]; then
   echo "Clangd LS is up-to-date. No need to pull or build."
 else
   echo "Updates available for Clangd LS. Pull and build recommended."
@@ -26,7 +26,7 @@ else
   git pull
   mkdir -p $LLVM_ROOT/build/
   cd $LLVM_ROOT/build/
-  cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra".
+  cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
   cmake --build $LLVM_ROOT/build --target clangd
 fi
 

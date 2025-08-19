@@ -408,7 +408,7 @@ else
 fi
 
 # C/C++ Language Server (Clangd)
-./installClangd
+$SCRIPT_DIR/installClangd &
 
 # Install fzf manually
 first_pull=false
