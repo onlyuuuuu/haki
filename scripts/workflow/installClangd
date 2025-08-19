@@ -26,8 +26,10 @@ else
   git pull
   mkdir -p $LLVM_ROOT/build/
   cd $LLVM_ROOT/build/
-  cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
-  cmake --build $LLVM_ROOT/build --target clangd
+  if [[ $first_pull == true || "$1" == "--force" ]]; then
+    cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
+  fi
+  cmake --build $LLVM_ROOT/build --target clangdi
 fi
 
 cd $SCRIPT_DIR
