@@ -369,6 +369,7 @@ fi
 #  chmod +x ~/.config/tmux-powerline/themes/my-theme.sh
 #fi
 
+# Java Language Server
 first_pull=false
 if [[ ! -d /tools/eclipse.jdt.ls ]]; then
   echo "Installing Eclipse Java Language Server..."

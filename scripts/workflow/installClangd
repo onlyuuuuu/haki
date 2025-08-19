@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# C/C++ Language Server
+LLVM_ROOT=/tools/llvm-project
+first_pull=false
+if [[ ! -d $LLVM_ROOT ]]; then
+  echo "Installing Clangd Language Server..."
+  cd /tools/
+  git clone --depth 1 https://github.com/llvm/llvm-project.git
+  first_pull=true
+fi
+
+cd $LLVM_ROOT
+# Compare the local and remote HEAD commits
+$SCRIPT_DIR/checkForUpdates.sh $LLVM_ROOT
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "Clangd LS is up-to-date. No need to pull or build."
+else
+  echo "Updates available for Clangd LS. Pull and build recommended."
+  echo "Local HEAD:  $LOCAL_HEAD"
+  echo "Remote HEAD: $REMOTE_HEAD"
+  git pull
+  mkdir -p build/
+  cd build/
+  cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra".
+  cmake --build $LLVM_ROOT/build --target clangd
+fi
