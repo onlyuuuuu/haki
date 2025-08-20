@@ -22,6 +22,7 @@ export BAT_THEME="Catppuccin Latte"
 tmux source ~/.tmux.conf
 
 if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
+  STARSHIP_DISABLE_ZLE_HOOKS=1
   eval "$(starship init zsh)"
 fi
 
