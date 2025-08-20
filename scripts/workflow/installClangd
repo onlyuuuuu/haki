@@ -29,7 +29,7 @@ else
   if [[ $first_pull == true || "$1" == "--force" ]]; then
     cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
   fi
-  cmake --build $LLVM_ROOT/build --target clangdi
+  cmake --build $LLVM_ROOT/build --target clangd
 fi
 
 cd $SCRIPT_DIR
