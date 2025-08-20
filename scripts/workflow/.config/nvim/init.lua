@@ -13,6 +13,7 @@ vim.lsp.enable('cssmodules_ls')
 vim.lsp.enable('jsonls')
 vim.lsp.enable('dockerls')
 vim.lsp.enable('bright_script')
+vim.lsp.enable('clangd')
 
 -- Mason NeoVim package manager
 require("mason").setup()

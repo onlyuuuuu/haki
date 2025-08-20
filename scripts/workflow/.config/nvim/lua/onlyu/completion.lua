@@ -70,3 +70,5 @@ lspconfig['cssmodules_ls'].setup { capabilities = capabilities }
 lspconfig['jsonls'].setup { capabilities = capabilities }
 lspconfig['dockerls'].setup { capabilities = capabilities }
 lspconfig['bright_script'].setup { capabilities = capabilities }
+lspconfig['clangd'].setup { capabilities = capabilities }
+
