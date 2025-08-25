@@ -173,3 +173,4 @@ unzip
 dos2unix
 fd-find
 clangd-12
+gemini-cli
