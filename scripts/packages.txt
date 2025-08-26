@@ -172,5 +172,6 @@ tlrc
 unzip
 dos2unix
 fd-find
+fd
 clangd-12
 gemini-cli

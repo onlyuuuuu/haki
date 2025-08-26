@@ -79,7 +79,10 @@ export FZF_DEFAULT_OPTS=" \
 --color=border:#ccd0da,label:#4c4f69"
 fi
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --height 50% --layout=reverse --border"
-export FZF_DEFAULT_COMMAND="/usr/bin/fdfind . --hidden --exclude .git"
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  export FZF_DEFAULT_COMMAND="fd . --hidden --exclude .git"
+else
+  export FZF_DEFAULT_COMMAND="/usr/bin/fdfind . --hidden --exclude .git"
 
 source ~/.fzf.zsh > /dev/null 2>&1
 source ~/.fzf.zsh2 > /dev/null 2>&1
