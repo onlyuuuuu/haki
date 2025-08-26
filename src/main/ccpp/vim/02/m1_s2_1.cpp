@@ -9,7 +9,7 @@ int main()
     {
         switch (c)
         {
-            case 'C' -> s.push(12);
+            case 'C': cout << "" << endl; break;
         }
     }
     return 0;

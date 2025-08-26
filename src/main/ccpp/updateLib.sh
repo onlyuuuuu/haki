@@ -33,4 +33,8 @@ echo 0 | sudo -S cp bits/stdc++.h /usr/include/bits/ > /dev/null 2>&1
 echo 0 | sudo -S mkdir -p /usr/lib/bits > /dev/null 2>&1
 echo 0 | sudo -S cp bits/stdc++.h /usr/lib/bits/ > /dev/null 2>&1
 
+echo 0 | sudo -S sudo xcode-select --reset
+echo 0 | sudo -S xcode-select --switch /Library/Developer/CommandLineTools
+
 exit 0
+
