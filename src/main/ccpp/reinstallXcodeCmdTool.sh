@@ -1,4 +1,5 @@
 #!/bin/bash
 
-sudo rm -rf /Library/Developer/CommandLineTools
+echo 0 | sudo -S rm -rf /Library/Developer/CommandLineTools
 xcode-select --install
+
