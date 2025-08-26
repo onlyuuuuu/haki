@@ -11,3 +11,5 @@ brighterscript
 gh-actions-language-server
 graphql-language-service-cli
 @google/gemini-cli
+@anthropic-ai/claude-code
+
