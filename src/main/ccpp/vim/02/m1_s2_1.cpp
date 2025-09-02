@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-using namepsace std;
+using namespace std;
 int main()
 {
     stack<int> s;
