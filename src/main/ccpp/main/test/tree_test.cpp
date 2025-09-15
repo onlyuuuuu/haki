@@ -6,7 +6,7 @@ struct compare_by_first
 {
     bool operator()(const pair<int, int>& a, const pair<int, int>& b) const
     {
-        if (a.first == b.first || a.first == INT_MAX || b.first == INT_MAX)
+        if (a.first == b.first)
             return a.second < b.second;
         return a.first < b.first;
     }
@@ -21,18 +21,19 @@ int main()
     tree.insert({2, 150});
     tree.insert({3, 50});
 
+    // tree.cbegin()->first = -1;
+    // tree.cbegin()->second = 201;
+
     for (const auto& p : tree)
         cout << "(" << p.first << ", " << p.second << ")\n";
 
-    auto b = tree.lower_bound(make_pair(INT_MAX, 150));
     // auto b = tree.lower_bound(make_pair(2, 150));
-    if (b == tree.cend())
-    {
-        cout << "END/NIL" << endl;
-        return 0;
-    }
-
-    cout << "(" << b->first << ", " << b->second << ")\n";
+    // if (b == tree.cend())
+    // {
+    //     cout << "Searched: END/NIL" << endl;
+    //     return 0;
+    // }
+    // cout << "Searched: (" << b->first << ", " << b->second << ")\n";
     
     return 0;
 }
