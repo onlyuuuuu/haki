@@ -5,11 +5,11 @@ public:
     Solution() {}
     int findMaxValueOfEquation(vector<vector<int>>& points, int k)
     {
-        int mx = INT_MIN; int insert = 0; int s1 = 0; deque<pair<int, int>> q(points.size());
+        int mx = INT_MIN; int s1 = 0; deque<pair<int, int>> q; deque<pair<int, int>>::iterator it;
         q.push_back(make_pair(points[0][0], points[0][1] - points[0][0]));
         for (int i = 1; i < points.size(); i++)
         {
-            while (!q.empty() && points[i][0] - q.front().first > k) q.pop_front();
+            for (; !q.empty() && points[i][0] - q.front().first > k; q.pop_front())
             if (q.empty())
             {
                 q.push_back(make_pair(points[i][0], points[i][1] - points[i][0]));
@@ -17,14 +17,8 @@ public:
             }
             mx = max(mx, points[i][1] + points[i][0] + q.front().second);
             s1 = points[i][1] - points[i][0];
-            if (s1 >= q.front().second)
-            {
-                q.push_front(make_pair(points[i][0], s1));
-                continue;
-            }
-            
-            // while (!q.empty() && q.back().second <= s1) q.pop_back();
-            q.push_back(make_pair(points[i][0], s1));
+            for (it = q.begin(); it != q.end() && it->second > s1 && points[i][0] - it->first <= k; it++) {}
+            q.insert(it, make_pair(points[i][0], s1));
         }
         return mx;
     }
@@ -39,17 +33,20 @@ int main()
     // m[2] = 0;
     // m[5] = 10;
     // m[6] = -10;
+    // ==> 4
 
     // k = 3;
-    // m[0] = 0;
     // m[3] = 0;
+    // m[0] = 0;
     // m[9] = 2;
+    // ==> 3
 
     k = 26;
     m[-17] = 13;
     m[2] = 1;
     m[8] = -5;
     m[18] = -20;
+    // ==> 33
 
     for (const auto& [k, v] : m)
     {
