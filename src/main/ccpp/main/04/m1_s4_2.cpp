@@ -2,21 +2,23 @@
 using namespace std;
 int main()
 {
-    int M,N,K,n;
-    vector<int> v(M);
-    priority_queue<int,vector<int>,greater<int>> q;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int M,N,K,m,n;multiset<int>s1,s2;priority_queue<int,vector<int>,greater<int>>q;multiset<int>::iterator it1,it2;
     cin>>M>>N>>K;
-    for (int i = 0; i < M; i++) { cin>>v[i]; }
-    for (int i = 0; i < N; i++)
+    for (;M>=1;M--){cin>>m;s1.emplace(m);};
+    for (;N>=1;N--){cin>>n;s2.emplace(n);};
+    int i,j; i = 0;
+    for (it1 = s1.begin(); it1 != s1.end() && i < K/2; it1++)
     {
-        cin>>n;
-        for (const auto& j : v)
-            q.push(n + j);
+        j = 0;
+        for (it2 = s2.begin(); it2 != s2.end() && j < K/2; it2++)
+        {
+            q.push(*it1 + *it2);
+            j++;
+        }
+        i++;
     }
-    for (int i = 0; i < K && !q.empty(); i++)
-    {
-        cout<<q.top()<<"\n";
-        q.pop();
-    }
+    for (;K>=1;K--){cout<<q.top()<<endl;q.pop();}
     return 0;
 }
