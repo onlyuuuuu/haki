@@ -2,18 +2,26 @@
 using namespace std;
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int M,N,K,i,s1,s2;priority_queue<int,vector<int>,greater<int>>qa,qb;vector<int>vfa,vfb;
+    int M,N,K,a,b;vector<int>va,vb;multiset<int>sa,sb,out;multiset<int>::iterator ita,itb,itout;
     cin>>M>>N>>K;
-    cin>>i;vfb.push_back(i);M--;
-    for (;M>0;M--){cin>>i;qa.push(i);};
-    cin>>i;vfa.push_back(i);N--;
-    for (;N>0;N--){cin>>i;qb.push(i);};
-    cout<<vfa[0]+vfb[0]<<endl;
-    while (!qa.empty()&&!qb.empty())
+    for (;M>0;M--){cin>>a;sa.insert(a);}
+    for (;N>0;N--){cin>>b;sb.insert(b);}
+    ita=sa.begin();va.push_back(*ita);ita++;
+    itb=sb.begin();vb.push_back(*itb);itb++;
+    while (ita!=sa.end()&&itb!=sb.end())
     {
-        
+        if (*ita >= *itb)
+        {
+            va.push_back(*ita);
+            ita++;
+        }
+        else
+        {
+            vb.push_back(*itb);
+            itb++;
+        }
+        if ((int)va.size()*(int)vb.size() > K)break;
     }
+    while (ita!=sa.end()&&itb!=sb.end())
     return 0;
 }
