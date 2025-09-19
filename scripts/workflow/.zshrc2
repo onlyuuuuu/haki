@@ -86,7 +86,7 @@ else
 
 source ~/.fzf.zsh > /dev/null 2>&1
 source ~/.fzf.zsh2 > /dev/null 2>&1
-source <(fzf --zsh)
+source <(fzf --zsh) > /dev/null 2>&1
 
 export PATH="$HOME/.fzf/bin:$PATH"
 export PATH="/tools/.fzf/bin:$PATH"
