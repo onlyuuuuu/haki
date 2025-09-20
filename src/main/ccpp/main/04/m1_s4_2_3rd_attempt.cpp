@@ -24,7 +24,7 @@ int main()
         if (!b2&&q.top().first==m2&&q.top().second){b2=true;continue;}
         for (const auto& p : m[!q.top().second])
         {
-            i = p+q.top().first;
+            i=p+q.top().first;
             if (i>=*out.crbegin())break;
             out.erase(--out.end());
             out.insert(i);
