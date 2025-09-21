@@ -31,4 +31,4 @@ file(GLOB_RECURSE
 )
 
 #add_executable(ccpp main/04/m1_s4_2_3rd_attempt.cpp)
-add_executable(ccpp main/05/m1_s5_1.cpp)
+add_executable(ccpp main/05/m1_s5_1_into_func.cpp)
