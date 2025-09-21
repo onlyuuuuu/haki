@@ -2,7 +2,6 @@
 using namespace std;
 int main()
 {
-    // THIS ONE IS FASTEST?
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int M,N,K,i;cin>>M>>N>>K;
@@ -21,9 +20,11 @@ int main()
     pair<int,bool>minp={INT_MAX,true};
     M=min(m[false][0],m[true][0]);
     // ----------------------------------------
-    for (;!qa.empty()&&!qb.empty();)
+    for (;!qa.empty()||!qb.empty();)
     {
-        minp=min(qa.top(),qb.top());
+        if (!qa.empty()&&qb.empty()) minp=qa.top();
+        else if (qa.empty()&&!qb.empty()) minp=qb.top();
+        else minp=min(qa.top(),qb.top());
         if (M+minp.first>=*out.crbegin())break;
         for (const auto& x : m[!minp.second])
         {
@@ -34,32 +35,6 @@ int main()
         }
         m[minp.second].push_back(minp.first);
         if (!minp.second)qa.pop();else qb.pop();
-    }
-    for (;!qa.empty();qa.pop())
-    {
-        minp=qa.top();
-        if (M+minp.first>=*out.crbegin())break;
-        for (const auto& b : m[true])
-        {
-            i=b+minp.first;
-            if (i>=*out.crbegin())break;
-            out.erase(--out.end());
-            out.insert(i);
-        }
-        m[false].push_back(minp.first);
-    }
-    for (;!qb.empty();qb.pop())
-    {
-        minp=qb.top();
-        if (M+minp.first>=*out.crbegin())break;
-        for (const auto& a : m[false])
-        {
-            i=a+minp.first;
-            if (i>=*out.crbegin())break;
-            out.erase(--out.end());
-            out.insert(i);
-        }
-        m[true].push_back(minp.first);
     }
     // ----------------------------------------
     for (it=out.cbegin();it!=out.cend();++it){cout<<*it<<endl;}

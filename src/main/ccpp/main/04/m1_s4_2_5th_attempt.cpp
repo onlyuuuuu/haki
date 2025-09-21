@@ -21,19 +21,21 @@ int main()
     pair<int,bool>minp={INT_MAX,true};
     M=min(m[false][0],m[true][0]);
     // ----------------------------------------
-    for (;ita!=A.cend()&&itb!=B.cend();)
+    for (;ita!=A.cend()||itb!=B.cend();)
     {
-        minp=min(*ita,*itb);
+        if (ita!=A.cend()&&itb==B.cend()) minp=*ita;
+        else if (ita==A.cend()&&itb!=B.cend()) minp=*itb;
+        else minp=min(*ita,*itb);
         if (M+minp.first>=*out.crbegin())break;
-
-    }
-    for (;ita!=A.cend();++ita)
-    {
-
-    }
-    for (;itb!=B.cend();++itb)
-    {
-
+        for (const auto &x : m[!minp.second])
+        {
+            i=x+minp.first;
+            if (i>=*out.crbegin())break;
+            out.erase(--out.end());
+            out.insert(i);
+        }
+        m[minp.second].push_back(minp.first);
+        if (!minp.second)++ita;else++itb;
     }
     // ----------------------------------------
     for (auto it=out.cbegin();it!=out.cend();++it){cout<<*it<<endl;}
