@@ -22,11 +22,19 @@ int main()
             {
                 if (i==m)
                 {
-                    if ((int)s1.size()>=(int)s2.size())
+                    if (s1.size()>=s2.size())
                     {
                         m=*s1.begin();
+                        s1.erase(s1.begin());
+                    }
+                    else
+                    {
+                        m=*s2.begin();
+                        s2.erase(s2.begin());
                     }
                 }
+                else if (i<m) s1.erase(s1.find(i));
+                else s2.erase(s2.find(i));
             }
             if ((int)s1.size()-(int)s2.size()==2)
             {
@@ -42,8 +50,8 @@ int main()
             }
             continue;
         }
-        if ((int)s1.size()==(int)s2.size()) cout<<m<<endl;
-        else if ((int)s1.size()>(int)s2.size()) cout<<(double)(m+*s1.begin())/2<<endl;
+        if (s1.size()==s2.size()) cout<<m<<endl;
+        else if (s1.size()>s2.size()) cout<<(double)(m+*s1.begin())/2<<endl;
         else cout<<(double)(m+*s2.begin())/2<<endl;
     }
     return 0;
