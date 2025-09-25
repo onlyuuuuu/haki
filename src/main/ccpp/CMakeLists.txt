@@ -30,5 +30,4 @@ file(GLOB_RECURSE
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
 
-#add_executable(ccpp main/05/m1_s5_3.cpp)
-add_executable(ccpp main/05/m1_s5_3_2nd_attempt.cpp)
+add_executable(ccpp main/05/m1_s5_4.cpp)
