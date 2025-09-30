@@ -25,8 +25,13 @@ int main()
         }
         else
         {
-            if (x<=*t1.rbegin()) t1.erase(t1.find(x));
-            else t2.erase(t2.find(x));
+            if (t1.empty()) t2.erase(t2.find(x));
+            else if (t2.empty()) t1.erase(t1.find(x));
+            else
+            {
+                if (x<=*t1.rbegin()) t1.erase(t1.find(x));
+                else t2.erase(t2.find(x));
+            }
         }
         d=static_cast<int>(t1.size())-static_cast<int>(t2.size());
         if (d==2)
