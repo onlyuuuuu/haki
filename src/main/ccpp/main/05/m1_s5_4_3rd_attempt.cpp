@@ -32,26 +32,10 @@ int main()
         }
     }
     m.insert({q.top().text.length(),q.top()});q.pop();
-    for (;!q.empty() && !(m.size()==1 && m.begin()->second.start==st && m.begin()->second.end==nd);q.pop())
+    for (obj top=q.top();!q.empty() && !(m.size()==1 && m.begin()->second.start==st && m.begin()->second.end==nd);q.pop())
     {
         it=m.lower_bound(q.top().start);
-        if (it==m.end())
-        {
-            m.insert({q.top().text.length(),q.top()});
-            continue;
-        }
-        if (it->second.start>q.top().end)
-            m.insert({q.top().text.length(),q.top()});
-        else if (it->second.start<q.top().end)
-        {
-            it->second.text=q.top().text.substr(0,it->second.start)+it->second.text;
-            it->second.start=q.top().start;
-        }
-        else
-        {
-            it->second.text=q.top().text+it->second.text;
-            it->second.start=q.top().start;
-        }
+
     }
     return 0;
 }
