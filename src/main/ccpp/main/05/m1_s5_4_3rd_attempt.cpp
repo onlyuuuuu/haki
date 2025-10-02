@@ -14,12 +14,14 @@ int main()
         cin>>s>>k;
         entry estr;estr.t=s;cin>>estr.s;estr.e=estr.s+estr.t.length()-1;
         st=min(st,estr.s);
+        if (k==1)nd=max(nd,estr.e);
         q.push(estr);
         for (--k;k>1;k--)
         {
             entry e;e.t=s;cin>>e.s;e.e=e.s+e.t.length()-1;
             q.push(e);
         }
+        if (k==0)continue;
         entry eend;eend.t=s;cin>>eend.s;eend.e=eend.s+eend.t.length()-1;
         nd=max(nd,eend.e);
         q.push(eend);
@@ -47,9 +49,9 @@ int main()
             f->second.s=top.s;
         }
     }
-    for (f=m.begin();f!=m.end();f++)
+    n=1;for (f=m.begin();f!=m.end();f++)
     {
-
+        
     }
     return 0;
 }
