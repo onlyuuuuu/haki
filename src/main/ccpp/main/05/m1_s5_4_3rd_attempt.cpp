@@ -12,13 +12,17 @@ int main()
     for (;n>0;n--)
     {
         cin>>s>>k;
-        for (;k>0;k--)
+        entry estr;estr.t=s;cin>>estr.s;estr.e=estr.s+estr.t.length()-1;
+        st=min(st,estr.s);
+        q.push(estr);
+        for (--k;k>1;k--)
         {
             entry e;e.t=s;cin>>e.s;e.e=e.s+e.t.length()-1;
-            st=min(st,e.s);
-            nd=max(nd,e.e);
             q.push(e);
         }
+        entry eend;eend.t=s;cin>>eend.s;eend.e=eend.s+eend.t.length()-1;
+        nd=max(nd,eend.e);
+        q.push(eend);
     }
     m[q.top().e]=q.top();q.pop();entry top;
     for (;!q.empty()&&!(static_cast<int>(m.size())==1&&m.begin()->second.s==st&&m.begin()->second.e==nd);q.pop())
@@ -29,7 +33,7 @@ int main()
         if (top.s<=f->second.s&&top.e>=f->second.e)continue;
         if (f->second.s<top.s)
         {
-            if (f->second.e>top.s)top.t=f->second.t.substr(0,top.s+1)+top.t;
+            if (f->second.e>top.s)top.t=f->second.t.substr(0,f->second.t.length()-(f->second.e-top.s))+top.t;
             else /*if (f->second.e==top.s)*/top.t=f->second.t+top.t;
             top.s=f->second.s;
             m.erase(f);
@@ -38,10 +42,11 @@ int main()
         }
         if (f->second.s>top.s)
         {
-            if (f->second.s<top.e)f->second.t=top.t.substr(0,f->second.s+1)+f->second.t;
+            if (f->second.s<top.e)f->second.t=top.t.substr(0,top.t.length()-(f->second.s-top.e))+f->second.t;
             else /*if (f->second.s==top.e)*/f->second.t=top.t+f->second.t;
             f->second.s=top.s;
         }
     }
+
     return 0;
 }
