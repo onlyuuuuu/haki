@@ -49,9 +49,6 @@ int main()
             f->second.s=top.s;
         }
     }
-    n=1;for (f=m.begin();f!=m.end();f++)
-    {
-        
-    }
+    n=1;for (f=m.begin();f!=m.end();f++){cout<<s.assign(f->second.s-n,'a')<<f->second.t;n=f->second.e;}cout<<endl;
     return 0;
 }
