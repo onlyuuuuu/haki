@@ -32,20 +32,20 @@ int main()
         top=q.top();
         f=m.lower_bound(top.s);
         if (f==m.end()||top.e<f->second.s){m[top.e]=top;continue;}
-        if (top.s<=f->second.s&&top.e>=f->second.e)continue;
+        if (f->second.s<=top.s&&f->second.e>=top.e)continue;
         if (f->second.s<top.s)
         {
             if (f->second.e>top.s)top.t=f->second.t.substr(0,top.s-f->second.s)+top.t;
-            else /*if (f->second.e==top.s)*/top.t=f->second.t+top.t;
+            else top.t=f->second.t+top.t;
             top.s=f->second.s;
             m.erase(f);
             f=m.lower_bound(top.s);
-            if (f==m.end())continue;
+            if (f==m.end()){m[top.e]=top;continue;}
         }
         if (f->second.s>top.s)
         {
             if (f->second.s<top.e)f->second.t=top.t.substr(0,f->second.s-top.s)+f->second.t;
-            else /*if (f->second.s==top.e)*/f->second.t=top.t+f->second.t;
+            else f->second.t=top.t+f->second.t;
             f->second.s=top.s;
         }
     }
