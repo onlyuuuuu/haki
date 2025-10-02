@@ -31,7 +31,7 @@ int main()
     {
         top=q.top();
         f=m.lower_bound(top.s);
-        if (f==m.end()||top.e<f->second.s){m[top.e]=top;continue;}
+        if (f==m.end()||top.e<f->second.s||top.s>f->second.e){m[top.e]=top;continue;}
         if (f->second.s<=top.s&&f->second.e>=top.e)continue;
         if (f->second.s<top.s)
         {
