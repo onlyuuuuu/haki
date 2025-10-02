@@ -47,6 +47,9 @@ int main()
             f->second.s=top.s;
         }
     }
+    for (f=m.begin();f!=m.end();f++)
+    {
 
+    }
     return 0;
 }
