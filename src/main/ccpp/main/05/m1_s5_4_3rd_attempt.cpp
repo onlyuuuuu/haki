@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct entry{string t;int s,e;};
-struct compare{bool operator()(const entry&a,const entry&b)const{return(a.t.length()!=b.t.length())?a.t.length()<b.t.length():a.e<b.e;}};
+static struct entry{string t;int s,e;};
+static struct compare{bool operator()(const entry&a,const entry&b)const{return(a.t.length()!=b.t.length())?a.t.length()<b.t.length():a.e<b.e;}};
+static constexpr char _a='a';
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -49,6 +50,12 @@ int main()
             f->second.s=top.s;
         }
     }
-    n=1;for (f=m.begin();f!=m.end();f++){cout<<s.assign(f->second.s-n,'a')<<f->second.t;n=f->second.e;}
+    n=1;for (f=m.begin();f!=m.end();f++)
+    {
+        k=f->second.s-n;
+        for (;k>0;k--)cout<<_a;
+        cout<<f->second.t;
+        n=f->second.e;
+    }
     return 0;
 }
