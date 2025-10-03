@@ -27,8 +27,7 @@ int main()
         nd=max(nd,eend.e);
         q.push(eend);
     }
-    m[q.top().e]=q.top();q.pop();entry top;
-    for (;!q.empty()&&!(static_cast<int>(m.size())==1&&m.begin()->second.s==st&&m.begin()->second.e==nd);q.pop())
+    m[q.top().e]=q.top();q.pop();for (entry top;!q.empty()&&!(static_cast<int>(m.size())==1&&m.begin()->second.s==st&&m.begin()->second.e==nd);q.pop())
     {
         top=q.top();
         f=m.lower_bound(top.s);
