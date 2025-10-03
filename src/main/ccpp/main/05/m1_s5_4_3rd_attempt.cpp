@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-static struct entry{string t;int s,e;};
-static struct compare{bool operator()(const entry&a,const entry&b)const{return(a.t.length()!=b.t.length())?a.t.length()<b.t.length():a.e<b.e;}};
+struct entry{string t;int s,e;};
+struct compare{bool operator()(const entry&a,const entry&b)const{return(a.t.length()!=b.t.length())?a.t.length()<b.t.length():a.e<b.e;}};
 static constexpr char _a='a';
 int main()
 {

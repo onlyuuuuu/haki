@@ -2,8 +2,12 @@
 using namespace std;
 int main()
 {
-    string s;
-    cout<<s.assign(0,'a')<<endl;
-    cout<<s.assign(3,'a')<<endl;
+    set<string>s;
+    s.insert("abc");
+    s.insert("xyz");
+    s.insert("abcc");
+    s.insert("abcabc");
+    for (auto it=s.begin();it!=s.end();it++)
+        cout<<*it<<endl;
     return 0;
 }
