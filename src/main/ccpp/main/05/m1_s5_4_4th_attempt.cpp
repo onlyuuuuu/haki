@@ -85,13 +85,7 @@ int main()
         f=m.equal_range(top.start);
         if (f.first == m.end() || f.first->second.start > top.end)
         {
-            m.emplace_hint
-            (
-                m.begin(),
-                piecewise_construct,
-                forward_as_tuple(top.end),
-                forward_as_tuple(top.text(),top.start,top.end)
-            );
+            m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
             continue;
         }
         if (f.first->second.start <= top.start && f.first->second.end >= top.end) continue;
@@ -100,14 +94,20 @@ int main()
             if (f.second == m.end() || f.second->second.start > top.end)
             {
                 auto node=m.extract(f.first);
-                node.key()=top.end;
+                node.mapped().text+=top.text().substr( node.mapped().end - top.start );
                 node.mapped().end=top.end;
-                node.mapped().text+=top.text().substr( node.mapped().start - top.start );
+                node.key()=top.end;
                 m.insert(move(node));
+                continue;
             }
             else
             {
-
+                entry deleted=f.first->second;m.erase(f.first);
+                deleted.text+=top.text().substr( deleted.end - top.start );
+                deleted.end=top.end;
+                f.second->second.text = deleted.text.substr( 0, f.second->second.start - deleted.start ) + f.second->second.text;
+                f.second->second.start=deleted.start;
+                continue;
             }
         }
         if (f.first->second.start > top.start)
