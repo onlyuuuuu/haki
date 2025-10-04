@@ -102,7 +102,6 @@ int main()
                 extracted.mapped().text+=extracted.key()==top.start?top.text():top.text().substr(extracted.key()-top.start);
                 extracted.key()=top.end;
                 m.insert(move(extracted));
-                continue;
             }
             else
             {
@@ -110,8 +109,8 @@ int main()
                 deleted.text+=k==top.start?top.text():top.text().substr(n);
                 f.second->second.text=(top.end==f.second->second.start?deleted.text:deleted.text.substr(0,f.second->second.start-deleted.start))+f.second->second.text;
                 f.second->second.start=deleted.start;
-                continue;
             }
+            continue;
         }
         f.first->second.text=(f.first->second.start==top.end?top.text():top.text().substr(0,f.first->second.start-top.start))+f.second->second.text;
         f.first->second.start=top.start;
