@@ -107,7 +107,7 @@ int main()
             if (f.second == m.end() || f.first == f.second || f.second->second.start > top.end)
             {
                 extracted=m.extract(f.first);
-                extracted.mapped().text+=top.text().substr( extracted.mapped().end - top.start );
+                extracted.mapped().text+=extracted.mapped().end==top.start?top.text():top.text().substr(extracted.mapped().end-top.start);
                 extracted.mapped().end=top.end;
                 extracted.key()=top.end;
                 m.insert(move(extracted));
@@ -116,9 +116,9 @@ int main()
             else
             {
                 deleted=f.first->second;m.erase(f.first);
-                deleted.text+=top.text().substr( deleted.end - top.start );
+                deleted.text+=deleted.end==top.start?top.text():top.text().substr(n);
                 deleted.end=top.end;
-                f.second->second.text=deleted.text.substr( 0, f.second->second.start - deleted.start ) + f.second->second.text;
+                f.second->second.text=(deleted.end==f.second->second.start?deleted.text:deleted.text.substr(0,f.second->second.start-deleted.start))+f.second->second.text;
                 f.second->second.start=deleted.start;
                 continue;
             }
