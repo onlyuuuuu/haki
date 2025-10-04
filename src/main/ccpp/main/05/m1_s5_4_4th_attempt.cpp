@@ -112,7 +112,11 @@ int main()
         }
         if (f->second.start <= top.start && f->first >= top.end) continue;
         s=++f;
+        if (f->second.start < top.start)
+        {
 
+        }
+        else merge_only_right(m,top,s);
     }
     n=1;
     for (const auto&[end,entry]:m)
