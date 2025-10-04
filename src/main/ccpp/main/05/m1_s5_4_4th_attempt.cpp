@@ -55,11 +55,6 @@ public:
         this->text=text;
         this->start=start;
     }
-    entry(string text,int start,int end)
-    {
-        this->text=text;
-        this->start=start;
-    }
 };
 int main()
 {
@@ -87,14 +82,14 @@ int main()
         q.emplace(i,x,e);
     }
     entry deleted;input top=q.top();q.pop();
-    m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
+    m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start));
     for (;!q.empty() && !( m.begin()->second.start==_start && m.begin()->first==_end );q.pop())
     {
         top=q.top();
         f=m.equal_range(top.start);
         if (f.first == m.end() || f.first->second.start > top.end)
         {
-            m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
+            m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start));
             continue;
         }
         if (f.first->second.start <= top.start && f.first->first >= top.end)
