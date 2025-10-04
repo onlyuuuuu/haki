@@ -44,24 +44,21 @@ class entry
 {
 public:
     string text;
-    int start,end;
+    int start;
     entry()
     {
         this->text="";
         this->start=0;
-        this->end=0;
     }
     entry(string text,int start)
     {
         this->text=text;
         this->start=start;
-        this->end=start+static_cast<int>(text.length());
     }
     entry(string text,int start,int end)
     {
         this->text=text;
         this->start=start;
-        this->end=end;
     }
 };
 int main()
@@ -91,7 +88,7 @@ int main()
     }
     entry deleted;input top=q.top();q.pop();
     m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
-    for (;!q.empty() && !( m.begin()->second.start==_start && m.begin()->second.end==_end );q.pop())
+    for (;!q.empty() && !( m.begin()->second.start==_start && m.begin()->first==_end );q.pop())
     {
         top=q.top();
         f=m.equal_range(top.start);
@@ -100,25 +97,23 @@ int main()
             m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
             continue;
         }
-        if (f.first->second.start <= top.start && f.first->second.end >= top.end)
+        if (f.first->second.start <= top.start && f.first->first >= top.end)
             continue;
         if (f.first->second.start < top.start)
         {
             if (f.second == m.end() || f.first == f.second || f.second->second.start > top.end)
             {
                 extracted=m.extract(f.first);
-                extracted.mapped().text+=extracted.mapped().end==top.start?top.text():top.text().substr(extracted.mapped().end-top.start);
-                extracted.mapped().end=top.end;
+                extracted.mapped().text+=extracted.key()==top.start?top.text():top.text().substr(extracted.key()-top.start);
                 extracted.key()=top.end;
                 m.insert(move(extracted));
                 continue;
             }
             else
             {
-                deleted=f.first->second;m.erase(f.first);
-                deleted.text+=deleted.end==top.start?top.text():top.text().substr(n);
-                deleted.end=top.end;
-                f.second->second.text=(deleted.end==f.second->second.start?deleted.text:deleted.text.substr(0,f.second->second.start-deleted.start))+f.second->second.text;
+                k=f.first->first;deleted=f.first->second;m.erase(f.first);
+                deleted.text+=k==top.start?top.text():top.text().substr(n);
+                f.second->second.text=(top.end==f.second->second.start?deleted.text:deleted.text.substr(0,f.second->second.start-deleted.start))+f.second->second.text;
                 f.second->second.start=deleted.start;
                 continue;
             }
