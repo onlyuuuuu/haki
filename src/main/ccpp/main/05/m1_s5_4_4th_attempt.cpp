@@ -8,7 +8,7 @@ public:
     int id,start,end;
     input()
     {
-        this->id=-1;
+        this->id=0;
         this->start=0;
         this->end=0;
     }
@@ -56,6 +56,25 @@ public:
         this->start=start;
     }
 };
+void merge_only_left(map<int,entry>& m, input& top, map<int,entry>::iterator& i)
+{
+    auto extracted=m.extract(i);
+    extracted.mapped().text+=extracted.key()==top.start?top.text():top.text().substr(extracted.key()-top.start);
+    extracted.key()=top.end;
+    m.insert(std::move(extracted));
+}
+void merge_only_right(map<int,entry>& m, input& top, map<int,entry>::iterator& i)
+{
+    i->second.text=(i->second.start==top.end?top.text():top.text().substr(0,i->second.start-top.start))+i->second.text;
+    i->second.start=top.start;
+}
+void merge_both_left_and_right(map<int,entry>& m, input& top, map<int,entry>::iterator& left, map<int,entry>::iterator& right)
+{
+    left->second.text+=left->first==top.start?top.text():top.text().substr(left->first-top.start);
+    right->second.text=(top.end==right->second.start?left->second.text:left->second.text.substr(0,right->second.start-left->second.start))+right->second.text;
+    right->second.start=left->second.start;
+    m.erase(left);
+}
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -63,8 +82,7 @@ int main()
     string t;int _start=INT_MAX,_end=INT_MIN,n,k,x,e;cin>>n;dictionary.reserve(n);
     priority_queue<input,vector<input>,input_comparator>q;
     map<int,entry>m;
-    map<int,entry>::node_type extracted;
-    pair<map<int,entry>::iterator,map<int,entry>::iterator>f;
+    map<int,entry>::iterator f,s;
     for (int i=0;i<n;i++)
     {
         cin>>t>>k>>x;dictionary.push_back(t);
@@ -86,34 +104,15 @@ int main()
     for (;!q.empty() && !( m.begin()->second.start==_start && m.begin()->first==_end );q.pop())
     {
         top=q.top();
-        f=m.equal_range(top.start);
-        if (f.first == m.end() || f.first->second.start > top.end)
+        f=m.lower_bound(top.start);
+        if (f == m.end() || f->second.start > top.end)
         {
             m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start));
             continue;
         }
-        if (f.first->second.start <= top.start && f.first->first >= top.end)
-            continue;
-        if (f.first->second.start < top.start)
-        {
-            if (f.second == m.end() || f.first == f.second || f.second->second.start > top.end)
-            {
-                extracted=m.extract(f.first);
-                extracted.mapped().text+=extracted.key()==top.start?top.text():top.text().substr(extracted.key()-top.start);
-                extracted.key()=top.end;
-                m.insert(move(extracted));
-            }
-            else
-            {
-                k=f.first->first;deleted=f.first->second;m.erase(f.first);
-                deleted.text+=k==top.start?top.text():top.text().substr(n);
-                f.second->second.text=(top.end==f.second->second.start?deleted.text:deleted.text.substr(0,f.second->second.start-deleted.start))+f.second->second.text;
-                f.second->second.start=deleted.start;
-            }
-            continue;
-        }
-        f.first->second.text=(f.first->second.start==top.end?top.text():top.text().substr(0,f.first->second.start-top.start))+f.second->second.text;
-        f.first->second.start=top.start;
+        if (f->second.start <= top.start && f->first >= top.end) continue;
+        s=++f;
+
     }
     n=1;
     for (const auto&[end,entry]:m)
