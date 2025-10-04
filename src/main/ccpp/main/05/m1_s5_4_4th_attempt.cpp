@@ -104,7 +104,7 @@ int main()
             continue;
         if (f.first->second.start < top.start)
         {
-            if (f.second == m.end() || f.second->second.start > top.end)
+            if (f.second == m.end() || f.first == f.second || f.second->second.start > top.end)
             {
                 extracted=m.extract(f.first);
                 extracted.mapped().text+=top.text().substr( extracted.mapped().end - top.start );
