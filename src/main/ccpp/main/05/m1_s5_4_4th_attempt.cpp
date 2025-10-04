@@ -6,6 +6,12 @@ class input
 {
 public:
     int id,start,end;
+    input()
+    {
+        this->id=-1;
+        this->start=0;
+        this->end=0;
+    }
     input(int id,int start)
     {
         this->id=id;
@@ -39,6 +45,12 @@ class entry
 public:
     string text;
     int start,end;
+    entry()
+    {
+        this->text="";
+        this->start=0;
+        this->end=0;
+    }
     entry(string text,int start)
     {
         this->text=text;
@@ -56,30 +68,30 @@ int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    string t;int start=INT_MAX,end=INT_MIN,n,k,x,e;cin>>n;dictionary.reserve(n);
+    string t;int _start=INT_MAX,_end=INT_MIN,n,k,x,e;cin>>n;dictionary.reserve(n);
     priority_queue<input,vector<input>,input_comparator>q;
     map<int,entry>m;
-    map<int,entry>::iterator it;
+    map<int,entry>::node_type extracted;
     pair<map<int,entry>::iterator,map<int,entry>::iterator>f;
     for (int i=0;i<n;i++)
     {
         cin>>t>>k>>x;dictionary.push_back(t);
         e=x+static_cast<int>(t.length());
-        start=min(start,x);
+        _start=min(_start,x);
         q.emplace(i,x,e);
         for (--k;k>1;k--)
         {
             cin>>x;
             q.emplace(i,x);
         }
-        if (k==0){end=max(end,e);continue;}
+        if (k==0){_end=max(_end,e);continue;}
         cin>>x;e=x+static_cast<int>(t.length());
-        end=max(end,e);
+        _end=max(_end,e);
         q.emplace(i,x,e);
     }
-    input top=q.top();q.pop();
+    entry deleted;input top=q.top();q.pop();
     m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
-    for (;!q.empty() && ( m.begin()->second.start==start && m.begin()->second.end==end );q.pop())
+    for (;!q.empty() && !( m.begin()->second.start==_start && m.begin()->second.end==_end );q.pop())
     {
         top=q.top();
         f=m.equal_range(top.start);
@@ -88,32 +100,38 @@ int main()
             m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start,top.end));
             continue;
         }
-        if (f.first->second.start <= top.start && f.first->second.end >= top.end) continue;
+        if (f.first->second.start <= top.start && f.first->second.end >= top.end)
+            continue;
         if (f.first->second.start < top.start)
         {
             if (f.second == m.end() || f.second->second.start > top.end)
             {
-                auto node=m.extract(f.first);
-                node.mapped().text+=top.text().substr( node.mapped().end - top.start );
-                node.mapped().end=top.end;
-                node.key()=top.end;
-                m.insert(move(node));
+                extracted=m.extract(f.first);
+                extracted.mapped().text+=top.text().substr( extracted.mapped().end - top.start );
+                extracted.mapped().end=top.end;
+                extracted.key()=top.end;
+                m.insert(move(extracted));
                 continue;
             }
             else
             {
-                entry deleted=f.first->second;m.erase(f.first);
+                deleted=f.first->second;m.erase(f.first);
                 deleted.text+=top.text().substr( deleted.end - top.start );
                 deleted.end=top.end;
-                f.second->second.text = deleted.text.substr( 0, f.second->second.start - deleted.start ) + f.second->second.text;
+                f.second->second.text=deleted.text.substr( 0, f.second->second.start - deleted.start ) + f.second->second.text;
                 f.second->second.start=deleted.start;
                 continue;
             }
         }
-        if (f.first->second.start > top.start)
-        {
-
-        }
+        f.first->second.text=top.text().substr( 0, f.first->second.start - top.start ) + f.second->second.text;
+        f.first->second.start=top.start;
+    }
+    n=1;
+    for (const auto&[end,entry]:m)
+    {
+        for (k=entry.start-n;k>0;k--)cout<<char_a;
+        cout<<entry.text;
+        n=end;
     }
     return 0;
 }
