@@ -123,7 +123,7 @@ int main()
                 continue;
             }
         }
-        f.first->second.text=top.text().substr( 0, f.first->second.start - top.start ) + f.second->second.text;
+        f.first->second.text=(f.first->second.start==top.end?top.text():top.text().substr(0,f.first->second.start-top.start))+f.second->second.text;
         f.first->second.start=top.start;
     }
     n=1;
