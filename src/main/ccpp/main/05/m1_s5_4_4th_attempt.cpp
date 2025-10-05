@@ -82,7 +82,7 @@ int main()
     string t;int _start=INT_MAX,_end=INT_MIN,n,k,x,e;cin>>n;dictionary.reserve(n);
     priority_queue<input,vector<input>,input_comparator>q;
     map<int,entry>m;
-    map<int,entry>::iterator f,s;
+    pair<map<int,entry>::iterator,map<int,entry>::iterator>r;
     for (int i=0;i<n;i++)
     {
         cin>>t>>k>>x;dictionary.push_back(t);
@@ -104,21 +104,21 @@ int main()
     for (;!q.empty() && !( m.begin()->second.start==_start && m.begin()->first==_end );q.pop())
     {
         top=q.top();
-        f=m.lower_bound(top.start);
-        if (f == m.end() || f->second.start > top.end)
+        r=m.equal_range(top.start);
+        if (r.first == m.end() || r.first->second.start > top.end)
         {
             m.emplace(piecewise_construct,forward_as_tuple(top.end),forward_as_tuple(top.text(),top.start));
             continue;
         }
-        if (f->second.start <= top.start && f->first >= top.end) continue;
-        s=++f;
-        if (f->second.start < top.start)
+        if (r.first->second.start <= top.start && r.first->first >= top.end) continue;
+        r.second = r.first == r.second ? ++r.second : r.second;
+        if (r.first->second.start < top.start)
         {
-            if (s != m.end() && s->second.start > top.start && s->second.start <= top.end)
-                merge_both_left_and_right(m,top,f,s);
-            else merge_only_left(m,top,f);
+            if (r.second != m.end() && r.second->second.start > top.start && r.second->second.start <= top.end)
+                merge_both_left_and_right(m,top,r.first,r.second);
+            else merge_only_left(m,top,r.first);
         }
-        else merge_only_right(m,top,f);
+        else merge_only_right(m,top,r.first);
     }
     n=1;
     for (const auto&[end,entry]:m)
