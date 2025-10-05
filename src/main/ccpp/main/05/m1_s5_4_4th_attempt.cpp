@@ -114,9 +114,11 @@ int main()
         s=++f;
         if (f->second.start < top.start)
         {
-
+            if (s != m.end() && s->second.start > top.start && s->second.start <= top.end)
+                merge_both_left_and_right(m,top,f,s);
+            else merge_only_left(m,top,f);
         }
-        else merge_only_right(m,top,s);
+        else merge_only_right(m,top,f);
     }
     n=1;
     for (const auto&[end,entry]:m)
