@@ -19,10 +19,10 @@ int main()
     string result,t;int n,k,x,e;cin>>n;
     map<int,input>m;
     map<int,input>::iterator i;
-    for (;n>0;n--)
+    while (n--)
     {
         cin>>t>>k;
-        for (;k>0;k--)
+        while (k--)
         {
             cin>>x;
             e=x+static_cast<int>(t.length());
@@ -51,19 +51,20 @@ int main()
     {
         if (i->second.start==1)
         {
-            result=((i->first==n)?i->second.text:i->second.text.substr(0,n-i->second.start))+result;
-            break;
+            cout<<((i->first==n)?i->second.text:i->second.text.substr(0,n-i->second.start))<<result;
+            return 0;
         }
         while (i!=m.end() && i->second.start>=n) i=m.erase(i);
         if (i==m.end())
         {
             --i;
-            for (k=n-i->first;k>0;k--) result=char_a+result;
+            for (k=n-i->first;k--;) result=char_a+result;
             result=i->second.text+result;
         }
         else result=((i->first==n)?i->second.text:i->second.text.substr(0,n-i->second.start))+result;
         n=i->second.start;
     }
+    for (k=n-1;k--;) cout<<char_a;
     cout<<result;
     return 0;
 }
