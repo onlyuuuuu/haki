@@ -5,7 +5,7 @@ int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    string t,temp;int n,k,s,e;cin>>n;
+    bool do_insert;string t,temp;int n,k,s,e;cin>>n;
     map<int,pair<int,string>>m;
     map<int,pair<int,string>>::iterator it,fr,to;
     while (n--)
@@ -28,6 +28,7 @@ int main()
                 it->second.first=s;
                 continue;
             }
+            do_insert=true;
             temp=t;
             if (it->second.first<s)
             {
@@ -40,8 +41,10 @@ int main()
             {
                 to->second.second=temp.substr(0,to->second.first-s)+to->second.second;
                 to->second.first=s;
+                do_insert=false;
             }
             m.erase(fr,to);
+            if (do_insert) m.emplace(piecewise_construct,forward_as_tuple(e),forward_as_tuple(s,temp));
         }
     }
     n=1;
