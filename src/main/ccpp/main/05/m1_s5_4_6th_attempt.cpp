@@ -53,6 +53,7 @@ int main()
         k=it->second.first-n;
         while (k--) cout<<char_a;
         cout<<it->second.second;
+        n=it->first;
     }
     return 0;
 }
