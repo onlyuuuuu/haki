@@ -32,7 +32,7 @@ int main()
             temp=t;
             if (it->second.first<s)
             {
-                temp=it->second.second.substr(0,s-it->second.first)+t;
+                temp=it->second.second.substr(0,s-it->second.first)+temp;
                 s=it->second.first;
             }
             fr=it;
