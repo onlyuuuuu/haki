@@ -8,12 +8,18 @@ int main()
     bool do_insert;string t,temp;int n,k,s,e;cin>>n;
     map<int,pair<int,string>>m;
     map<int,pair<int,string>>::iterator it,fr,to;
+    stack<int>st;
     while (n--)
     {
         cin>>t>>k;
         while (k--)
         {
             cin>>s;
+            st.emplace(s);
+        }
+        for (;!st.empty();st.pop())
+        {
+            s=st.top();
             e=s+static_cast<int>(t.length());
             it=m.lower_bound(s);
             if (it==m.end()||it->second.first>e)
