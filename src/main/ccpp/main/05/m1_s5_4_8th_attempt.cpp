@@ -9,18 +9,17 @@ struct token
 struct token_compare
 {
     using is_transparent=void;
-    bool operator()(const token&a,const token&b)const{a.start>b.start;}
-    bool operator()(const int a,const token&b)const{a>b.start;}
-    bool operator()(const token&a,const int b)const{a.start>b;}
+    bool operator()(const token&a,const token&b)const{return a.start>b.start;}
+    bool operator()(const int a,const token&b)const{return a>b.start;}
+    bool operator()(const token&a,const int b)const{return a.start>b;}
 };
 struct input
 {
     set<token,token_compare>tokens;
     input(){}
     token min() const{return *tokens.rbegin();}
-    token max() const{return *tokens.begin();}
     int min_start() const{return tokens.rbegin()->start;}
-    int max_start() const{return tokens.begin()->start;}
+    void erase_min(){tokens.erase(--tokens.end());}
     const token* before(const int pos) const
     {
         if (tokens.rbegin()->start > pos) return nullptr;
@@ -34,9 +33,10 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     map<int,input,greater<int>>m;
-    map<int,input,greater<int>>::iterator it;
+    map<int,input,greater<int>>::iterator it,closest;
     set<token,token_compare>::iterator h;
     string s,t;int n,k,start,end;cin>>n;
+    const token* found;
     while (n--)
     {
         cin>>t>>k>>start;
@@ -48,6 +48,24 @@ int main()
             h=tokens.emplace_hint(h,start,t);
         }
         end=max(end,h->end);
+    }
+    for (start=1;start!=end;)
+    {
+        closest=m.begin();
+        for (it=m.begin();it!=m.end();it++)
+        {
+            found=it->second.before(start);
+            if (found) break;
+            if (it->second.min_start() < closest->second.min_start()) closest=it;
+        }
+        if (!found)
+        {
+            n=closest->second.min_start()-start;
+            while (n--) s+='a';
+            s+=closest->second.min().text;
+            start=closest->second.min().end;
+            closest->second.tokens.erase(closest->second.min());
+        }
     }
     return 0;
 }
