@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 static constexpr char char_a='a';
+// BUSTED, HAVEN'T BEEN ABLE TO TRY THIS
+// TOO COMPLICATED AND AT SOME POINT, OUT OF WACK! OUT OF CONTROL!
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -50,23 +52,16 @@ int main()
                 if (i2->second.begin()->first<n)
                     found=i2->second.begin();
                 else found=i2->second.lower_bound(n);
-                if (found->first==n)
-                {
-                    s+=found->second;
-                    n+=static_cast<int>(found->second.length());
-                    i2->second.erase(found);
-                    if (i2->second.empty()) m.erase(i2);
-                    stop=true;
-                }
-                else
+                i=found->first+static_cast<int>(found->second.length());
+                if (i>n)
                 {
                     k=found->first+static_cast<int>(found->second.length());
                     max1=found;
                     max2=i2;
+                    break;
                 }
-                break;
             }
-            if (i2->second.rbegin()->first < min->second.rbegin()->first)
+            if (i2->second.rbegin()->first < min->second.rbegin()->first && i2->second.rbegin()->first > n)
                 min=i2;
         }
         if (stop) continue;
