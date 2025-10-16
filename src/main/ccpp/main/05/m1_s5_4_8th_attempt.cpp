@@ -5,22 +5,32 @@ class token
 public:
     int start,end;
     string text;
-    token(int start,string text):start(start),end(start+static_cast<int>(text.length())),text(text){}
-    token(int start,int end,string text):start(start),end(end),text(text){}
+    token(const int start,const int end,const string&text):start(start),end(end),text(text){}
 };
-static constexpr auto compare_token=[](const token&a,const token&b){return a.start<b.start;};
 class input
 {
 public:
     int length;
-    set<token,decltype(compare_token)>tokens;
-    input(string t):length(static_cast<int>(t.length())){};
+    map<int,token,greater<int>>tokens;
+    explicit input(const string&text):length(static_cast<int>(text.length())){}
+    explicit input(const size_t&size):length(static_cast<int>(size)){}
+    token min() const{return tokens.rbegin()->second;}
+    token max() const{return tokens.begin()->second;}
+    int min_start() const{return tokens.rbegin()->second.start;}
+    int max_start() const{return tokens.begin()->second.start;}
+    const token* before(const int pos) const
+    {
+        if (tokens.rbegin()->second.start > pos) return nullptr;
+        if (tokens.rbegin()->second.start == pos) return &tokens.rbegin()->second;
+        if (tokens.begin()->second.start <= pos) return &tokens.begin()->second;
+        return &tokens.lower_bound(pos)->second;
+    }
 };
-static constexpr auto compare_input=[](const input&a,const input&b){return false;};
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-
+    map<int,input,greater<int>>m;
+    map<int,input,greater<int>>::iterator it;
     return 0;
 }
