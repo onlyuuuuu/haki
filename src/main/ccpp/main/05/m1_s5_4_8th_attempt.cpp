@@ -5,8 +5,8 @@ struct token
 {
     int end;
     string text;
-    input*inp;
-    token(int start,string&text,input*inp):end(start+static_cast<int>(text.length())),text(text),inp(inp){}
+    input*owner;
+    token(int start,string&text,input*owner):end(start+static_cast<int>(text.length())),text(text),owner(owner){}
 };
 struct input
 {
@@ -19,10 +19,11 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     map<int,input,greater<int>>m;
-    map<int,input,greater<int>>::iterator it,closest;
+    map<int,input,greater<int>>::iterator it;
     map<int,token,greater<int>>::iterator h;
     string s,t;int n,k,start,end;cin>>n;
-    const token* found;
+    bool stop=false;
+    token* next=nullptr;
     while (n--)
     {
         cin>>t>>k>>start;
@@ -38,16 +39,11 @@ int main()
     }
     for (start=1;start!=end;)
     {
-        closest=m.begin();
-        for (it=m.begin();it!=m.end();it++)
+        bool stop=false;
+        for (it=m.begin();it!=m.end();)
         {
 
         }
-        if (!found)
-        {
-
-        }
-        n=found->end;
         for (++it;it!=m.end();it++)
         {
 
