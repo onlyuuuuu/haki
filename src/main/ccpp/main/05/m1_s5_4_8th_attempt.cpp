@@ -65,8 +65,7 @@ int main()
                 {
                     s+=it->second.tokens.rbegin()->second.text;
                     start=it->second.tokens.rbegin()->second.end;
-                    if (it->second.tokens.size()==1)
-                        it=m.erase(it);
+                    if (it->second.tokens.size()==1) it=m.erase(it);
                     else
                     {
                         it->second.tokens.erase(std::prev(it->second.tokens.end()));
@@ -137,8 +136,7 @@ int main()
                 if (it->second.tokens.rbegin()->first == start)
                 {
                     best=max_end_in_range(best,std::prev(it->second.tokens.end()));
-                    if (it->second.tokens.size()==1)
-                        it=m.erase(it);
+                    if (it->second.tokens.size()==1) it=m.erase(it);
                     else
                     {
                         it->second.tokens.erase(std::prev(it->second.tokens.end()));
@@ -146,32 +144,20 @@ int main()
                     }
                     continue;
                 }
-                if (it->second.tokens.begin()->first == start)
-                {
-                    best=max_end_in_range(best,it->second.tokens.begin());
-                    it=m.erase(it);
-                    continue;
-                }
                 if (it->second.tokens.rbegin()->first > start)
                 {
                     it++;
                     continue;
                 }
-                if (it->second.tokens.begin()->first < start)
+                if (it->second.tokens.begin()->first <= start)
                 {
                     best=max_end_in_range(best,it->second.tokens.begin());
                     it=m.erase(it);
                     continue;
                 }
-                // to be continue...
-                if (it->second.tokens.begin()->first <= start)
-                {
-                    best=it->second.tokens.begin();
-                    it=m.erase(it);
-                    continue;
-                }
                 found=it->second.tokens.lower_bound(start);
                 best=max_end_in_range(best,found);
+                it->second.tokens.erase(found);
                 it++;
             }
             n=bs->first-start;
