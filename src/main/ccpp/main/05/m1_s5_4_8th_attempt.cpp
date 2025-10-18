@@ -6,7 +6,7 @@ struct token
     int end;
     string text;
     input*owner;
-    token(int start,string&text,input*owner):end(start+static_cast<int>(text.length())),text(text),owner(owner){}
+    token(int start,string text,input*owner):end(start+static_cast<int>(text.length())),text(text),owner(owner){}
 };
 struct input
 {
@@ -14,15 +14,25 @@ struct input
     map<int,input,greater<int>>*inputs;
     input(map<int,input,greater<int>>*inputs):inputs(inputs){}
 };
-map<int,token,greater<int>>::iterator min_start_off_range(map<int,token,greater<int>>::iterator a, map<int,token,greater<int>>::iterator b)
+optional<map<int,token,greater<int>>::iterator> min_start_off_range
+(
+    const optional<map<int,token,greater<int>>::iterator>& a,
+    const optional<map<int,token,greater<int>>::iterator>& b
+)
 {
-    if (a->first < b->first) return a;
-    return b;
+    if (!a) return b;
+    if (!b) return a;
+    return ((*a)->first < (*b)->first) ? a : b;
 }
-token* max_end_in_range(token& a, token& b)
+optional<map<int,token,greater<int>>::iterator> max_end_in_range
+(
+    const optional<map<int,token,greater<int>>::iterator>& a,
+    const optional<map<int,token,greater<int>>::iterator>& b
+)
 {
-    if (a.end > b.end) return &a;
-    return &b;
+    if (!a) return b;
+    if (!b) return a;
+    return ((*a)->second.end > (*b)->second.end) ? a : b;
 }
 int main()
 {
@@ -30,10 +40,9 @@ int main()
     cin.tie(nullptr);
     map<int,input,greater<int>>m;
     map<int,input,greater<int>>::iterator it;
-    map<int,token,greater<int>>::iterator h,next,found;
-    string s,t;int n,k,start,end;cin>>n;
-    bool stop,next_off_range_found,need_further_inspection;
-    token* best;
+    map<int,token,greater<int>>::iterator h,found;
+    optional<map<int,token,greater<int>>::iterator> next,best;
+    bool stop;string s,t;int n,k,start,end;cin>>n;
     while (n--)
     {
         cin>>t>>k>>start;
@@ -50,16 +59,19 @@ int main()
     for (start=1;start!=end;)
     {
         stop=false;
-        next_off_range_found=false;
-        need_further_inspection=false;
         for (it=m.begin();it!=m.end();)
         {
             if (it->second.tokens.rbegin()->first == start)
             {
                 s+=it->second.tokens.rbegin()->second.text;
                 start=it->second.tokens.rbegin()->second.end;
-                if (it->second.tokens.size()==1) it=m.erase(it);
-                else it->second.tokens.erase(--(it->second.tokens.end()));
+                if (it->second.tokens.size()==1)
+                    it=m.erase(it);
+                else
+                {
+                    it->second.tokens.erase(std::prev(it->second.tokens.end()));
+                    it++;
+                }
                 stop=true;break;
             }
             if (it->second.tokens.begin()->first == start)
@@ -71,12 +83,7 @@ int main()
             }
             if (it->second.tokens.rbegin()->first > start)
             {
-                if (!next_off_range_found)
-                {
-                    next=--(it->second.tokens.end());
-                    next_off_range_found=true;
-                }
-                else next=min_start_off_range(next,--(it->second.tokens.end()));
+                next=min_start_off_range(next,std::prev(it->second.tokens.end()));
                 it++;
             }
             else if (it->second.tokens.begin()->first < start)
@@ -85,8 +92,7 @@ int main()
                     it=m.erase(it);
                 else
                 {
-                    need_further_inspection=true;
-                    best=!best?&(it->second.tokens.begin()->second):max_end_in_range(*best,it->second.tokens.begin()->second);
+                    best=max_end_in_range(best,it->second.tokens.begin());
                     it=m.erase(it);
                     break;
                 }
@@ -98,40 +104,37 @@ int main()
                 {
                     s+=found->second.text;
                     start=found->second.end;
-                    it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found));
+                    //it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found));
+                    it++;
                     stop=true;break;
                 }
                 else if (found->second.end <= start)
                 {
-                    if (!next_off_range_found)
-                    {
-                        next=it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found));
-                        next_off_range_found=true;
-                    }
-                    else next=min_start_off_range(next,it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)));
+                    next=min_start_off_range(next,std::next(found));
+                    //next=min_start_off_range(next,it->second.tokens.erase(found));
+                    //next=min_start_off_range(next,it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)));
                     it++;
                 }
                 else
                 {
-                    need_further_inspection=true;
-                    best=!best?&(found->second):max_end_in_range(*best,found->second);
+                    best=max_end_in_range(best,found);
                     it++;
                     break;
                 }
             }
         }
         if (stop) continue;
-        if (!need_further_inspection)
+        if (!best)
         {
-            n=next->first-start;
+            auto&nx=*next;
+            n=nx->first-start;
             while (n--) s+='a';
-            s+=next->second.text;
-            start=next->second.end;
-            auto&tokens=next->second.owner->tokens;
-            tokens.erase(next);
+            s+=nx->second.text;
+            start=nx->second.end;
+            nx->second.owner->tokens.erase(nx);
             continue;
         }
-        for (;it!=m.end();)
+        for (;it!=m.end();it++)
         {
 
         }
