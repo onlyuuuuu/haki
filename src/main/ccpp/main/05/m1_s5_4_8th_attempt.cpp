@@ -110,8 +110,9 @@ int main()
                     }
                     else if (found->second.end <= start)
                     {
-                        next=min_start_off_range(next,std::next(found));
-                        //next=min_start_off_range(next,it->second.tokens.erase(found));
+                        //next=min_start_off_range(next,found++);
+                        //next=min_start_off_range(next,std::next(found));
+                        next=min_start_off_range(next,it->second.tokens.erase(found));
                         //next=min_start_off_range(next,it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)));
                         it++;
                     }
@@ -133,11 +134,36 @@ int main()
                 nx->second.owner->tokens.erase(nx);
                 return;
             }
-            for (;it!=m.end();it++)
+            auto&bs=*best;
+            while (it!=m.end())
             {
-
+                if (start + it->first <= bs->second.end) break;
+                if (it->second.tokens.begin()->second.end <= bs->second.end)
+                {
+                    it=m.erase(it);
+                    continue;
+                }
+                if (it->second.tokens.begin()->first <= start)
+                {
+                    best=it->second.tokens.begin();
+                    it=m.erase(it);
+                    continue;
+                }
+                if (it->second.tokens.rbegin()->first > start)
+                {
+                    it++;
+                    continue;
+                }
+                found=it->second.tokens.lower_bound(start);
+                best=max_end_in_range(best,found);
+                it++;
             }
+            n=bs->first-start;
+            while (n--) s.pop_back();
+            s+=bs->second.text;
+            start=bs->second.end;
         }();
     }
+    cout<<s;
     return 0;
 }
