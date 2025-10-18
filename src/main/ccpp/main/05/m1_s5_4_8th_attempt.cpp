@@ -61,16 +61,18 @@ int main()
         [&]{
             for (it=m.begin();it!=m.end();)
             {
+                if (it->second.tokens.empty())
+                {
+                    it=m.erase(it);
+                    continue;
+                }
                 if (it->second.tokens.rbegin()->first == start)
                 {
                     s+=it->second.tokens.rbegin()->second.text;
                     start=it->second.tokens.rbegin()->second.end;
-                    if (it->second.tokens.size()==1) it=m.erase(it);
-                    else
-                    {
-                        it->second.tokens.erase(std::prev(it->second.tokens.end()));
-                        it++;
-                    }
+                    it->second.tokens.erase(std::prev(it->second.tokens.end()));
+                    if (it->second.tokens.empty()) it=m.erase(it);
+                    else it++;
                     return;
                 }
                 if (it->second.tokens.begin()->first == start)
@@ -104,7 +106,8 @@ int main()
                     start=found->second.end;
                     it->second.tokens.erase(found);
                     //it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found));
-                    it++;
+                    if (it->second.tokens.empty()) it=m.erase(it);
+                    else it++;
                     return;
                 }
                 if (found->second.end <= start)
@@ -113,7 +116,7 @@ int main()
                     //next=min_start_off_range(next,std::next(found));
                     next=min_start_off_range(next,it->second.tokens.erase(found));
                     //next=min_start_off_range(next,it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)));
-                    it++;
+                    if (it->second.tokens.empty()) it=m.erase(it); else it++;
                     continue;
                 }
                 best=max_end_in_range(best,found);
@@ -133,15 +136,16 @@ int main()
             auto&bs=*best;
             while (it!=m.end() && start+it->first>bs->second.end)
             {
+                if (it->second.tokens.empty())
+                {
+                    it=m.erase(it);
+                    continue;
+                }
                 if (it->second.tokens.rbegin()->first == start)
                 {
                     best=max_end_in_range(best,std::prev(it->second.tokens.end()));
-                    if (it->second.tokens.size()==1) it=m.erase(it);
-                    else
-                    {
-                        it->second.tokens.erase(std::prev(it->second.tokens.end()));
-                        it++;
-                    }
+                    it->second.tokens.erase(std::prev(it->second.tokens.end()));
+                    if (it->second.tokens.empty()) it=m.erase(it); else it++;
                     continue;
                 }
                 if (it->second.tokens.rbegin()->first > start)
@@ -158,7 +162,7 @@ int main()
                 found=it->second.tokens.lower_bound(start);
                 best=max_end_in_range(best,found);
                 it->second.tokens.erase(found);
-                it++;
+                if (it->second.tokens.empty()) it=m.erase(it); else it++;
             }
             n=bs->first-start;
             while (n--) s.pop_back();
