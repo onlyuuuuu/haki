@@ -1,4 +1,12 @@
-3
-ab 2 2 8
-xy 2 5 11
-h 3 4 7 14
+11
+abc 2 2 9
+ab 1 6
+def 1 12
+cdefgh 1 11
+defghk 1 12
+fghkl 1 14
+ghk 1 15
+efghk 1 13
+zww 1 22
+yzww 1 21
+x 1 20
