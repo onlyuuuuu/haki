@@ -5,24 +5,22 @@ struct token
 {
     int end;
     string text;
-    input*owner;
-    token(int start,string text,input*owner):end(start+static_cast<int>(text.length())),text(text),owner(owner){}
+    token(int start,string text,input*owner):end(start+static_cast<int>(text.length())),text(text){}
 };
 struct input
 {
     map<int,token,greater<int>>tokens;
-    map<int,input,greater<int>>*inputs;
-    input(map<int,input,greater<int>>*inputs):inputs(inputs){}
+    input(){}
 };
-optional<map<int,token,greater<int>>::iterator> min_start_off_range
+pair<optional<map<int,token,greater<int>>::iterator>,map<int,input,greater<int>>::iterator> min_start_off_range
 (
-    optional<map<int,token,greater<int>>::iterator> a,
-    optional<map<int,token,greater<int>>::iterator> b
+    pair<optional<map<int,token,greater<int>>::iterator>,map<int,input,greater<int>>::iterator> a,
+    pair<optional<map<int,token,greater<int>>::iterator>,map<int,input,greater<int>>::iterator> b
 )
 {
-    if (!a) return b;
-    if (!b) return a;
-    return ((*a)->first < (*b)->first) ? a : b;
+    if (!a.first) return b;
+    if (!b.first) return a;
+    return ((*a.first)->first < (*b.first)->first) ? a : b;
 }
 optional<map<int,token,greater<int>>::iterator> max_end_in_range
 (
@@ -41,12 +39,13 @@ int main()
     map<int,input,greater<int>>m;
     map<int,input,greater<int>>::iterator it;
     map<int,token,greater<int>>::iterator h,found;
-    optional<map<int,token,greater<int>>::iterator> next,best;
+    optional<map<int,token,greater<int>>::iterator> best;
+    pair<optional<map<int,token,greater<int>>::iterator>,map<int,input,greater<int>>::iterator> next;
     bool stop;string s,t;int n,k,start,end;cin>>n;
     while (n--)
     {
         cin>>t>>k>>start;
-        auto&input=m.try_emplace(static_cast<int>(t.length()),&m).first->second;
+        auto&input=m.try_emplace(static_cast<int>(t.length())).first->second;
         auto&tokens=input.tokens;
         h=tokens.emplace(piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,t,&input)).first;
         while (--k)
@@ -83,7 +82,7 @@ int main()
             }
             if (it->second.tokens.rbegin()->first > start)
             {
-                next=min_start_off_range(next,std::prev(it->second.tokens.end()));
+                next=min_start_off_range(next,std::make_pair(std::prev(it->second.tokens.end()),it));
                 it++;
                 continue;
             }
@@ -112,7 +111,7 @@ int main()
             {
                 //next=min_start_off_range(next,found++);
                 //next=min_start_off_range(next,std::next(found));
-                next=min_start_off_range(next,it->second.tokens.erase(found));
+                next=min_start_off_range(next,std::make_pair(it->second.tokens.erase(found),it));
                 //next=min_start_off_range(next,it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)));
                 if (it->second.tokens.empty()) it=m.erase(it); else it++;
                 continue;
@@ -124,12 +123,13 @@ int main()
         if (stop) continue;
         if (!best)
         {
-            auto&nx=*next;
+            auto&nx=*next.first;
             n=nx->first-start;
             while (n--) s+='a';
             s+=nx->second.text;
             start=nx->second.end;
-            nx->second.owner->tokens.erase(nx);
+            next.second->second.tokens.erase(nx);
+            if (next.second->second.tokens.empty()) m.erase(next.second);
             continue;
         }
         auto&bs=*best;
