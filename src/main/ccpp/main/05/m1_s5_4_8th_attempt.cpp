@@ -16,8 +16,8 @@ struct input
 };
 optional<map<int,token,greater<int>>::iterator> min_start_off_range
 (
-    const optional<map<int,token,greater<int>>::iterator>& a,
-    const optional<map<int,token,greater<int>>::iterator>& b
+    optional<map<int,token,greater<int>>::iterator> a,
+    optional<map<int,token,greater<int>>::iterator> b
 )
 {
     if (!a) return b;
@@ -26,8 +26,8 @@ optional<map<int,token,greater<int>>::iterator> min_start_off_range
 }
 optional<map<int,token,greater<int>>::iterator> max_end_in_range
 (
-    const optional<map<int,token,greater<int>>::iterator>& a,
-    const optional<map<int,token,greater<int>>::iterator>& b
+    optional<map<int,token,greater<int>>::iterator> a,
+    optional<map<int,token,greater<int>>::iterator> b
 )
 {
     if (!a) return b;
@@ -71,8 +71,7 @@ int main()
                     s+=it->second.tokens.rbegin()->second.text;
                     start=it->second.tokens.rbegin()->second.end;
                     it->second.tokens.erase(std::prev(it->second.tokens.end()));
-                    if (it->second.tokens.empty()) it=m.erase(it);
-                    else it++;
+                    if (it->second.tokens.empty()) it=m.erase(it); else it++;
                     return;
                 }
                 if (it->second.tokens.begin()->first == start)
@@ -106,8 +105,7 @@ int main()
                     start=found->second.end;
                     it->second.tokens.erase(found);
                     //it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found));
-                    if (it->second.tokens.empty()) it=m.erase(it);
-                    else it++;
+                    if (it->second.tokens.empty()) it=m.erase(it); else it++;
                     return;
                 }
                 if (found->second.end <= start)
@@ -141,16 +139,16 @@ int main()
                     it=m.erase(it);
                     continue;
                 }
+                if (it->second.tokens.rbegin()->first > start)
+                {
+                    it++;
+                    continue;
+                }
                 if (it->second.tokens.rbegin()->first == start)
                 {
                     best=max_end_in_range(best,std::prev(it->second.tokens.end()));
                     it->second.tokens.erase(std::prev(it->second.tokens.end()));
                     if (it->second.tokens.empty()) it=m.erase(it); else it++;
-                    continue;
-                }
-                if (it->second.tokens.rbegin()->first > start)
-                {
-                    it++;
                     continue;
                 }
                 if (it->second.tokens.begin()->first <= start)
