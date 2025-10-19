@@ -51,7 +51,7 @@ int main()
     map<int,token,greater<int>>::iterator h,found;
     optional<token> best;
     optional<nor> next;
-    bool stop;string s,t;int n,k,start,end;cin>>n;
+    bool stop;string s,t;int n,k,start,end=0;cin>>n;
     while (n--)
     {
         cin>>t>>k>>start;
@@ -171,7 +171,7 @@ int main()
             }
             found=it->second.tokens.lower_bound(start);
             best=max_end_in_range(best,found->second);
-            it->second.tokens.erase(found);
+            it->second.tokens.erase(found,it->second.tokens.end()); // O(n)
             if (it->second.tokens.empty()) it=m.erase(it); else it++;
         }
         n=start-best->start;
