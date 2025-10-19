@@ -114,13 +114,13 @@ int main()
             {
                 s+=found->second.text;
                 start=found->second.end;
-                it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)); // O(n)
+                it->second.tokens.erase(found,it->second.tokens.end()); // O(n)
                 if (it->second.tokens.empty()) it=m.erase(it); else it++;
                 stop=true;break;
             }
             if (found->second.end <= start)
             {
-                next=min_start_off_range(next,nor(it->second.tokens.erase(it->second.tokens.begin(),it->second.tokens.erase(found)),it)); // O(n)
+                next=min_start_off_range(next,nor(std::prev(it->second.tokens.erase(found,it->second.tokens.end())),it)); // O(n)
                 if (it->second.tokens.empty()) it=m.erase(it); else it++;
                 continue;
             }
