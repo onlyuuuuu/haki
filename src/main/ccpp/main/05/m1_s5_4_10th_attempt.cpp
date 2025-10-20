@@ -4,8 +4,9 @@ struct input;
 struct token
 {
     int start,end;
-    string text;
-    token(int start,string text):start(start),end(start+static_cast<int>(text.length())),text(text){}
+    const string* text;
+    token(int start,const string* text):
+    start(start),end(start+static_cast<int>(text->length())),text(text){}
 };
 struct input
 {
@@ -51,17 +52,18 @@ int main()
     map<int,token,greater<int>>::iterator h,found;
     optional<token> best;
     optional<nor> next;
-    bool stop;string s,t;int n,k,start,end=0;cin>>n;
+    bool stop;string s,t;int n,k,start,end=INT_MIN;cin>>n;
+    vector<string>texts;texts.reserve(n);int text_id=-1;
     while (n--)
     {
-        cin>>t>>k>>start;
+        cin>>t>>k>>start;texts.push_back(t);++text_id;
         auto&input=m.try_emplace(static_cast<int>(t.length())).first->second;
         auto&tokens=input.tokens;
-        h=tokens.emplace(piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,t)).first;
+        h=tokens.emplace(piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,&texts[text_id])).first;
         while (--k)
         {
             cin>>start;
-            h=tokens.emplace_hint(h,piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,t));
+            h=tokens.emplace_hint(h,piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,&texts[text_id]));
         }
         end=max(end,h->second.end);
     }
@@ -79,7 +81,7 @@ int main()
             }
             if (it->second.tokens.rbegin()->first == start)
             {
-                s+=it->second.tokens.rbegin()->second.text;
+                s+=*it->second.tokens.rbegin()->second.text;
                 start=it->second.tokens.rbegin()->second.end;
                 it->second.tokens.erase(std::prev(it->second.tokens.end()));
                 if (it->second.tokens.empty()) it=m.erase(it); else it++;
@@ -87,7 +89,7 @@ int main()
             }
             if (it->second.tokens.begin()->first == start)
             {
-                s+=it->second.tokens.begin()->second.text;
+                s+=*it->second.tokens.begin()->second.text;
                 start=it->second.tokens.begin()->second.end;
                 it=m.erase(it);
                 stop=true;break;
@@ -112,7 +114,7 @@ int main()
             found=it->second.tokens.lower_bound(start);
             if (found->first == start)
             {
-                s+=found->second.text;
+                s+=*found->second.text;
                 start=found->second.end;
                 it->second.tokens.erase(found,it->second.tokens.end()); // O(n)
                 if (it->second.tokens.empty()) it=m.erase(it); else it++;
@@ -133,15 +135,10 @@ int main()
         {
             n=next->token_it->second.start-start;
             while (n--) s+='a';
-            s+=next->token_it->second.text;
+            s+=*next->token_it->second.text;
             start=next->token_it->second.end;
             next->input_it->second.tokens.erase(next->token_it);
             if (next->input_it->second.tokens.empty()) m.erase(next->input_it);
-            continue;
-        }
-        if (it->second.tokens.empty())
-        {
-            it=m.erase(it);
             continue;
         }
         while (it != m.end() && start + it->first > best->end)
@@ -176,7 +173,7 @@ int main()
         }
         n=start-best->start;
         while (n--) s.pop_back();
-        s+=best->text;
+        s+=*best->text;
         start=best->end;
     }
     cout<<s;
