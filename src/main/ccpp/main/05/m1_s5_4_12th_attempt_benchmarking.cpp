@@ -55,7 +55,11 @@ int main()
     t=*msme->rbegin()->text;
     for (start=msme->rbegin()->end;start!=end;)
     {
-
+        while (!q.empty())
+        {
+            if (q.front()->begin()->end <= start){q.pop();continue;}
+            
+        }
     }
     return 0;
 }
