@@ -15,11 +15,10 @@ struct token_comparator
     bool operator()(const token&a, const int&b) const{return a.start>b;}
 };
 const set<token,token_comparator>* min_start_max_end
-(
-const set<token,token_comparator>* a,
-const set<token,token_comparator>* b
-)
+(const set<token,token_comparator>* a,const set<token,token_comparator>* b)
 {
+    if (!a) return b;
+    if (!b) return a;
     if (a->rbegin()->start != b->rbegin()->start)
         return a->rbegin()->start < b->rbegin()->start ? a : b;
     return a->rbegin()->end > b->rbegin()->end ? a : b;
@@ -35,7 +34,7 @@ int main()
     set<token,token_comparator>* tks;
     const set<token,token_comparator>* msme;
     set<token,token_comparator>::iterator h;
-    queue<set<token,token_comparator>>q;
+    queue<const set<token,token_comparator>*>q;
     while (n--)
     {
         cin>>t>>k>>start;v.push_back(t);++id;
@@ -48,13 +47,13 @@ int main()
         }
         end=max(end,h->end);
     }
-    for (const auto&[k,v]:m)
+    for (const auto&[key,val]:m)
     {
-        msme=min_start_max_end(msme,&v);
-        q.emplace(v);
+        msme=min_start_max_end(msme,&val);
+        q.emplace(&val);
     }
     t=*msme->rbegin()->text;
-    for (start=1;start!=end;)
+    for (start=msme->rbegin()->end;start!=end;)
     {
 
     }
