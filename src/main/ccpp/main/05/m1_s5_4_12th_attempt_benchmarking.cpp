@@ -46,8 +46,8 @@ int main()
     map<size_t,map<int,token,greater<int>>,greater<size_t>>m;
     map<int,token,greater<int>>* tks;
     map<int,token,greater<int>>::iterator mi;
-    forward_list<map<int,token,greater<int>>*>l;
-    forward_list<map<int,token,greater<int>>*>::iterator li;
+    list<map<int,token,greater<int>>*>l;
+    list<map<int,token,greater<int>>*>::iterator li;
     const token* best;
     const token* nearest;
     while (n--)
@@ -80,20 +80,20 @@ int main()
             tks=*li;
             if (tks->empty() || tks->begin()->second.end <= start)
             {
-                li=l.erase_after(std::prev(li));
+                li=l.erase(li);
                 continue;
             }
             if (tks->begin()->second.start == start)
             {
                 t+=*tks->begin()->second.text;
                 start=tks->begin()->second.end;
-                li=l.erase_after(std::prev(li));
+                li=l.erase(li);
                 stop=true;break;
             }
             if (tks->begin()->second.start < start)
             {
                 best=best_extension(best,&tks->begin()->second);
-                li=l.erase_after(std::prev(li));
+                li=l.erase(li);
                 break;
             }
             if (tks->rbegin()->second.start == start)
