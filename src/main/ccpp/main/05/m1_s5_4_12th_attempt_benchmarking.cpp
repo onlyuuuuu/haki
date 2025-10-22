@@ -136,7 +136,12 @@ int main()
         }
         while (li!=l.end())
         {
-            
+            tks=*li;
+            if (tks->empty() || tks->begin()->second.end <= start)
+            {
+                li=l.erase(li);
+                continue;
+            }
         }
     }
     return 0;
