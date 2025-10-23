@@ -7,12 +7,13 @@ struct token
     token(int start,const string* text):
     start(start),end(start+static_cast<int>(text->length())),text(text){}
 };
-struct token_comparator
+struct result
 {
-    using is_transparent=void;
-    bool operator()(const token&a, const token&b) const{return a.start>b.start;}
-    bool operator()(const int&a, const token&b) const{return a>b.start;}
-    bool operator()(const token&a, const int&b) const{return a.start>b;}
+    map<int,token,greater<int>>* inp;
+    map<int,token,greater<int>>::iterator tkn;
+    result(map<int,token,greater<int>>*& inp,const map<int,token,greater<int>>::iterator& tkn):inp(inp),tkn(tkn){}
+    void self_destruct(){inp->erase(tkn);} // O(1)
+    void cascade_destruct(){inp->erase(tkn,inp->end());} // O(n)
 };
 map<int,token,greater<int>>* min_start_max_end
 (map<int,token,greater<int>>* a,map<int,token,greater<int>>* b)
@@ -23,17 +24,17 @@ map<int,token,greater<int>>* min_start_max_end
         return a->rbegin()->second.start < b->rbegin()->second.start ? a : b;
     return a->rbegin()->second.end > b->rbegin()->second.end ? a : b;
 }
-const token* best_extension(const token* a,const token* b)
+optional<result> best_extension(optional<result> a,optional<result> b)
 {
     if (!a) return b;
     if (!b) return a;
-    return a->end > b->end ? a : b;
+    return a->tkn->second.end > b->tkn->second.end ? a : b;
 }
-const token* nearest_neighbor(const token* a,const token* b)
+optional<result> nearest_neighbor(optional<result> a,optional<result> b)
 {
     if (!a) return b;
     if (!b) return a;
-    return a->start < b->start ? a : b;
+    return a->tkn->second.start < b->tkn->second.start ? a : b;
 }
 static constexpr char char_a='a';
 int main()
@@ -48,8 +49,7 @@ int main()
     map<int,token,greater<int>>::iterator mi;
     list<map<int,token,greater<int>>*>l;
     list<map<int,token,greater<int>>*>::iterator li;
-    const token* best;
-    const token* nearest;
+    optional<result> best,nearest;
     while (n--)
     {
         cin>>t>>k>>start;v.push_back(t);++id;
@@ -72,12 +72,11 @@ int main()
     tks->erase(std::prev(tks->end()));
     while (start!=end)
     {
-        stop=false;
-        best=nullptr;
-        nearest=nullptr;
+        stop=false;best.reset();nearest.reset();
         for (li=l.begin();li!=l.end();)
         {
             tks=*li;
+            // if (tks->begin()->second.end <= start)
             if (tks->empty() || tks->begin()->second.end <= start)
             {
                 li=l.erase(li);
@@ -92,7 +91,7 @@ int main()
             }
             if (tks->begin()->second.start < start)
             {
-                best=best_extension(best,&tks->begin()->second);
+                best=best_extension(best,result(*li,tks->begin()));
                 li=l.erase(li);
                 break;
             }
@@ -105,7 +104,7 @@ int main()
             }
             if (tks->rbegin()->second.start > start)
             {
-                nearest=nearest_neighbor(nearest,&tks->rbegin()->second);
+                nearest=nearest_neighbor(nearest,result(*li,std::prev(tks->end())));
                 li++;continue;
             }
             mi=tks->lower_bound(start);
@@ -113,30 +112,35 @@ int main()
             {
                 t+=*mi->second.text;
                 start=mi->second.end;
-                tks->erase(mi);
+                tks->erase(mi); // O(1)
+                // tks->erase(mi,tks->end()); // O(n)
                 li++;stop=true;break;
             }
             if (mi->second.end <= start)
             {
-                nearest=nearest_neighbor(nearest,&mi->second);
+                nearest=nearest_neighbor(nearest,result(*li,mi));
                 li++;continue;
             }
-            best=best_extension(best,&tks->begin()->second);
-            tks->erase(mi);
+            best=best_extension(best,result(*li,tks->begin()));
+            tks->erase(mi); // O(1)
+            // tks->erase(mi,tks->end()); // O(n)
             li++;break;
         }
         if (stop) continue;
         if (!best)
         {
-            n=nearest->start-start;
+            n=nearest->tkn->second.start-start;
             while (n--) t+=char_a;
-            t+=*nearest->text;
-            start=nearest->end;
+            t+=*nearest->tkn->second.text;
+            start=nearest->tkn->second.end;
+            nearest->self_destruct(); // O(1)
+            // nearest->cascade_destruct(); // O(n)
             continue;
         }
         while (li!=l.end())
         {
             tks=*li;
+            // if (tks->begin()->second.end <= start)
             if (tks->empty() || tks->begin()->second.end <= start)
             {
                 li=l.erase(li);
