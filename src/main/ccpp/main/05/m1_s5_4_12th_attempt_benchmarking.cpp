@@ -140,13 +140,36 @@ int main()
         while (li!=l.end())
         {
             tks=*li;
-            // if (tks->begin()->second.end <= start)
-            if (tks->empty() || tks->begin()->second.end <= start)
+            // if (tks->begin()->second.end <= best->tkn->second.end)
+            if (tks->empty() || tks->begin()->second.end <= best->tkn->second.end)
             {
                 li=l.erase(li);
                 continue;
             }
+            if (start + static_cast<int>(tks->begin()->second.text->length()) <= best->tkn->second.end) break;
+            if (tks->rbegin()->second.start > start) {li++;continue;}
+            if (tks->rbegin()->second.start == start)
+            {
+                best=best_extension(best,result(*li,std::prev(tks->end())));
+                tks->erase(std::prev(tks->end()));
+                li++;continue;
+            }
+            if (tks->begin()->second.start <= start)
+            {
+                best=best_extension(best,result(*li,tks->begin()));
+                li=l.erase(li);
+                continue;
+            }
+            mi=tks->lower_bound(start);
+            best=best_extension(best,result(*li,std::prev(tks->end())));
+            tks->erase(mi); // O(1)
+            // tks->erase(mi,tks->end()); // O(n)
+            li++;
         }
+        n=start-best->tkn->second.start;
+        while (n--) t.pop_back();
+        t+=*best->tkn->second.text;
+        start=best->tkn->second.end;
     }
     return 0;
 }
