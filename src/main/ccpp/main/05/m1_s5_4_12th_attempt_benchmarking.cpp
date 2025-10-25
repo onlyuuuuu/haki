@@ -121,7 +121,7 @@ int main()
             }
             if (mi->second.end <= start)
             {
-                nearest=nearest_neighbor(nearest,result(*li,mi));
+                nearest=nearest_neighbor(nearest,result(*li,std::prev(mi)));
                 li++;continue;
             }
             best=best_extension(best,result(*li,tks->begin()));
