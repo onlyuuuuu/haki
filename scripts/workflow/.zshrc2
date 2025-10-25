@@ -84,12 +84,13 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
 else
   export FZF_DEFAULT_COMMAND="/usr/bin/fdfind . --hidden --exclude .git"
 
-source ~/.fzf.zsh > /dev/null 2>&1
-source ~/.fzf.zsh2 > /dev/null 2>&1
-source <(fzf --zsh) > /dev/null 2>&1
-
 export PATH="$HOME/.fzf/bin:$PATH"
 export PATH="/tools/.fzf/bin:$PATH"
+
+source ~/.fzf.zsh > /dev/null 2>&1
+source ~/.fzf.zsh2 > /dev/null 2>&1
+source <(~/.fzf/bin/fzf --zsh) > /dev/null 2>&1
+source <(/tools/.fzf/bin/fzf --zsh) > /dev/null 2>&1
 
 export PATH="/tools/eclipse-java-ls/bin:$PATH"
 
