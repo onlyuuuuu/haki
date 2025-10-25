@@ -1,3 +1,17 @@
+11
+abc 2 2 9
+ab 1 6
+def 1 12
+cdefgh 1 11
+defghk 1 12
+fghkl 1 14
+ghk 1 15
+efghk 1 13
+zww 1 22
+yzww 1 21
+x 1 20
+aabcaabaabcdefghklaxyzww
+
 3
 ab 1 1
 aba 1 3
@@ -13,17 +27,3 @@ abacaba
 1
 a 1 3
 aaa
-
-11
-abc 2 2 9
-ab 1 6
-def 1 12
-cdefgh 1 11
-defghk 1 12
-fghkl 1 14
-ghk 1 15
-efghk 1 13
-zww 1 22
-yzww 1 21
-x 1 20
-aabcaabaabcdefghklaxyzww
