@@ -124,7 +124,7 @@ int main()
                 nearest=nearest_neighbor(nearest,result(*li,std::prev(mi)));
                 li++;continue;
             }
-            best=best_extension(best,result(*li,tks->begin()));
+            best=best_extension(best,result(*li,mi));
             tks->erase(mi); // O(1)
             // tks->erase(mi,tks->end()); // O(n)
             li++;break;
@@ -164,7 +164,7 @@ int main()
                 continue;
             }
             mi=tks->lower_bound(start);
-            best=best_extension(best,result(*li,std::prev(tks->end())));
+            best=best_extension(best,result(*li,mi));
             tks->erase(mi); // O(1)
             // tks->erase(mi,tks->end()); // O(n)
             li++;
