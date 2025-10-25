@@ -1,4 +1,3 @@
-if [ -f ~/.zshrc ]; then
+if [ -f ~/.zshrc2 ]; then
     . ~/.zshrc2
 fi
-

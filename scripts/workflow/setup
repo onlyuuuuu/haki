@@ -434,6 +434,8 @@ else
 fi
 
 ln -sf ~/.fzf/ /tools/.fzf
+echo 0 | sudo -S cp -rf ~/.fzf/bin/fzf /usr/bin/fzf
+echo 0 | sudo -S cp -rf ~/.fzf/bin/fzf /bin/fzf
 
 # Install NeoVim Telescope FZF Plugin manually
 first_pull=false
