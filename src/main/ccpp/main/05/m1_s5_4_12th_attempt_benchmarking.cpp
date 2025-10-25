@@ -7,11 +7,12 @@ struct token
     token(int start,const string* text):
     start(start),end(start+static_cast<int>(text->length())),text(text){}
 };
-struct result
+struct nearest
 {
     map<int,token,greater<int>>* inp;
     map<int,token,greater<int>>::iterator tkn;
-    result(map<int,token,greater<int>>*& inp,const map<int,token,greater<int>>::iterator& tkn):inp(inp),tkn(tkn){}
+    nearest(map<int,token,greater<int>>*& inp,const map<int,token,greater<int>>::iterator& tkn)
+    :inp(inp),tkn(tkn){}
     void self_destruct(){inp->erase(tkn);} // O(1)
     void cascade_destruct(){inp->erase(tkn,inp->end());} // O(n)
 };
@@ -24,13 +25,13 @@ map<int,token,greater<int>>* min_start_max_end
         return a->rbegin()->second.start < b->rbegin()->second.start ? a : b;
     return a->rbegin()->second.end > b->rbegin()->second.end ? a : b;
 }
-optional<result> best_extension(optional<result> a,optional<result> b)
+optional<token> best_extension(optional<token> a,optional<token> b)
 {
     if (!a) return b;
     if (!b) return a;
-    return a->tkn->second.end > b->tkn->second.end ? a : b;
+    return a->end > b->end ? a : b;
 }
-optional<result> nearest_neighbor(optional<result> a,optional<result> b)
+optional<nearest> nearest_neighbor(optional<nearest> a,optional<nearest> b)
 {
     if (!a) return b;
     if (!b) return a;
@@ -47,9 +48,10 @@ int main()
     map<size_t,map<int,token,greater<int>>,greater<size_t>>m;
     map<int,token,greater<int>>* tks;
     map<int,token,greater<int>>::iterator mi;
-    list<map<int,token,greater<int>>*>l;
-    list<map<int,token,greater<int>>*>::iterator li;
-    optional<result> best,nearest;
+    list<map<int,token,greater<int>>>l;
+    list<map<int,token,greater<int>>>::iterator li;
+    optional<nearest> near;
+    optional<token> best;
     while (n--)
     {
         cin>>t>>k>>start;v.push_back(t);++id;
@@ -62,11 +64,7 @@ int main()
         }
         end=max(end,mi->second.end);
     }
-    for (auto&e:m)
-    {
-        tks=min_start_max_end(tks,&e.second);
-        l.emplace_front(&e.second);
-    }
+    for (auto it=m.begin();it!=m.end();it=m.erase(it)) tks=min_start_max_end(tks,&l.emplace_front(it->second));
     t="";
     n=tks->rbegin()->second.start-1;
     while (n--) t+=char_a;
@@ -75,10 +73,10 @@ int main()
     tks->erase(std::prev(tks->end()));
     while (start!=end)
     {
-        stop=false;best.reset();nearest.reset();
+        stop=false;best.reset();near.reset();
         for (li=l.begin();li!=l.end();)
         {
-            tks=*li;
+            tks=&*li;
             // if (tks->begin()->second.end <= start)
             if (tks->empty() || tks->begin()->second.end <= start)
             {
@@ -94,7 +92,7 @@ int main()
             }
             if (tks->begin()->second.start < start)
             {
-                best=best_extension(best,result(*li,tks->begin()));
+                best=best_extension(best,tks->begin()->second);
                 li=l.erase(li);
                 break;
             }
@@ -107,7 +105,7 @@ int main()
             }
             if (tks->rbegin()->second.start > start)
             {
-                nearest=nearest_neighbor(nearest,result(*li,std::prev(tks->end())));
+                near=nearest_neighbor(near,nearest(tks,std::prev(tks->end())));
                 li++;continue;
             }
             mi=tks->lower_bound(start);
@@ -121,10 +119,10 @@ int main()
             }
             if (mi->second.end <= start)
             {
-                nearest=nearest_neighbor(nearest,result(*li,mi));
+                near=nearest_neighbor(near,nearest(tks,mi));
                 li++;continue;
             }
-            best=best_extension(best,result(*li,tks->begin()));
+            best=best_extension(best,tks->begin()->second);
             tks->erase(mi); // O(1)
             // tks->erase(mi,tks->end()); // O(n)
             li++;break;
@@ -132,47 +130,47 @@ int main()
         if (stop) continue;
         if (!best)
         {
-            n=nearest->tkn->second.start-start;
+            n=near->tkn->second.start-start;
             while (n--) t+=char_a;
-            t+=*nearest->tkn->second.text;
-            start=nearest->tkn->second.end;
-            nearest->self_destruct(); // O(1)
+            t+=*near->tkn->second.text;
+            start=near->tkn->second.end;
+            near->self_destruct(); // O(1)
             // nearest->cascade_destruct(); // O(n)
             continue;
         }
         while (li!=l.end())
         {
-            tks=*li;
-            // if (tks->begin()->second.end <= best->tkn->second.end)
-            if (tks->empty() || tks->begin()->second.end <= best->tkn->second.end)
+            tks=&*li;
+            // if (tks->begin()->second.end <= best->end)
+            if (tks->empty() || tks->begin()->second.end <= best->end)
             {
                 li=l.erase(li);
                 continue;
             }
-            if (start + static_cast<int>(tks->begin()->second.text->length()) <= best->tkn->second.end) break;
+            if (start + static_cast<int>(tks->begin()->second.text->length()) <= best->end) break;
             if (tks->rbegin()->second.start > start) {li++;continue;}
             if (tks->rbegin()->second.start == start)
             {
-                best=best_extension(best,result(*li,std::prev(tks->end())));
+                best=best_extension(best,std::prev(tks->end())->second);
                 tks->erase(std::prev(tks->end()));
                 li++;continue;
             }
             if (tks->begin()->second.start <= start)
             {
-                best=best_extension(best,result(*li,tks->begin()));
+                best=best_extension(best,tks->begin()->second);
                 li=l.erase(li);
                 continue;
             }
             mi=tks->lower_bound(start);
-            best=best_extension(best,result(*li,std::prev(tks->end())));
+            best=best_extension(best,std::prev(tks->end())->second);
             tks->erase(mi); // O(1)
             // tks->erase(mi,tks->end()); // O(n)
             li++;
         }
-        n=start-best->tkn->second.start;
+        n=start-best->start;
         while (n--) t.pop_back();
-        t+=*best->tkn->second.text;
-        start=best->tkn->second.end;
+        t+=*best->text;
+        start=best->end;
     }
     cout<<t;
     return 0;
