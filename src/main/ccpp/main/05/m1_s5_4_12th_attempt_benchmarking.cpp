@@ -55,7 +55,7 @@ int main()
         cin>>t>>k>>start;v.push_back(t);++id;
         tks=&m.try_emplace(t.length()).first->second;
         mi=tks->emplace(piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,&v[id])).first;
-        while (k--)
+        while (--k)
         {
             cin>>start;
             mi=tks->emplace_hint(mi,piecewise_construct,forward_as_tuple(start),forward_as_tuple(start,&v[id]));
@@ -67,7 +67,10 @@ int main()
         tks=min_start_max_end(tks,&e.second);
         l.emplace_front(&e.second);
     }
-    t=*tks->rbegin()->second.text;
+    t="";
+    n=tks->rbegin()->second.start-1;
+    while (n--) t+=char_a;
+    t+=*tks->rbegin()->second.text;
     start=tks->rbegin()->second.end;
     tks->erase(std::prev(tks->end()));
     while (start!=end)
@@ -171,5 +174,6 @@ int main()
         t+=*best->tkn->second.text;
         start=best->tkn->second.end;
     }
+    cout<<t;
     return 0;
 }
