@@ -5,6 +5,16 @@ struct token
     const string* t;
     int s,e;
     token(const string*t,const int&s):t(t),s(s),e(s+t->length()){}
+    bool operator==(const token&tk)const{return s==tk.s;}
+    bool operator<(const token&tk)const{return s<tk.s;}
+    bool operator<=(const token&tk)const{return s<=tk.s;}
+    bool operator>(const token&tk)const{return s>tk.s;}
+    bool operator>=(const token&tk)const{return s>=tk.s;}
+    bool operator==(const int&i)const{return s==i;}
+    bool operator<(const int&i)const{return s<i;}
+    bool operator<=(const int&i)const{return s<=i;}
+    bool operator>(const int&i)const{return s>i;}
+    bool operator>=(const int&i)const{return s>=i;}
 };
 static constexpr char char_a='a';
 int main()
@@ -20,7 +30,7 @@ int main()
     {
         cin>>t>>k>>s;
         d.emplace_back(t);++seq;
-        vector<token>&v=m.try_emplace(t.length()).first->second;
+        auto&v=m.try_emplace(t.length()).first->second;
         if (v.empty())
         {
             v.reserve(k);
@@ -33,9 +43,9 @@ int main()
         }
         else
         {
-            if (s > v.back().s)
+            if (v.back()<s)
             {
-                v.reserve(v.size() + k);
+                v.reserve(v.size()+k);
                 v.emplace_back(&t,s);
                 while (--k)
                 {
@@ -45,29 +55,20 @@ int main()
             }
             else
             {
-                for (i=0;v[i].s<s;i++) q.push(v[i]);
-                q.emplace(&t,s);
+                vector<token>tmp;
+                tmp.reserve(k+v.size());
+                for (i=0;v[i]<s;i++) tmp.push_back(v[i]);
+                tmp.emplace_back(&t,s);
                 while (--k)
                 {
                     cin>>s;
-                    for (;v[i].s < s && i < v.size();i++) q.push(v[i]);
-                    q.emplace(&t,s);
+                    for (;v[i]<s&&i<v.size();i++) tmp.push_back(v[i]);
+                    tmp.emplace_back(&t,s);
                 }
-                for (;i < v.size();i++) q.push(v[i++]);
-                v.reserve(q.size());
-                for (i=0;i<v.size();i++)
-                {
-                    v[i]=q.front();
-                    q.pop();
-                }
-                while (!q.empty())
-                {
-                    v.push_back(q.front());
-                    q.pop();
-                }
+                for (;i<v.size();i++) tmp.push_back(v[i]);
+                v=tmp;
             }
         }
     }
-
     return 0;
 }
