@@ -15,25 +15,43 @@ struct token
     bool operator>(const int&i)const{return s>i;}
     bool operator>=(const int&i)const{return s>=i;}
 };
-token* min_start_max_end(token*a,token*b)
+struct result
+{
+    int id;
+    map<size_t,pair<int,vector<token>>,greater<size_t>>::iterator mit;
+    result(const int&id,const map<size_t,pair<int,vector<token>>,greater<size_t>>::iterator&mit):id(id),mit(mit){}
+    token&tkn(){return mit->second.second[id];}
+    void move_head(){mit->second.first=id+1;}
+};
+result* min_start_max_end(result*a,result*b)
 {
     if (!a) return b;
     if (!b) return a;
-    if (a->s != b->s)
-        return a->s < b->s ? a : b;
-    return a->e > b->e ? a : b;
+    if (a->tkn().s != b->tkn().s)
+        return a->tkn().s < b->tkn().s ? a : b;
+    return a->tkn().e > b->tkn().e ? a : b;
 }
-token* best_extension(token*a,token*b)
+result* best_extension(result*a,result*b)
 {
-    if (!a) return b;
-    if (!b) return a;
-    return a->e > b->e ? a : b;
+    if (!a)
+    {
+        b->move_head();
+        return b;
+    }
+    if (!b)
+    {
+        a->move_head();
+        return a;
+    }
+    a->move_head();
+    b->move_head();
+    return a->tkn().e > b->tkn().e ? a : b;
 }
-token* nearest_neighbor(token*a,token*b)
+result* nearest_neighbor(result*a,result*b)
 {
     if (!a) return b;
     if (!b) return a;
-    return a->s < b->s ? a : b;
+    return a->tkn().s < b->tkn().s ? a : b;
 }
 static constexpr char char_a='a';
 int main()
@@ -44,9 +62,9 @@ int main()
     map<size_t,pair<int,vector<token>>,greater<size_t>>::iterator mit;
     bool stop;string t;int n,k,s,i,seq=-1,e=INT_MIN;cin>>n;
     vector<string>d;d.reserve(n);
-    token* msme=nullptr;
-    token* best=nullptr;
-    token* near=nullptr;
+    result* msme=nullptr;
+    result* best=nullptr;
+    result* near=nullptr;
     while (n--)
     {
         cin>>t>>k>>s;
@@ -92,11 +110,12 @@ int main()
                 v.swap(tmp);
             }
         }
-        msme=min_start_max_end(msme,&v[0]);
+        msme=min_start_max_end(msme,new result(0,mit));
         e=std::max(e,v.back().e);
     }
-    t=*msme->t;
-    s=msme->e;
+    t=*msme->tkn().t;
+    s=msme->tkn().e;
+    msme->move_head();
     while (s!=e)
     {
         stop=false;
@@ -118,7 +137,7 @@ int main()
             }
             if (back < s)
             {
-                best=best_extension(best,&back);
+                best=best_extension(best,new result(tokens.size()-1,mit));
                 mit=m.erase(mit);
                 continue;
             }
@@ -132,7 +151,7 @@ int main()
             }
             if (front > s)
             {
-                near=nearest_neighbor(near,&front);
+                near=nearest_neighbor(near,new result(0,mit));
                 head++;
                 mit++;
                 continue;
@@ -142,10 +161,11 @@ int main()
         if (stop) continue;
         if (!best)
         {
-            n=near->s-s;
+            n=near->tkn().s-s;
             while (n--) t+=char_a;
-            t+=*near->t;
-            s=
+            t+=*near->tkn().t;
+            s=near->tkn().e;
+            near->move_head();
             continue;
         }
         while (mit!=m.end())
@@ -164,9 +184,12 @@ int main()
             {
                 continue;
             }
-            // search
-        }
 
+        }
+        n=s-best->tkn().s;
+        while (n--) t.pop_back();
+        t+=*best->tkn().t;
+        s=best->tkn().e;
     }
     return 0;
 }
