@@ -23,22 +23,37 @@ token* min_start_max_end(token*a,token*b)
         return a->s < b->s ? a : b;
     return a->e > b->e ? a : b;
 }
+token* best_extension(token*a,token*b)
+{
+    if (!a) return b;
+    if (!b) return a;
+    return a->e > b->e ? a : b;
+}
+token* nearest_neighbor(token*a,token*b)
+{
+    if (!a) return b;
+    if (!b) return a;
+    return a->s < b->s ? a : b;
+}
 static constexpr char char_a='a';
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    map<size_t,vector<token>,greater<size_t>>m;
-    map<size_t,vector<token>,greater<size_t>>::iterator mit;
-    queue<token>q;
-    string t;int n,k,s,i,seq=-1,end=INT_MIN;cin>>n;
+    map<size_t,pair<int,vector<token>>,greater<size_t>>m;
+    map<size_t,pair<int,vector<token>>,greater<size_t>>::iterator mit;
+    bool stop;string t;int n,k,s,i,seq=-1,e=INT_MIN;cin>>n;
     vector<string>d;d.reserve(n);
     token* msme=nullptr;
+    token* best=nullptr;
+    token* near=nullptr;
     while (n--)
     {
         cin>>t>>k>>s;
         d.emplace_back(t);++seq;
-        auto&v=m.try_emplace(t.length()).first->second;
+        mit=m.try_emplace(t.length()).first;
+        mit->second.first=0;
+        auto&v=mit->second.second;
         if (v.empty())
         {
             v.reserve(k);
@@ -78,9 +93,80 @@ int main()
             }
         }
         msme=min_start_max_end(msme,&v[0]);
-        end=std::max(end,v.back().e);
+        e=std::max(e,v.back().e);
     }
     t=*msme->t;
     s=msme->e;
+    while (s!=e)
+    {
+        stop=false;
+        best=nullptr;
+        near=nullptr;
+        for (mit=m.begin();mit!=m.end();)
+        {
+            auto&head=mit->second.first;
+            auto&tokens=mit->second.second;
+            auto&front=tokens[head];
+            auto&back=tokens.back();
+            if (back.e <= s) { mit=m.erase(mit);continue; }
+            if (back == s)
+            {
+                t+=*back.t;
+                s=back.e;
+                mit=m.erase(mit);
+                stop=true;break;
+            }
+            if (back < s)
+            {
+                best=best_extension(best,&back);
+                mit=m.erase(mit);
+                continue;
+            }
+            if (front == s)
+            {
+                t+=*front.t;
+                s=front.e;
+                head++;
+                mit++;
+                stop=true;break;
+            }
+            if (front > s)
+            {
+                near=nearest_neighbor(near,&front);
+                head++;
+                mit++;
+                continue;
+            }
+
+        }
+        if (stop) continue;
+        if (!best)
+        {
+            n=near->s-s;
+            while (n--) t+=char_a;
+            t+=*near->t;
+            s=
+            continue;
+        }
+        while (mit!=m.end())
+        {
+            i=mit->second.first;
+            auto&tokens=mit->second.second;
+            auto&front=tokens[i];
+            auto&back=tokens.back();
+            if (back.e <= s) { mit=m.erase(mit);continue; }
+            if (front > s) continue;
+            if (back <= s)
+            {
+                continue;
+            }
+            if (front == s)
+            {
+                continue;
+            }
+            // search
+        }
+
+    }
     return 0;
 }
