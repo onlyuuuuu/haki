@@ -42,20 +42,16 @@ int main()
     v.push_back(token(7));
     vector<token>::iterator it;int result;
     it=std::lower_bound(v.begin(),v.end(),5);
-    cout<<it->s<<endl;
+    cout<<it->s<<" - "<<it-v.begin()<<endl;
     it=std::upper_bound(v.begin(),v.end(),5,token_compare_lt{});
-    cout<<it->s<<endl;
+    cout<<it->s<<" - "<<it-v.begin()<<endl;
     it=std::lower_bound(v.begin()+1,v.end(),2);
-    cout<<it->s<<endl;
+    cout<<it->s<<" - "<<it-v.begin()<<endl;
     it=std::lower_bound(v.begin()+2,v.end(),2);
-    cout<<it->s<<endl;
+    cout<<it->s<<" - "<<it-v.begin()<<endl;
     it=std::lower_bound(v.begin()+3,v.end(),2);
-    cout<<it->s<<endl;
+    cout<<it->s<<" - "<<it-v.begin()<<endl;
     it=std::lower_bound(v.begin()+4,v.end(),2);
-    cout<<it->s<<endl;
-    // it=std::lower_bound(v.begin(),v.end(),5,token_compare_gt{});
-    // cout<<it->s<<endl;
-    // it=std::upper_bound(v.begin(),v.end(),5,token_compare_gt{});
-    // cout<<it->s<<endl;
+    cout<<it->s<<" - "<<it-v.begin()<<endl;
     return 0;
 }
