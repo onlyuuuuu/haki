@@ -59,6 +59,8 @@ int main()
     vector<string>d;d.reserve(n);
     result* best=nullptr;
     result* near=nullptr;
+    token search(nullptr,0);
+    vector<token>::iterator vit;
     while (n--)
     {
         cin>>t>>k>>s;
@@ -149,7 +151,7 @@ int main()
                 mit++;
                 continue;
             }
-
+            vit=std::lower_bound(tokens.begin()+head,tokens.end(),s);
         }
         if (stop) continue;
         if (!best)
