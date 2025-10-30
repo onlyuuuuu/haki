@@ -20,7 +20,7 @@ struct input
 {
     vector<token>v;
     vector<token>::iterator f;
-    input():f(v.begin()){};
+    input(){};
 };
 struct nearest
 {
@@ -113,6 +113,7 @@ int main()
                 v.swap(tmp);
             }
         }
+        mit->second.f=v.begin();
         e=std::max(e,v.back().e);
     }
     for (s=1;s!=e;)
