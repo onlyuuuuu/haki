@@ -4,6 +4,7 @@ struct token
 {
     const string* t;int s,e;
     token(const string*t,const int&s):t(t),s(s),e(s+t->length()){}
+    int operator-(const int&i)const{return s-i;}
     bool operator==(const token&tk)const{return s==tk.s;}
     bool operator<(const token&tk)const{return s<tk.s;}
     bool operator<=(const token&tk)const{return s<=tk.s;}
@@ -23,10 +24,10 @@ struct input
 };
 struct nearest
 {
-    int idx;input inp;vector<token>::iterator vit;
-    nearest(const vector<token>::iterator&vit,const input&inp):idx(vit-inp.v.begin()),inp(inp),vit(vit){}
-    nearest(const int&idx,const vector<token>::iterator&vit,const input&inp):idx(idx),inp(inp),vit(vit){}
-    void to_next_head(){inp.f=std::next(vit);}
+    input inp;vector<token>::iterator vit;
+    nearest(const vector<token>::iterator&vit,const input&inp):inp(inp),vit(vit){}
+    void to_next_head(){inp.f=vit+1;}
+    int operator-(const int&i)const{return *vit-i;}
 };
 nearest*nearest_neighbor(nearest*a,nearest*b)
 {
@@ -43,14 +44,6 @@ nearest*nearest_neighbor(nearest*a,const vector<token>::iterator&vit,const input
 nearest*nearest_neighbor(nearest*a,const vector<token>::iterator&vit,const map<size_t,input,greater<size_t>>::iterator&mit)
 {
     return nearest_neighbor(a,vit,mit->second);
-}
-nearest*nearest_neighbor(nearest*a,const int&idx,const vector<token>::iterator&vit,const input&inp)
-{
-    return nearest_neighbor(a,new nearest(idx,vit,inp));
-}
-nearest*nearest_neighbor(nearest*a,const int&idx,const vector<token>::iterator&vit,const map<size_t,input,greater<size_t>>::iterator&mit)
-{
-    return nearest_neighbor(a,idx,vit,mit->second);
 }
 optional<token>best_extension(optional<token>a,optional<token>b)
 {
@@ -119,9 +112,11 @@ int main()
                 v.swap(tmp);
             }
         }
-        near=nearest_neighbor(near,0,v.begin(),mit->second);
+        near=nearest_neighbor(near,v.begin(),mit->second);
         e=std::max(e,v.back().e);
     }
+    n=*near-1;
+    while (n--) t+=char_a;
     t=*near->vit->t;
     s=near->vit->e;
     near->to_next_head();
@@ -136,82 +131,86 @@ int main()
             vector<token>::iterator&front=mit->second.f;
             vector<token>::iterator&back=--mit->second.v.end();
             if (back->e <= s) { mit=m.erase(mit);continue; }
-            if (back->s == s)
+            if (*back == s)
             {
                 t+=*back->t;
                 s=back->e;
                 mit=m.erase(mit);
                 stop=true;break;
             }
-            if (back->s < s)
+            if (*back < s)
             {
                 best=best_extension(best,back);
                 mit=m.erase(mit);
                 break;
             }
-            if (front->s == s)
+            if (*front == s)
             {
                 t+=*front->t;
                 s=front->e;
                 front++;
                 stop=true;break;
             }
-            if (front->s > s)
+            if (*front > s)
             {
-                near=nearest_neighbor(near,0,front,mit);
+                near=nearest_neighbor(near,front,mit++);
                 continue;
             }
             found=std::lower_bound(front,back,s);
-            if (found->s == s)
+            if (*found == s)
             {
                 t+=*found->t;
                 s=found->e;
-                front=std::next(found);
+                front=found+1;
                 stop=true;break;
             }
             if ((--found)->e > s)
             {
                 best=best_extension(best,found);
-                front=std::next(found);
+                front=found+1;
+                mit++;
                 break;
             }
-            near=nearest_neighbor(near,std::next(found),mit);
+            near=nearest_neighbor(near,++found,mit++);
         }
         if (stop) continue;
         if (!best)
         {
-            n=near->tkn().s-s;
+            n=*near-s;
             while (n--) t+=char_a;
-            t+=*near->tkn().t;
-            s=near->tkn().e;
+            t+=*near->vit->t;
+            s=near->vit->e;
             near->to_next_head();
             continue;
         }
         while (mit!=m.end() && s+mit->first>s)
         {
-            auto&head=mit->second.first;
-            auto&tokens=mit->second.second;
-            auto&front=tokens[head];
-            auto&back=tokens.back();
-            if (back.e <= s) { mit=m.erase(mit);continue; }
-            if (front > s) continue;
-            if (back <= s)
+            vector<token>&tokens=mit->second.v;
+            vector<token>::iterator&front=mit->second.f;
+            vector<token>::iterator&back=--mit->second.v.end();
+            if (back->e <= s) { mit=m.erase(mit);continue; }
+            if (*front > s) continue;
+            if (*front == s)
             {
-                best=best_extension(best,new nearest(tokens.size()-1,mit));
+                best=best_extension(best,front++);
+                mit++;
+                continue;
+            }
+            if (*back <= s)
+            {
+                best=best_extension(best,back);
                 mit=m.erase(mit);
                 continue;
             }
-            if (front == s)
-            {
-                best=best_extension(best,new nearest(0,mit));
-                continue;
-            }
-
+            found=std::lower_bound(front,back,s);
+            if (*found > s) --found;
+            best=best_extension(best,found);
+            front=found+1;
         }
-        n=s-best->tkn().s;
-        while (n--) t.pop_back();
-        t+=*best->tkn().t;
-        s=best->tkn().e;
+        n=*best-s;
+        while (n++) t.pop_back();
+        t+=*best->t;
+        s=best->e;
     }
     return 0;
 }
