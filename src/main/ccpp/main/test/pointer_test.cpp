@@ -1,41 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-// struct object1
-// {
-//     const int&id=0;
-//     object1(const int&id):id(id){}
-// };
-// struct object2
-// {
-//     int id=0;
-//     object2(const int&id):id(id){}
-// };
-// struct object3
-// {
-//     int*id=0;
-//     object3(int*id):id(id){}
-// };
-// struct object4
-// {
-//     object1&o1;
-//     object4(object1&):o1(o1){}
-// };
 struct object
 {
-    vector<int>::iterator&it;
-    object(vector<int>::iterator&it):it(it){}
+    int&i;
+    object();
+    object(int&i):i(i){}
 };
-struct object2
+void func(object*op)
 {
-    vector<int>v;
-    object2();
-};
+    op->i=99;
+}
+void func2(object*&op)
+{
+    op->i=99;
+}
 int main()
 {
-    vector<int>v;v.push_back(0);
-    // object o(v.begin()); // not working
-    object2 o2;
-    vector<int>&vo2=o2.v;
-    // object o(o2.v); // not working
-    // object o(vo2.begin()); // not working
+    int i=1;
+    func(new object(i));
+    object* p=new object(i);
+    func2(p);
 }
