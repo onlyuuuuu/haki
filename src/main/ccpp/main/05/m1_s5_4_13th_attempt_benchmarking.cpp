@@ -183,7 +183,7 @@ int main()
             near->to_next_head();
             continue;
         }
-        while (mit!=m.end() && s+mit->first>s)
+        while (mit!=m.end() && s+mit->first >= best->e)
         {
             vector<token>&tokens=mit->second.v;
             vector<token>::iterator&front=mit->second.f;
