@@ -2,8 +2,8 @@
 using namespace std;
 struct token
 {
-    const string* t;int s,e;
-    token(const string*t,const int&s):t(t),s(s),e(s+t->length()){}
+    string* t;int s,e;
+    token(string*t,const int&s):t(t),s(s),e(s+t->length()){}
     int operator-(const int&i)const{return s-i;}
     bool operator==(const token&tk)const{return s==tk.s;}
     bool operator<(const token&tk)const{return s<tk.s;}
@@ -20,16 +20,17 @@ struct input
 {
     vector<token>v;
     vector<token>::iterator f;
-    input(){};
+    input();
 };
 struct nearest
 {
-    input inp;vector<token>::iterator vit;
-    nearest(const vector<token>::iterator&vit,const input&inp):inp(inp),vit(vit){}
-    void to_next_head(){inp.f=vit+1;}
+    input*inp;
+    vector<token>::iterator&vit;
+    nearest(vector<token>::iterator&vit,input*inp):inp(inp),vit(vit){}
+    void to_next_head(){inp->f=vit+1;}
     int operator-(const int&i)const{return *vit-i;}
 };
-nearest*nearest_neighbor(nearest*a,nearest*b)
+optional<nearest>nearest_neighbor(optional<nearest>a,optional<nearest>b)
 {
     if (!a) return b;
     if (!b) return a;
@@ -37,11 +38,11 @@ nearest*nearest_neighbor(nearest*a,nearest*b)
         return a->vit->s < b->vit->s ? a : b;
     return a->vit->e > b->vit->e ? a : b;
 }
-nearest*nearest_neighbor(nearest*a,const vector<token>::iterator&vit,const input&inp)
+optional<nearest>nearest_neighbor(optional<nearest>a,vector<token>::iterator&vit,input&inp)
 {
-    return nearest_neighbor(a,new nearest(vit,inp));
+    return nearest_neighbor(a,std::make_optional(nearest(vit,&inp)));
 }
-nearest*nearest_neighbor(nearest*a,const vector<token>::iterator&vit,const map<size_t,input,greater<size_t>>::iterator&mit)
+optional<nearest>nearest_neighbor(optional<nearest>a,vector<token>::iterator&vit,const map<size_t,input,greater<size_t>>::iterator&mit)
 {
     return nearest_neighbor(a,vit,mit->second);
 }
@@ -53,7 +54,7 @@ optional<token>best_extension(optional<token>a,optional<token>b)
         return a->e > b->e ? a : b;
     return a->s > b->s ? a : b;
 }
-optional<token>best_extension(optional<token>a,const vector<token>::iterator&b)
+optional<token>best_extension(optional<token>a,vector<token>::iterator&b)
 {
     return best_extension(a,std::make_optional(*b));
 }
@@ -65,10 +66,10 @@ int main()
     map<size_t,input,greater<size_t>>m;
     map<size_t,input,greater<size_t>>::iterator mit;
     bool stop;string t;int n,k,s,i,seq=-1,e=INT_MIN;cin>>n;
-    vector<string>d;d.reserve(n);
-    optional<token> best;
-    nearest* near=nullptr;
     vector<token>::iterator found;
+    vector<string>d;d.reserve(n);
+    optional<token>best;
+    optional<nearest>near;
     while (n--)
     {
         cin>>t>>k>>s;
@@ -116,10 +117,11 @@ int main()
         mit->second.f=v.begin();
         e=std::max(e,v.back().e);
     }
+    t="";
     for (s=1;s!=e;)
     {
         stop=false;
-        near=nullptr;
+        near.reset();
         best.reset();
         for (mit=m.begin();mit!=m.end();)
         {
@@ -176,6 +178,7 @@ int main()
             while (n--) t+=char_a;
             t+=*near->vit->t;
             s=near->vit->e;
+            near->inp.f=near->vit+1;
             near->to_next_head();
             continue;
         }
