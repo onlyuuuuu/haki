@@ -73,7 +73,8 @@ int main()
     {
         cin>>t>>k>>s;
         d.emplace_back(t);++seq;
-        auto&v=m.try_emplace(t.length()).first->second.v;
+        mit=m.try_emplace(t.length()).first;
+        vector<token>&v=mit->second.v;
         if (v.empty())
         {
             v.reserve(k);
@@ -112,15 +113,9 @@ int main()
                 v.swap(tmp);
             }
         }
-        near=nearest_neighbor(near,v.begin(),mit->second);
         e=std::max(e,v.back().e);
     }
-    n=*near-1;
-    while (n--) t+=char_a;
-    t=*near->vit->t;
-    s=near->vit->e;
-    near->to_next_head();
-    while (s!=e)
+    for (s=1;s!=e;)
     {
         stop=false;
         near=nullptr;
@@ -212,5 +207,6 @@ int main()
         t+=*best->t;
         s=best->e;
     }
+    cout<<t;
     return 0;
 }
