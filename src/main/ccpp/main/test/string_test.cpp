@@ -1,13 +1,21 @@
 #include <bits/stdc++.h>
 using namespace std;
+struct object
+{
+    std::string_view txt;
+    object()=default;
+};
 int main()
 {
-    set<string>s;
-    s.insert("abc");
-    s.insert("xyz");
-    s.insert("abcc");
-    s.insert("abcabc");
-    for (auto it=s.begin();it!=s.end();it++)
-        cout<<*it<<endl;
+    string shared = "Hello world!";
+
+    object a;
+    a.txt = shared;
+
+    object b;
+    b.txt = shared;
+
+    cout << a.txt << endl;
+    cout << b.txt << endl;
     return 0;
 }

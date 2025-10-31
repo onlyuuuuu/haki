@@ -2,7 +2,8 @@
 using namespace std;
 struct token
 {
-    const string&t;int s=0,e=0;
+    const string&t="";int s=0,e=0;
+    token()=default;
     token(const string&t):t(t),s(0),e(0){}
     token(const string&t,const int&s):t(t),s(s),e(s+t.length()){}
     int operator-(const int&i)const{return s-i;}
@@ -17,8 +18,16 @@ struct token
     bool operator>(const int&i)const{return s>i;}
     bool operator>=(const int&i)const{return s>=i;}
     bool operator!()const{return s==0;}
+    explicit operator bool()const{return s==0;}
     token&operator=(const int&i){s=i;e=i;return*this;}
 };
+inline int operator-(const int&i,const token&o){return i-o.s;}
+inline bool operator==(const int&i,const token&tk){return i==tk.s;}
+inline bool operator<(const int&i,const token&tk){return i<tk.s;}
+inline bool operator<=(const int&i,const token&tk){return i<=tk.s;}
+inline bool operator>(const int&i,const token&tk){return i>tk.s;}
+inline bool operator>=(const int&i,const token&tk){return i>=tk.s;}
+static vector<token> nil;
 struct input
 {
     vector<token>v;

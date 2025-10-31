@@ -3,7 +3,7 @@ using namespace std;
 struct object
 {
     int id;
-    object();
+    object()=default;
     object(const int&i):id(i){}
     explicit operator bool() const
     {
@@ -28,14 +28,16 @@ struct object
         id=op->id;
         return*this;
     }
+    int operator+(const int&i)const
+    {
+        return id+i;
+    }
 };
 int main()
 {
     object o(-1);
-    if (!o) cout<<"ID=0, meaning that this object is unset!";
-    else cout<<"ID!=0, meaning that this object is set!";
-    o=0;
-    o=nullptr;
-    o=new object(-99);
+    int result=o+1;
+    cout<<result<<endl;
+    //result=1+o; // not working
     return 0;
 }
