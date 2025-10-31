@@ -2,9 +2,9 @@
 using namespace std;
 struct token
 {
-    string&t;int s,e;
-    token(string&t):t(t),s(0),e(0){}
-    token(string&t,int&s):t(t),s(s),e(s+t.length()){}
+    const string&t;int s=0,e=0;
+    token(const string&t):t(t),s(0),e(0){}
+    token(const string&t,const int&s):t(t),s(s),e(s+t.length()){}
     int operator-(const int&i)const{return s-i;}
     bool operator==(const token&tk)const{return s==tk.s;}
     bool operator<(const token&tk)const{return s<tk.s;}
@@ -16,8 +16,8 @@ struct token
     bool operator<=(const int&i)const{return s<=i;}
     bool operator>(const int&i)const{return s>i;}
     bool operator>=(const int&i)const{return s>=i;}
-    bool unset()const{return s==0;}
-    token&reset(){s=0;return*this;}
+    bool operator!()const{return s==0;}
+    token&operator=(const int&i){s=i;e=i;return*this;}
 };
 struct input
 {
@@ -27,11 +27,14 @@ struct input
 };
 struct nearest
 {
-    input&inp;
+    bool set=false;
+    const input&inp;
     const vector<token>::iterator&vit;
-    nearest(const vector<token>::iterator&vit,input&inp):inp(inp),vit(vit){}
+    nearest();
+    nearest(const vector<token>::iterator&vit,input&inp):inp(inp),vit(vit),set(true){}
     nearest&to_next_head(){inp.f=vit+1;return*this;}
     int operator-(const int&i)const{return*vit-i;}
+    nearest&operator=(const int&i){set=i==0?false:true;return*this;}
 };
 nearest*nearest_neighbor(nearest*a,nearest*b)
 {

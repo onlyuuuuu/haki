@@ -1,24 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
-// void func(const int& i)
-// {
-//     cout<<"Passed in: "<<i<<endl;
-// }
+struct object
+{
+    int id;
+    object();
+    object(const int&i):id(i){}
+    explicit operator bool() const
+    {
+        return id==0;
+    }
+    bool operator!() const
+    {
+        return id==0;
+    }
+    object&operator=(const int&i)
+    {
+        id=i;
+        return*this;
+    }
+    object&operator=(object*op)
+    {
+        if (!op)
+        {
+            id=0;
+            return*this;
+        }
+        id=op->id;
+        return*this;
+    }
+};
 int main()
 {
-    // int i=1;
-    // func(i++);
-    // func(++i);
-    // cout<<"Final result: "<<i<<endl;
-    // int n=-5;
-    // while (++n) cout<<"ay yo it's "<<n<<endl;
-    // cout<<"-------------------------------------"<<endl;
-    // n=-5;
-    // while (n++) cout<<"ay yo it's "<<n<<endl;
-    // cout<<"-------------------------------------"<<endl;
-    int i = 5;
-    int j = i++;
-    int k = ++i;
-    cout<<j<<" "<<k<<endl;
+    object o(-1);
+    if (!o) cout<<"ID=0, meaning that this object is unset!";
+    else cout<<"ID!=0, meaning that this object is set!";
+    o=0;
+    o=nullptr;
+    o=new object(-99);
     return 0;
 }
