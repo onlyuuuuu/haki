@@ -147,8 +147,8 @@ int main()
             if (back_token.e <= s) { mit=m.erase(mit);continue; }
             if (back_token == s)
             {
-                t+=back->t;
-                s=back->e;
+                t+=back_token.t;
+                s=back_token.e;
                 mit=m.erase(mit);
                 stop=true;break;
             }
@@ -160,8 +160,8 @@ int main()
             }
             if (front_token == s)
             {
-                t+=front->t;
-                s=front->e;
+                t+=front_token.t;
+                s=front_token.e;
                 front++;
                 stop=true;break;
             }
@@ -191,11 +191,11 @@ int main()
         if (stop) continue;
         if (!best)
         {
-            n=near-s;
+            auto&token=*near.shift_left().vit;
+            n=token-s;
             while (n--) t+=char_a;
-            t+=near.vit->t;
-            s=near.vit->e;
-            near.shift_left();
+            t+=token.t;
+            s=token.e;
             continue;
         }
         while (mit!=m.end() && s+mit->first >= best.e)
