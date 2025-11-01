@@ -1,37 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct inner
-{
-    int something=-2;
-    inner()=default;
-};
-static inner nil_inner;
 struct object
 {
-    int id=-1;
-    bool set=false;
-    std::string_view txt;
-    vector<inner>v;
-    vector<inner>::iterator vit;
-    inner&inn=nil_inner;
-    object();
-    object&modify()
-    {
-        inn.something=99;
-        return*this;
-    }
+    vector<int>v;
+    vector<int>::iterator vit;
+    object()=default;
 };
 int main()
 {
-    string s="canknkdcdsac";
     object o;
-    o.txt=s;
-    inner i1;
-    inner i2;
-    vector<inner>v;
-    v.emplace_back(i1);
-    v.emplace_back(i2);
-    o.vit=v.begin();
-    o.vit++;
+    auto&v=o.v;
+    v.emplace_back(0);
+    v.emplace_back(1);
+    v.emplace_back(2);
+    auto&vit=o.vit;
+    vit=v.begin();
+    cout<<*o.vit<<endl;
+    vit++;
+    cout<<*o.vit<<endl;
+    vector<int>v2(1,99);
+    vit=v2.begin();
+    cout<<*o.vit<<endl;
     return 0;
 }
