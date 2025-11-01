@@ -20,7 +20,7 @@ struct token
     bool operator>=(const int&i)const{return s>=i;}
     bool operator!()const{return s==0;}
     explicit operator bool()const{return s==0;}
-    token&operator=(const int&i){s=i;e=i;return*this;}
+    token&operator=(const int&i){s=0;return*this;}
 };
 inline int operator-(const int&i,const token&o){return i-o.s;}
 inline bool operator!=(const int&i,const token&tk){return i!=tk.s;}
@@ -44,7 +44,6 @@ struct nearest
     nearest&to_next_head(){inp->f=vit+1;return*this;}
     nearest&operator=(const int&i)
     {
-        if (i!=0) return*this;
         inp=nullptr;
         return*this;
     }
