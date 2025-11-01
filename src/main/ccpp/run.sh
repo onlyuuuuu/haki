@@ -25,8 +25,11 @@ if [[ "$1" == "--benchmark" || "$1" == "-bm" || "$1" == "-b" || "$1" == "-v" ]];
     fi
     "$TIME_BIN" $TIME_ARGS ./ccpp < main/input_$i.txt
     expected=$(awk 'END {print}' main/input_$i.txt)
-    if [[ "$(./ccpp < main/input_$i.txt)" != "$expected" ]]; then
-      echo "TEST $i FAILED! - WRONG ANSWER - EXPECTED: $expected"
+    actual=$(./ccpp < main/input_$i.txt)
+    if [[ "$actual" != "$expected" ]]; then
+      echo "TEST $i FAILED! - WRONG ANSWER"
+      echo "  Expected: $expected"
+      echo "  Actual:   $actual"
     else
       echo "TEST $i PASSED!"
     fi
@@ -39,8 +42,11 @@ for i in {1..10}; do
     break;
   fi
   expected=$(awk 'END {print}' main/input_$i.txt)
-  if [[ "$(./ccpp < main/input_$i.txt)" != "$expected" ]]; then
-    echo "TEST $i FAILED! - WRONG ANSWER - EXPECTED: $expected"
+  actual=$(./ccpp < main/input_$i.txt)
+  if [[ "$actual" != "$expected" ]]; then
+    echo "TEST $i FAILED! - WRONG ANSWER"
+    echo "  Expected: $expected"
+    echo "  Actual:   $actual"
   else
     echo "TEST $i PASSED!"
   fi

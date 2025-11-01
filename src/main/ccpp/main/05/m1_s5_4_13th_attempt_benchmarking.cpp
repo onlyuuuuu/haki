@@ -5,7 +5,7 @@ struct token
     std::string_view t;int s=0,e=0;
     token()=default;
     token(const string&t):t(t),s(0),e(0){}
-    token(const string&t,const int&s):t(t),s(s),e(s+t.length()){}
+    token(const string&t,const int&s):t(t),s(s),e(s+static_cast<int>(t.length())){}
     int operator-(const int&i)const{return s-i;}
     bool operator!=(const token&tk)const{return s!=tk.s;}
     bool operator==(const token&tk)const{return s==tk.s;}
@@ -60,7 +60,7 @@ const nearest& nearest_neighbor(const nearest&a,const vector<token>::iterator&vi
 {
     return nearest_neighbor(a,nearest(vit,inp));
 }
-const nearest& nearest_neighbor(const nearest&a,const vector<token>::iterator&vit,const map<size_t,input,greater<size_t>>::iterator&mit)
+const nearest& nearest_neighbor(const nearest&a,const vector<token>::iterator&vit,const map<int,input,greater<int>>::iterator&mit)
 {
     return nearest_neighbor(a,vit,mit->second);
 }
@@ -79,8 +79,8 @@ int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    map<size_t,input,greater<size_t>>m;
-    map<size_t,input,greater<size_t>>::iterator mit;
+    map<int,input,greater<int>>m;
+    map<int,input,greater<int>>::iterator mit;
     bool stop;string t;int n,k,s,i,seq=-1,e=INT_MIN;cin>>n;
     vector<token>::iterator found;
     vector<string>d;d.reserve(n);
@@ -89,7 +89,7 @@ int main()
     {
         cin>>t>>k>>s;
         d.emplace_back(t);++seq;
-        mit=m.try_emplace(t.length()).first;
+        mit=m.try_emplace(static_cast<int>(t.length())).first;
         vector<token>&v=mit->second.v;
         if (v.empty())
         {
@@ -105,7 +105,7 @@ int main()
         {
             if (v.back()<s)
             {
-                v.reserve(v.size()+k);
+                v.reserve(static_cast<int>(v.size())+k);
                 v.emplace_back(d[seq],s);
                 while (--k)
                 {
@@ -116,16 +116,16 @@ int main()
             else
             {
                 vector<token>tmp;
-                tmp.reserve(k+v.size());
+                tmp.reserve(k+static_cast<int>(v.size()));
                 for (i=0;v[i]<s;i++) tmp.push_back(v[i]);
                 tmp.emplace_back(d[seq],s);
                 while (--k)
                 {
                     cin>>s;
-                    for (;v[i]<s&&i<v.size();i++) tmp.push_back(v[i]);
+                    for (;i<static_cast<int>(v.size())&&v[i]<s;i++) tmp.push_back(v[i]);
                     tmp.emplace_back(d[seq],s);
                 }
-                for (;i<v.size();i++) tmp.push_back(v[i]);
+                for (;i<static_cast<int>(v.size());i++) tmp.push_back(v[i]);
                 v.swap(tmp);
             }
         }
