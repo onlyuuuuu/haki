@@ -41,12 +41,8 @@ struct nearest
     vector<token>::iterator vit;
     nearest()=default;
     nearest(const vector<token>::iterator&vit,input&inp):inp(&inp),vit(vit){}
-    nearest&to_next_head(){inp->f=vit+1;return*this;}
-    nearest&operator=(const int&i)
-    {
-        inp=nullptr;
-        return*this;
-    }
+    nearest&shift_left(){inp->f=vit+1;return*this;}
+    nearest&operator=(const int&i){inp=nullptr;return*this;}
     bool operator!()const{return inp==nullptr;}
     explicit operator bool()const{return inp==nullptr;}
     int operator-(const int&i)const{return*vit-i;}
@@ -85,11 +81,10 @@ int main()
     cin.tie(nullptr);
     map<size_t,input,greater<size_t>>m;
     map<size_t,input,greater<size_t>>::iterator mit;
-    bool stop;string t;int n,k,s,i,seq=0,e=INT_MIN;cin>>n;
+    bool stop;string t;int n,k,s,i,seq=-1,e=INT_MIN;cin>>n;
     vector<token>::iterator found;
-    vector<string>d;d.reserve(n+1);d.emplace_back("");
-    token best;
-    nearest near;
+    vector<string>d;d.reserve(n);
+    token best;nearest near;
     while (n--)
     {
         cin>>t>>k>>s;
@@ -144,40 +139,43 @@ int main()
         near=0;best=0;
         for (mit=m.begin();mit!=m.end();)
         {
-            vector<token>&tokens=mit->second.v;
-            vector<token>::iterator&front=mit->second.f;
-            vector<token>::iterator&back=--mit->second.v.end();
-            if (back->e <= s) { mit=m.erase(mit);continue; }
-            if (*back == s)
+            auto&tokens=mit->second.v;
+            auto&front=mit->second.f;
+            auto&back=--mit->second.v.end();
+            auto&front_token=*front;
+            auto&back_token=*back;
+            if (back_token.e <= s) { mit=m.erase(mit);continue; }
+            if (back_token == s)
             {
                 t+=back->t;
                 s=back->e;
                 mit=m.erase(mit);
                 stop=true;break;
             }
-            if (*back < s)
+            if (back_token < s)
             {
                 best=best_extension(best,back);
                 mit=m.erase(mit);
                 break;
             }
-            if (*front == s)
+            if (front_token == s)
             {
                 t+=front->t;
                 s=front->e;
                 front++;
                 stop=true;break;
             }
-            if (*front > s)
+            if (front_token > s)
             {
                 near=nearest_neighbor(near,front,mit++);
                 continue;
             }
             found=std::lower_bound(front,back,s);
-            if (*found == s)
+            auto&found_token=*found;
+            if (found_token == s)
             {
-                t+=found->t;
-                s=found->e;
+                t+=found_token.t;
+                s=found_token.e;
                 front=found+1;
                 stop=true;break;
             }
@@ -197,23 +195,25 @@ int main()
             while (n--) t+=char_a;
             t+=near.vit->t;
             s=near.vit->e;
-            near.to_next_head();
+            near.shift_left();
             continue;
         }
         while (mit!=m.end() && s+mit->first >= best.e)
         {
-            vector<token>&tokens=mit->second.v;
-            vector<token>::iterator&front=mit->second.f;
-            vector<token>::iterator&back=--mit->second.v.end();
-            if (back->e <= s) { mit=m.erase(mit);continue; }
-            if (*front > s) continue;
-            if (*front == s)
+            auto&tokens=mit->second.v;
+            auto&front=mit->second.f;
+            auto&back=--mit->second.v.end();
+            auto&front_token=*front;
+            auto&back_token=*back;
+            if (back_token.e <= s) { mit=m.erase(mit);continue; }
+            if (front_token > s) continue;
+            if (front_token == s)
             {
                 best=best_extension(best,front++);
                 mit++;
                 continue;
             }
-            if (*back <= s)
+            if (back_token <= s)
             {
                 best=best_extension(best,back);
                 mit=m.erase(mit);
