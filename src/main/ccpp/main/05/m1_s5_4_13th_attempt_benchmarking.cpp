@@ -206,7 +206,7 @@ int main()
             auto&front_token=*front;
             auto&back_token=*back;
             if (back_token.e <= s) { mit=m.erase(mit);continue; }
-            if (front_token > s) continue;
+            if (front_token > s) { mit++;continue; };
             if (front_token == s)
             {
                 best=best_extension(best,front++);
@@ -223,6 +223,7 @@ int main()
             if (*found > s) --found;
             best=best_extension(best,found);
             front=found+1;
+            mit++;
         }
         n=s-best;
         while (n--) t.pop_back();
