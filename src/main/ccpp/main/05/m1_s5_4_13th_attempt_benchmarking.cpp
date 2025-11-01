@@ -2,7 +2,7 @@
 using namespace std;
 struct token
 {
-    std::string_view t="";int s=0,e=0;
+    std::string_view t;int s=0,e=0;
     token()=default;
     token(const string&t):t(t),s(0),e(0){}
     token(const string&t,const int&s):t(t),s(s),e(s+t.length()){}
