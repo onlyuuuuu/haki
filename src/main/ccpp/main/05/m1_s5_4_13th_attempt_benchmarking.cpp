@@ -5,7 +5,7 @@ struct token
     std::string_view t;int s=0,e=0;
     token()=default;
     token(const string&t):t(t),s(0),e(0){}
-    token(const string&t,const int&s):t(t),s(s),e(s+t.length()){}
+    token(const string&t,const int&s):t(t),s(s),e(s+static_cast<int>(t.length())){}
     int operator-(const int&i)const{return s-i;}
     bool operator!=(const token&tk)const{return s!=tk.s;}
     bool operator==(const token&tk)const{return s==tk.s;}
@@ -20,7 +20,7 @@ struct token
     bool operator>=(const int&i)const{return s>=i;}
     bool operator!()const{return s==0;}
     explicit operator bool()const{return s==0;}
-    token&operator=(const int&i){s=0;return*this;}
+    token&operator=(const int&i){s=i;return*this;}
 };
 inline int operator-(const int&i,const token&o){return i-o.s;}
 inline bool operator!=(const int&i,const token&tk){return i!=tk.s;}
@@ -34,7 +34,6 @@ struct input
     vector<token>v;
     vector<token>::iterator f;
     input()=default;
-    int operator++(){f++;return 0;}
 };
 struct nearest
 {
@@ -52,7 +51,6 @@ inline int operator-(const int&i,const nearest&n){return i-*n.vit;}
 const nearest& nearest_neighbor(const nearest&a,const nearest&b)
 {
     if (!a) return b;
-    if (!b) return a;
     if (*a.vit != *b.vit)
         return *a.vit < *b.vit ? a : b;
     return *a.vit > *b.vit ? a : b;
@@ -82,19 +80,19 @@ int main()
     cin.tie(nullptr);
     map<int,input,greater<int>>m;
     map<int,input,greater<int>>::iterator mit;
-    bool stop;string t;int n,k,s,i,seq=-1,e=INT_MIN;cin>>n;
+    bool stop;string t;int x,s,e=INT_MIN;size_t n,k,i,seq=-1ull;cin>>n;
     vector<token>::iterator found;
-    vector<string>d;d.reserve(n);
+    vector<string>d;d.reserve(static_cast<size_t>(n));
     token best;nearest near;
     while (n--)
     {
         cin>>t>>k>>s;
         d.emplace_back(t);++seq;
-        mit=m.try_emplace(t.length()).first;
+        mit=m.try_emplace(static_cast<int>(t.length())).first;
         vector<token>&v=mit->second.v;
         if (v.empty())
         {
-            v.reserve(k);
+            v.reserve(static_cast<size_t>(k));
             v.emplace_back(d[seq],s);
             while (--k)
             {
@@ -140,49 +138,44 @@ int main()
         near=0;best=0;
         for (mit=m.begin();mit!=m.end();)
         {
-            vector<token>::iterator front=mit->second.f;
-            vector<token>::iterator back=std::prev(mit->second.v.end());
-            const token&front_token=*mit->second.f;
-            const token&back_token=mit->second.v.back();
-            if (back_token.e <= s) { mit=m.erase(mit);continue; }
-            if (back_token == s)
+            if (mit->second.v.back().e <= s) { mit=m.erase(mit);continue; }
+            if (mit->second.v.back() == s)
             {
-                t+=back_token.t;
-                s=back_token.e;
+                t+=mit->second.v.back().t;
+                s=mit->second.v.back().e;
                 mit=m.erase(mit);
                 stop=true;break;
             }
-            if (back_token < s)
+            if (mit->second.v.back() < s)
             {
-                best=best_extension(best,back);
+                best=best_extension(best,mit->second.v.back());
                 mit=m.erase(mit);
                 break;
             }
-            if (front_token == s)
+            if (*mit->second.f == s)
             {
-                t+=front_token.t;
-                s=front_token.e;
-                front++;
+                t+=mit->second.f->t;
+                s=mit->second.f->e;
+                mit->second.f++;
                 stop=true;break;
             }
-            if (front_token > s)
+            if (*mit->second.f > s)
             {
-                near=nearest_neighbor(near,front,mit++);
+                near=nearest_neighbor(near,mit->second.f,mit++);
                 continue;
             }
-            found=std::lower_bound(front,back,s);
-            const token&found_token=*found;
-            if (found_token == s)
+            found=std::lower_bound(mit->second.f,mit->second.v.end(),s);
+            if (*found == s)
             {
-                t+=found_token.t;
-                s=found_token.e;
-                front=found+1;
+                t+=found->t;
+                s=found->e;
+                mit->second.f=found+1;
                 stop=true;break;
             }
             if ((--found)->e > s)
             {
                 best=best_extension(best,found);
-                front=found+1;
+                mit->second.f=found+1;
                 mit++;
                 break;
             }
@@ -191,41 +184,37 @@ int main()
         if (stop) continue;
         if (!best)
         {
-            const token&token=*near.shift_left().vit;
-            n=token-s;
-            while (n--) t+=char_a;
-            t+=token.t;
-            s=token.e;
+            x=*near.vit-s;
+            while (x--) t+=char_a;
+            t+=near.vit->t;
+            s=near.vit->e;
+            near.shift_left();
             continue;
         }
-        while (mit!=m.end() && s+mit->first >= best.e)
+        while (mit!=m.end() && s + mit->first >= best.e)
         {
-            vector<token>::iterator front=mit->second.f;
-            vector<token>::iterator back=std::prev(mit->second.v.end());
-            const token&front_token=*front;
-            const token&back_token=*back;
-            if (back_token.e <= s) { mit=m.erase(mit);continue; }
-            if (front_token > s) { mit++;continue; };
-            if (front_token == s)
+            if (mit->second.v.back().e <= best.e) { mit=m.erase(mit);continue; }
+            if (*mit->second.f > s) { mit++;continue; };
+            if (*mit->second.f == s)
             {
-                best=best_extension(best,front++);
+                best=best_extension(best,mit->second.f++);
                 mit++;
                 continue;
             }
-            if (back_token <= s)
+            if (mit->second.v.back() <= s)
             {
-                best=best_extension(best,back);
+                best=best_extension(best,mit->second.v.back());
                 mit=m.erase(mit);
                 continue;
             }
-            found=std::lower_bound(front,back,s);
+            found=std::lower_bound(mit->second.f,mit->second.v.end(),s);
             if (*found > s) --found;
             best=best_extension(best,found);
-            front=found+1;
+            mit->second.f=found+1;
             mit++;
         }
-        n=s-best;
-        while (n--) t.pop_back();
+        x=s-best;
+        while (x--) t.pop_back();
         t+=best.t;
         s=best.e;
     }
