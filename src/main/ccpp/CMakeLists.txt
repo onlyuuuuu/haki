@@ -31,3 +31,25 @@ file(GLOB_RECURSE
 )
 
 add_executable(ccpp main/05/m1_s5_4_13th_attempt_benchmarking.cpp)
+
+if(MINGW)
+    target_compile_definitions(ccpp PRIVATE
+        NDEBUG
+        _GLIBCXX_ASSERTIONS
+    )
+
+    target_compile_options(ccpp PRIVATE
+        -std=gnu++23
+        -O2 -pipe
+        -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
+        -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
+        -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
+    )
+
+    target_link_options(ccpp PRIVATE
+        -static
+        -static-libgcc
+        -static-libstdc++
+        -s
+    )
+endif()

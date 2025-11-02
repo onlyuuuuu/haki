@@ -5,7 +5,7 @@ struct token
     std::string_view t;int s=0,e=0;
     token()=default;
     token(const string&t):t(t),s(0),e(0){}
-    token(const string&t,const int&s):t(t),s(s),e(s+static_cast<int>(t.length())){}
+    token(const string&t,const int&s):t(t),s(s),e(s+t.length()){}
     int operator-(const int&i)const{return s-i;}
     bool operator!=(const token&tk)const{return s!=tk.s;}
     bool operator==(const token&tk)const{return s==tk.s;}
@@ -34,6 +34,7 @@ struct input
     vector<token>v;
     vector<token>::iterator f;
     input()=default;
+    int operator++(){f++;return 0;}
 };
 struct nearest
 {
@@ -89,7 +90,7 @@ int main()
     {
         cin>>t>>k>>s;
         d.emplace_back(t);++seq;
-        mit=m.try_emplace(static_cast<int>(t.length())).first;
+        mit=m.try_emplace(t.length()).first;
         vector<token>&v=mit->second.v;
         if (v.empty())
         {
@@ -105,7 +106,7 @@ int main()
         {
             if (v.back()<s)
             {
-                v.reserve(static_cast<int>(v.size())+k);
+                v.reserve(v.size()+k);
                 v.emplace_back(d[seq],s);
                 while (--k)
                 {
@@ -116,16 +117,16 @@ int main()
             else
             {
                 vector<token>tmp;
-                tmp.reserve(k+static_cast<int>(v.size()));
+                tmp.reserve(k+v.size());
                 for (i=0;v[i]<s;i++) tmp.push_back(v[i]);
                 tmp.emplace_back(d[seq],s);
                 while (--k)
                 {
                     cin>>s;
-                    for (;i<static_cast<int>(v.size())&&v[i]<s;i++) tmp.push_back(v[i]);
+                    for (;i<v.size()&&v[i]<s;i++) tmp.push_back(v[i]);
                     tmp.emplace_back(d[seq],s);
                 }
-                for (;i<static_cast<int>(v.size());i++) tmp.push_back(v[i]);
+                for (;i<v.size();i++) tmp.push_back(v[i]);
                 v.swap(tmp);
             }
         }
@@ -139,11 +140,10 @@ int main()
         near=0;best=0;
         for (mit=m.begin();mit!=m.end();)
         {
-            auto&tokens=mit->second.v;
-            auto&front=mit->second.f;
-            auto&back=--mit->second.v.end();
-            auto&front_token=*front;
-            auto&back_token=*back;
+            vector<token>::iterator front=mit->second.f;
+            vector<token>::iterator back=std::prev(mit->second.v.end());
+            const token&front_token=*mit->second.f;
+            const token&back_token=mit->second.v.back();
             if (back_token.e <= s) { mit=m.erase(mit);continue; }
             if (back_token == s)
             {
@@ -171,7 +171,7 @@ int main()
                 continue;
             }
             found=std::lower_bound(front,back,s);
-            auto&found_token=*found;
+            const token&found_token=*found;
             if (found_token == s)
             {
                 t+=found_token.t;
@@ -191,7 +191,7 @@ int main()
         if (stop) continue;
         if (!best)
         {
-            auto&token=*near.shift_left().vit;
+            const token&token=*near.shift_left().vit;
             n=token-s;
             while (n--) t+=char_a;
             t+=token.t;
@@ -200,11 +200,10 @@ int main()
         }
         while (mit!=m.end() && s+mit->first >= best.e)
         {
-            auto&tokens=mit->second.v;
-            auto&front=mit->second.f;
-            auto&back=--mit->second.v.end();
-            auto&front_token=*front;
-            auto&back_token=*back;
+            vector<token>::iterator front=mit->second.f;
+            vector<token>::iterator back=std::prev(mit->second.v.end());
+            const token&front_token=*front;
+            const token&back_token=*back;
             if (back_token.e <= s) { mit=m.erase(mit);continue; }
             if (front_token > s) { mit++;continue; };
             if (front_token == s)
