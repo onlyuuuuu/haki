@@ -76,9 +76,9 @@ int main()
     cin.tie(nullptr);
     map<int,input,greater<int>>m;
     map<int,input,greater<int>>::iterator mit;
-    bool stop;string t;int x,s,e=INT_MIN;size_t n,k,i,seq=-1ull;cin>>n;
+    bool stop;string t;int x,s,e=INT_MIN;unsigned long long n,k,i,seq=-1ull;cin>>n;
     vector<token>::iterator found;
-    vector<string>d;d.reserve(static_cast<size_t>(n));
+    vector<string>d;d.reserve(n);
     token best;nearest near;
     while (n--)
     {
@@ -88,7 +88,7 @@ int main()
         vector<token>&v=mit->second.v;
         if (v.empty())
         {
-            v.reserve(static_cast<size_t>(k));
+            v.reserve(k);
             v.emplace_back(d[seq],s);
             while (--k)
             {

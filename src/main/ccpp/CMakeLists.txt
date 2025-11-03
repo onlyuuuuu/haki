@@ -30,22 +30,23 @@ file(GLOB_RECURSE
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
 
-add_executable(ccpp main/05/m1_s5_4_13th_attempt_benchmarking.cpp)
+add_executable(ccpp main/05/m1_s5_4.cpp)
 
 if(MINGW)
     target_compile_definitions(ccpp PRIVATE
         NDEBUG
         _GLIBCXX_ASSERTIONS
     )
-
     target_compile_options(ccpp PRIVATE
         -std=gnu++23
         -O2 -pipe
         -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
         -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
         -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
+        -Wpedantic -Wsign-conversion -Wimplicit-fallthrough=3 -Wnon-virtual-dtor
+        -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
+        -fanalyzer
     )
-
     target_link_options(ccpp PRIVATE
         -static
         -static-libgcc

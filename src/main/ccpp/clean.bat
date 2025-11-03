@@ -1,6 +1,8 @@
 @echo off
 setlocal
 
+cmake --build . --target clean
+
 REM Remove directories (quietly, recursively)
 for %%D in (
   ".cmake"
