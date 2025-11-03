@@ -28,6 +28,10 @@ if [[ "$(which exa)" == *"not"*"found"* ]]; then
   alias ls='eza'
   alias ll='eza -lha'
   alias tree='eza --tree'
+elif [[ "$(uname -a)" == *"MINGW"* ]]; then
+  alias ls='ls --color=auto'
+  alias ll='ls -la'
+  alias l.='ls -d .* --color=auto'
 else
   alias ls='exa'
   alias ll='exa -lha'
