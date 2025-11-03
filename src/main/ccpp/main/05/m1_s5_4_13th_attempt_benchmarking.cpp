@@ -48,18 +48,14 @@ struct nearest
     int operator-(const int&i)const{return*vit-i;}
 };
 inline int operator-(const int&i,const nearest&n){return i-*n.vit;}
-const nearest& nearest_neighbor(const nearest&a,const nearest&b)
+nearest nearest_neighbor(const nearest&a,const vector<token>::iterator&vit,input&inp)
 {
-    if (!a) return b;
-    if (*a.vit != *b.vit)
-        return *a.vit < *b.vit ? a : b;
-    return *a.vit > *b.vit ? a : b;
+    if (!a) return nearest(vit,inp);
+    if (*a.vit != *vit)
+        return *a.vit < *vit ? a : nearest(vit,inp);
+    return *a.vit > *vit ? a : nearest(vit,inp);
 }
-const nearest& nearest_neighbor(const nearest&a,const vector<token>::iterator&vit,input&inp)
-{
-    return nearest_neighbor(a,nearest(vit,inp));
-}
-const nearest& nearest_neighbor(const nearest&a,const vector<token>::iterator&vit,const map<int,input,greater<int>>::iterator&mit)
+nearest nearest_neighbor(const nearest&a,const vector<token>::iterator&vit,const map<int,input,greater<int>>::iterator&mit)
 {
     return nearest_neighbor(a,vit,mit->second);
 }
