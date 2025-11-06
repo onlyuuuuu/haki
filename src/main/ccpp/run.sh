@@ -8,10 +8,17 @@ else
 fi
 
 ninja clean > /dev/null 2>&1
-rm -rf CMakeCache.txt
+rm -rf CMakeCache.txt CMakeSettings.json
+rm -rf build/ target/ cmake-build-default/ cmake-build-debug/ CMakeFiles/
+rm -rf ccpp ccpp.exe
+rm -rf cmake_install.cmake Makefile
 cmake .
 cmake --build . --target clean
-cmake --build .
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  cmake -S . -B build
+else
+  cmake --build .
+fi
 if [[ "$(uname -a)" == *"MINGW"* ]]; then
   ./ccpp.exe < $file
 elif [[ -f ./build/ccpp.exe ]]; then

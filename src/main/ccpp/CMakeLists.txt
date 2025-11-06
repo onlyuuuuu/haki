@@ -8,14 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(APPLE)
     include_directories(AFTER SYSTEM
-        /Library/Developer/CommandLineTools/usr/include/c++/v1
         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
-        /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include
-        /Library/Developer/CommandLineTools/usr/include
+        /Library/Developer/CommandLineTools/usr/include/c++/v1
+        /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
         /Library/Developer/CommandLineTools/usr/include
         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
-        /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
         /usr/local/include
         /usr/include
         /usr/lib
@@ -40,11 +38,11 @@ if(MINGW)
     target_compile_options(ccpp PRIVATE
         -std=gnu++23
         -O2 -pipe
-        -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
-        -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
-        -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
-        -Wpedantic -Wsign-conversion -Wimplicit-fallthrough=3 -Wnon-virtual-dtor
-        -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
+        # -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
+        # -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
+        # -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
+        # -Wpedantic -Wsign-conversion -Wimplicit-fallthrough=3 -Wnon-virtual-dtor
+        # -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
     )
     target_link_options(ccpp PRIVATE
         -static
@@ -60,10 +58,24 @@ elseif(UNIX AND NOT APPLE)
     target_compile_options(ccpp PRIVATE
         -std=gnu++23
         -O2 -pipe
-        -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
-        -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
-        -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
-        -Wpedantic -Wsign-conversion -Wimplicit-fallthrough=3 -Wnon-virtual-dtor
-        -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
+        # -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
+        # -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
+        # -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
+        # -Wpedantic -Wsign-conversion -Wimplicit-fallthrough=3 -Wnon-virtual-dtor
+        # -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
+    )
+elseif(APPLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_definitions(ccpp PRIVATE
+        NDEBUG
+    )
+    target_compile_options(ccpp PRIVATE
+        -std=gnu++23
+        -O2 -pipe
+        -stdlib=libc++
+        # -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
+        # -Wconversion -Wcast-qual -Wcast-align
+        # -Wpedantic -Wsign-conversion -Wimplicit-fallthrough
+        # -Wnon-virtual-dtor -Woverloaded-virtual -Wold-style-cast
+        # -Wzero-as-null-pointer-constant
     )
 endif()

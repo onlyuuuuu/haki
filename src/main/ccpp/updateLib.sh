@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo 0 | sudo -S xcode-select --reset
+echo 0 | sudo -S xcode-select --switch /Library/Developer/CommandLineTools
+
 echo 0 | sudo -S mkdir -p /Library/Developer/CommandLineTools/usr/include/c++/v1/bits > /dev/null 2>&1
 echo 0 | sudo -S cp bits/stdc++.h /Library/Developer/CommandLineTools/usr/include/c++/v1/bits/ > /dev/null 2>&1
 
@@ -8,6 +11,9 @@ echo 0 | sudo -S cp bits/stdc++.h /Library/Developer/CommandLineTools/SDKs/MacOS
 
 echo 0 | sudo -S mkdir -p /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/bits > /dev/null 2>&1
 echo 0 | sudo -S cp bits/stdc++.h /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/bits/ > /dev/null 2>&1
+
+echo 0 | sudo -S mkdir -p /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk/usr/include/bits > /dev/null 2>&1
+echo 0 | sudo -S cp bits/stdc++.h /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk/usr/include/bits/ > /dev/null 2>&1
 
 echo 0 | sudo -S mkdir -p /Library/Developer/CommandLineTools/usr/include/bits > /dev/null 2>&1
 echo 0 | sudo -S cp bits/stdc++.h /Library/Developer/CommandLineTools/usr/include/bits/ > /dev/null 2>&1
@@ -37,4 +43,3 @@ echo 0 | sudo -S sudo xcode-select --reset
 echo 0 | sudo -S xcode-select --switch /Library/Developer/CommandLineTools
 
 exit 0
-
