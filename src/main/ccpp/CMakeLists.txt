@@ -29,6 +29,9 @@ file(GLOB_RECURSE
 )
 
 add_executable(ccpp main/05/m1_s5_4.cpp)
+target_include_directories(ccpp PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 if(MINGW)
     target_compile_definitions(ccpp PRIVATE
@@ -65,6 +68,8 @@ elseif(UNIX AND NOT APPLE)
         # -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
     )
 elseif(APPLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # At the end of the arguments should be something like...
+    # /usr/bin/clang++ -std=gnu++23 -stdlib=libc++ -fcolor-diagnostics -fansi-escape-codes -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -DNDEBUG -O2 -pipe -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wcast-qual -Wcast-align -Wpedantic -Wsign-conversion -Wimplicit-fallthrough -Wnon-virtual-dtor -Woverloaded-virtual -Wold-style-cast -Wzero-as-null-pointer-constant
     target_compile_definitions(ccpp PRIVATE
         NDEBUG
     )
