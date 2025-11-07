@@ -102,3 +102,6 @@ export NVM_DIR="$HOME/.nvm"
 # LLVM Clangd
 export PATH="/tools/llvm-project/build/bin:$PATH"
 
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  export CPLUS_INCLUDE_PATH=$(xcrun --show-sdk-path)/usr/include/c++/v1
+fi

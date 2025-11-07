@@ -7,6 +7,15 @@ src/main/ccpp/ex1
 src/main/ccpp/ex2
 src/main/ccpp/ex3
 src/main/ccpp/ex4
+# Keep selected sources/data under src/main/ccpp/main
+src/main/ccpp/main/**
+!src/main/ccpp/main/
+!src/main/ccpp/main/**/
+!src/main/ccpp/main/**/*.c
+!src/main/ccpp/main/**/*.cpp
+!src/main/ccpp/main/**/*.csv
+!src/main/ccpp/main/**/*.txt
+!src/main/ccpp/main/**/*.xlsx
 **/*.vcxproj
 **/*.vcxproj.filters
 **/*.sln
@@ -38,6 +47,8 @@ src/main/ccpp/C/installer-initrd.gz
 src/main/ccpp/C/installer-vmlinuz
 src/main/ccpp/C/tools.dir/hda.img
 src/main/ccpp/C/tools.dir/mnt/
+**/Program
+**/*.output
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -2328,4 +2339,3 @@ FodyWeavers.xsd
 ### Ninja template
 .ninja_deps
 .ninja_log
-
