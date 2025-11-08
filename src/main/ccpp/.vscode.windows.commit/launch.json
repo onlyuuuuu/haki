@@ -13,7 +13,7 @@
             "preLaunchTask": "C/C++: cl.exe build active file"
         },
         {
-            "name": "C/C++: g++.exe build and debug active file",
+            "name": "C/C++: g++.exe build and debug active file (O2)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
@@ -23,7 +23,9 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+            "targetArchitecture": "x64",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "launchCompleteCommand": "exec-run",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -36,7 +38,37 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++.exe build active file"
+            "customLaunchSetupCommands": [],
+            "preLaunchTask": "C/C++: g++.exe build active file (O2)"
+        },
+        {
+            "name": "C/C++: g++.exe build and debug active file (Og for debugging)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "targetArchitecture": "x64",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "launchCompleteCommand": "exec-run",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "customLaunchSetupCommands": [],
+            "preLaunchTask": "C/C++: g++.exe build active file (Og for debugging)"
         }
     ],
     "version": "2.0.0"

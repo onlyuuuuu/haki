@@ -29,7 +29,7 @@ if(MINGW)
     )
     target_compile_options(ccpp PRIVATE
         -std=gnu++23
-        -O2 -pipe
+        -g -O2 -pipe
         # -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
         # -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
         # -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
@@ -40,7 +40,6 @@ if(MINGW)
         -static
         -static-libgcc
         -static-libstdc++
-        -s
     )
 elseif(UNIX AND NOT APPLE)
     target_compile_definitions(ccpp PRIVATE
@@ -49,7 +48,7 @@ elseif(UNIX AND NOT APPLE)
     )
     target_compile_options(ccpp PRIVATE
         -std=gnu++23
-        -O2 -pipe
+        -g -O2 -pipe
         # -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
         # -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
         # -Wcast-qual -Wcast-align -Wnull-dereference -Wuseless-cast -Wdouble-promotion
@@ -64,7 +63,7 @@ elseif(APPLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     )
     target_compile_options(ccpp PRIVATE
         -std=gnu++23
-        -O2 -pipe
+        -g -O2 -pipe
         -stdlib=libc++
         # -Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal
         # -Wconversion -Wcast-qual -Wcast-align
