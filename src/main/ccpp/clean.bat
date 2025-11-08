@@ -1,33 +1,37 @@
 @echo off
 setlocal
 
-cmake --build . --target clean
+REM Clean existing ninja artifacts quietly; ignore failures if ninja is absent
+ninja clean >nul 2>&1
 
-REM Remove directories (quietly, recursively)
-for %%D in (
-  ".cmake"
-  "cmake-build-debug"
-  "CMakeFiles"
-  "Testing"
-  "sandbox"
-) do (
-  if exist "%%~D" rmdir /s /q "%%~D"
-)
-
-REM Remove files
+REM Remove generated files
 for %%F in (
-  "ccpp.exe"
-  "ccpp"
-  "cmake_install.cmake"
   "CMakeCache.txt"
+  "CMakeSettings.json"
+  "ccpp"
+  "ccpp.exe"
+  "cmake_install.cmake"
   "Makefile"
 ) do (
-  if exist "%%~F" del /f /q "%%~F"
+  if exist %%~F del /f /q %%~F >nul 2>&1
 )
 
-REM Remove any *.dSYM directories (macOS artifacts checked in accidentally)
-for /d %%G in ("*.dSYM") do (
-  if exist "%%~G" rmdir /s /q "%%~G"
+REM Remove generated directories
+for %%D in (
+  "build"
+  "target"
+  "cmake-build-default"
+  "cmake-build-debug"
+  "CMakeFiles"
+) do (
+  if exist %%~D rmdir /s /q %%~D >nul 2>&1
 )
 
-endlocal
+cmake .
+if errorlevel 1 goto finish
+
+cmake --build . --target clean
+
+:finish
+set "ERR=%errorlevel%"
+endlocal & exit /b %ERR%

@@ -21,9 +21,6 @@ file(GLOB_RECURSE
 )
 
 add_executable(ccpp main/05/m1_s5_4.cpp)
-target_include_directories(ccpp PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
 
 if(MINGW)
     target_compile_definitions(ccpp PRIVATE

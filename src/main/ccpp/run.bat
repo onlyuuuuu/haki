@@ -1,24 +1,52 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 
-set "BUILD_DIR=build"
+set "ERR=0"
 
-REM Clean option to remove old in-source CMake artifacts and build dir
-if /I "%1"=="clean" (
-  if exist "CMakeCache.txt" del /q "CMakeCache.txt"
-  if exist "cmake_install.cmake" del /q "cmake_install.cmake"
-  if exist "Makefile" del /q "Makefile"
-  if exist "CMakeFiles" rmdir /s /q "CMakeFiles"
-  if exist "!BUILD_DIR!" rmdir /s /q "!BUILD_DIR!"
-  exit /b 0
+pushd "%~dp0" >nul 2>&1
+
+set "FILE=main/input.txt"
+if not "%~1"=="" (
+  set "FILE=main/input_%~1.txt"
 )
 
-if not exist "%BUILD_DIR%" mkdir "%BUILD_DIR%"
+call "%~dp0clean.bat"
+set "ERR=%ERRORLEVEL%"
+if not "%ERR%"=="0" goto finish
 
-REM Configure out-of-source to avoid path/cache mismatches
-cmake -S . -B "%BUILD_DIR%"
-if errorlevel 1 exit /b %errorlevel%
+set "UNAME="
+for /f "delims=" %%u in ('uname -a 2^>nul') do set "UNAME=%%u"
 
-REM Build the configured tree
-cmake --build "%BUILD_DIR%" --parallel
-exit /b %errorlevel%
+set "IS_DARWIN=0"
+set "IS_MINGW=0"
+if defined UNAME (
+  echo(%UNAME%| findstr /i "Darwin" >nul && set "IS_DARWIN=1"
+  echo(%UNAME%| findstr /i "MINGW" >nul && set "IS_MINGW=1"
+)
+
+if "%IS_DARWIN%"=="1" (
+  cmake -S . -B build
+) else (
+  cmake --build .
+)
+set "ERR=%ERRORLEVEL%"
+if not "%ERR%"=="0" goto finish
+
+set "APP="
+if "%IS_MINGW%"=="1" (
+  if exist ".\ccpp.exe" set "APP=.\ccpp.exe"
+)
+if not defined APP if exist ".\build\ccpp.exe" set "APP=.\build\ccpp.exe"
+if not defined APP if exist ".\ccpp" set "APP=.\ccpp"
+
+if defined APP (
+  "%APP%" < "%FILE%"
+  set "ERR=%ERRORLEVEL%"
+) else (
+  echo Failed to locate executable.
+  set "ERR=1"
+)
+
+:finish
+popd >nul 2>&1
+endlocal & exit /b %ERR%
