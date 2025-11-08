@@ -9,14 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(APPLE)
     include_directories(AFTER SYSTEM
         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
-        /Library/Developer/CommandLineTools/usr/include/c++/v1
-        /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
-        /Library/Developer/CommandLineTools/usr/include
-        /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
-        /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
-        /usr/local/include
-        /usr/include
-        /usr/lib
     )
 endif()
 
