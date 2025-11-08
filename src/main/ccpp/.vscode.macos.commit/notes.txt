@@ -1,1 +1,2 @@
 /usr/bin/clang++ -std=c++23 -stdlib=libc++ -fcolor-diagnostics -fansi-escape-codes -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -DNDEBUG -O2 -pipe main/05/m1_s5_4.cpp -o main/05/m1_s5_4
+/opt/homebrew/bin/g++-15 -std=gnu++23 -stdlib=libc++ -DNDEBUG -O2 -pipe main/05/m1_s5_4.cpp -o main/05/m1_s5_4
