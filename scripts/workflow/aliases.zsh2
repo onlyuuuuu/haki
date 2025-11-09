@@ -154,8 +154,8 @@ alias du='du -ch'
 # top is atop, just like vi is vim
 alias top='atop'
 
-# VSCode
-alias code='/tools/superCode.sh'
+# VSCode (root)
+alias superCode='/tools/superCode.sh'
 
 alias c='clear'
 alias su='su --l'

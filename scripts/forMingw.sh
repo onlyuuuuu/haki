@@ -10,13 +10,25 @@ if [[ "$(uname -a)" == *"ARM64"* ]]; then
     pkg-config \
     python \
     clang
+  pacman --noconfirm -S mingw-w64-ucrt-x86_64-toolchain
+  pacman --noconfirm -S mingw-w64-ucrt-x86_64-clang
+  pacman -S --needed --noconfirm \
+      mingw-w64-ucrt-x86_64-gcc \
+      mingw-w64-ucrt-x86_64-gcc-libs \
+      mingw-w64-ucrt-x86_64-binutils
+  pacman --noconfirm -Syu
 else
   pacman -S \
     msys2-runtime \
     gcc \
-    g++ \
     make \
     cmake \
     ninja
-  pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+  pacman --noconfirm -S mingw-w64-ucrt-x86_64-toolchain
+  pacman --noconfirm -S mingw-w64-ucrt-x86_64-clang
+  pacman -S --needed --noconfirm \
+      mingw-w64-ucrt-x86_64-gcc \
+      mingw-w64-ucrt-x86_64-gcc-libs \
+      mingw-w64-ucrt-x86_64-binutils
+  pacman --noconfirm -Syu
 fi
