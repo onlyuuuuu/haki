@@ -54,7 +54,7 @@
             "preLaunchTask": "C/C++: g++.exe build active file (O2)"
         },
         {
-            "name": "C/C++: g++.exe build and debug active file (Og for debugging)",
+            "name": "C/C++: g++.exe build and debug active file (Og)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
@@ -80,7 +80,7 @@
                 }
             ],
             "customLaunchSetupCommands": [],
-            "preLaunchTask": "C/C++: g++.exe build active file (Og for debugging)"
+            "preLaunchTask": "C/C++: g++.exe build active file (Og)"
         }
     ],
     "version": "2.0.0"
