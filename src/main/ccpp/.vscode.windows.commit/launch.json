@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "C/C++: cl.exe build and debug active file",
+            "name": "C/C++: cl.exe build and debug active file (-O2//O2)",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
@@ -10,7 +10,19 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "console": "integratedTerminal",
-            "preLaunchTask": "C/C++: cl.exe build active file"
+            "preLaunchTask": "C/C++: cl.exe build active file (-O2//O2)"
+        },
+        {
+            "name": "C/C++: cl.exe build and debug active file (-Og//Od)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "C/C++: cl.exe build active file (-Og//Od)"
         },
         {
             "name": "C/C++: g++.exe build and debug active file (O2)",

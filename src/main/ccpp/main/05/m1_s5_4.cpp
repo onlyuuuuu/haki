@@ -5,7 +5,7 @@ struct token
     std::string_view txt;
     int str=0,end=0;
     token()=default;
-    token(const string&t,const int&s):txt(t),str(s),end(s+static_cast<int>(t.length())){}
+    token(const string&t,const int&s):txt(t),str(s),end(s+t.length()){}
 };
 struct input
 {
@@ -13,11 +13,13 @@ struct input
     vector<token>tokens;
     input()=default;
 };
-const string solve()
+int main()
 {
-    map<unsigned long long,input,greater<unsigned long long>>m;
-    map<unsigned long long,input,greater<unsigned long long>>::iterator mit;
-    string t;unsigned long long i,k,n;int start,end=INT_MAX;cin>>n;
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    map<int,input,greater<int>>m;
+    map<int,input,greater<int>>::iterator mit;
+    string t;int i,k,n;int start,end=INT_MAX;cin>>n;
     vector<string>d;d.reserve(n);
     while(n--)
     {
@@ -51,12 +53,6 @@ const string solve()
         }
         end=std::max(end,v.back().end);
     }
-    return t;
-}
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout<<solve()<<'\n';
+    cout<<t<<'\n';
     return 0;
 }

@@ -8,16 +8,17 @@
                 "-fdiagnostics-color=always",
                 "-DNDEBUG",
                 "-D_GLIBCXX_ASSERTIONS",
+                "-D_GLIBCXX_DEBUG",
                 "-std=gnu++23",
                 "-g",
                 "-Og",
+                "-fsanitize=address,undefined",
+                "-fsanitize-address-use-after-scope",
+                "-fno-omit-frame-pointer",
                 "-pipe",
                 "${file}",
                 "-o",
-                "${fileDirname}/target/${fileBasenameNoExtension}",
-                "-static",
-                "-static-libgcc",
-                "-static-libstdc++"
+                "${fileDirname}/target/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${fileDirname}"
