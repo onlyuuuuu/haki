@@ -9,7 +9,6 @@
                 "-DNDEBUG",
                 "-D_GLIBCXX_ASSERTIONS",
                 "-std=gnu++23",
-                "-stdlib=libc++",
                 "-g",
                 "-Og",
                 "-pipe",

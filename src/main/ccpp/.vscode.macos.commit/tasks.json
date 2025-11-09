@@ -1,0 +1,127 @@
+{
+  "tasks": [
+    {
+      "type": "cppbuild",
+      "label": "C/C++: clang++ (macOS strict) build active file (O2)",
+      "command": "/usr/bin/clang++",
+      "args": [
+        "-std=gnu++23",
+        "-stdlib=libc++",
+        "-fcolor-diagnostics",
+        "-fansi-escape-codes",
+        "-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "-DNDEBUG",
+        "-O2",
+        "-g",
+        "-pipe",
+        "${file}",
+        "-o",
+        "${fileDirname}/target/${fileBasenameNoExtension}"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "detail": "Strict macOS clang++ build (O2)"
+    },
+    {
+      "type": "cppbuild",
+      "label": "C/C++: clang++ (macOS strict) build active file (Og)",
+      "command": "/usr/bin/clang++",
+      "args": [
+        "-std=gnu++23",
+        "-stdlib=libc++",
+        "-fcolor-diagnostics",
+        "-fansi-escape-codes",
+        "-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "-DNDEBUG",
+        "-Og",
+        "-g",
+        "-pipe",
+        "${file}",
+        "-o",
+        "${fileDirname}/target/${fileBasenameNoExtension}"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Strict macOS clang++ build (Og)"
+    },
+    {
+      "type": "cppbuild",
+      "label": "C/C++: Homebrew g++ (macOS strict) build active file (O2)",
+      "command": "/opt/homebrew/bin/g++-15",
+      "args": [
+        "-fdiagnostics-color=always",
+        "-DNDEBUG",
+        "-D_GLIBCXX_ASSERTIONS",
+        "-std=gnu++23",
+        "-g",
+        "-O2",
+        "-pipe",
+        "${file}",
+        "-o",
+        "${fileDirname}/target/${fileBasenameNoExtension}",
+        "-static",
+        "-static-libgcc",
+        "-static-libstdc++"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "detail": "Strict Homebrew g++ build (O2)"
+    },
+    {
+      "type": "cppbuild",
+      "label": "C/C++: Homebrew g++ (macOS strict) build active file (Og)",
+      "command": "/opt/homebrew/bin/g++-15",
+      "args": [
+        "-fdiagnostics-color=always",
+        "-DNDEBUG",
+        "-D_GLIBCXX_ASSERTIONS",
+        "-std=gnu++23",
+        "-g",
+        "-Og",
+        "-pipe",
+        "${file}",
+        "-o",
+        "${fileDirname}/target/${fileBasenameNoExtension}",
+        "-static",
+        "-static-libgcc",
+        "-static-libstdc++"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "detail": "Strict Homebrew g++ build (Og)"
+    }
+  ],
+  "version": "2.0.0"
+}
