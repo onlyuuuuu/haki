@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "externalConsole": false,
+      "externalConsole": true,
       "MIMode": "lldb",
       "preLaunchTask": "C/C++: clang++ (macOS strict) build active file (O2)"
     },
@@ -22,7 +22,7 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "externalConsole": false,
+      "externalConsole": true,
       "MIMode": "lldb",
       "preLaunchTask": "C/C++: clang++ (macOS strict) build active file (Og)"
     },
@@ -35,7 +35,7 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "externalConsole": false,
+      "externalConsole": true,
       "MIMode": "lldb",
       "preLaunchTask": "C/C++: Homebrew g++ (macOS strict) build active file (O2)"
     },
@@ -48,7 +48,7 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "externalConsole": false,
+      "externalConsole": true,
       "MIMode": "lldb",
       "preLaunchTask": "C/C++: Homebrew g++ (macOS strict) build active file (Og)"
     }

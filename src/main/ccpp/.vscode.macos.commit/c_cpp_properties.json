@@ -1,33 +1,29 @@
 {
-  "configurations": [
-    {
-      "name": "Mac",
-      "includePath": [
-        "/usr/local/include",
-        "/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1",
-        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
-        "/Library/Developer/CommandLineTools/usr/include",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks",
-        "${workspaceFolder}/**"
-      ],
-      "defines": [],
-      "macFrameworkPath": [
-        "/usr/local/include",
-        "/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1",
-        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
-        "/Library/Developer/CommandLineTools/usr/include",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks",
-        "${workspaceFolder}/**"
-      ],
-      "compilerPath": "/usr/bin/clang++",
-      "cStandard": "gnu23",
-      "cppStandard": "gnu++23",
-      "intelliSenseMode": "macos-clang-arm64"
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Library/Developer/CommandLineTools/usr/include/c++/v1",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+                "/usr/local/include",
+                "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+                "/Library/Developer/CommandLineTools/usr/include",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "NDEBUG",
+                "_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "compilerArgs": [
+                "-std=gnu++23",
+                "-stdlib=libc++"
+            ],
+            "cStandard": "gnu23",
+            "cppStandard": "gnu++23",
+            "intelliSenseMode": "macos-clang-arm64"
+        }
+    ],
+    "version": 4
 }

@@ -10,6 +10,7 @@ fi
 ./clean.sh
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   cmake -S . -B build
+  cmake --build build
 else
   cmake --build .
 fi
@@ -18,5 +19,5 @@ if [[ "$(uname -a)" == *"MINGW"* ]]; then
 elif [[ -f ./build/ccpp.exe ]]; then
   ./build/ccpp.exe < $file
 else
-  ./ccpp < $file
+  ./build/ccpp < $file
 fi
