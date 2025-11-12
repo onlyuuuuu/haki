@@ -1,3 +1,5 @@
+wget
+curl
 gcc
 gcc-arm-linux-gnueabi
 gcc-arm-linux-gnueabihf
