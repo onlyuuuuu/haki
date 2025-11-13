@@ -34,7 +34,7 @@
         },
         {
             "type": "cppbuild",
-            "label": "C/C++: g++ build active file (Og)",
+            "label": "C/C++: g++ build active file",
             "command": "/usr/bin/g++",
             "args": [
                 "-fdiagnostics-color=always",
@@ -43,7 +43,6 @@
                 "-D_GLIBCXX_DEBUG",
                 "-std=gnu++23",
                 "-g",
-                "-Og",
                 "-fsanitize=address,undefined",
                 "-fsanitize-address-use-after-scope",
                 "-fno-omit-frame-pointer",

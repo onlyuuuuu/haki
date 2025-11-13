@@ -14,7 +14,7 @@
       "preLaunchTask": "C/C++: clang++ (macOS strict) build active file (O2)"
     },
     {
-      "name": "C/C++: clang++ build and debug active file (Og)",
+      "name": "C/C++: clang++ build and debug active file",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/target/${fileBasenameNoExtension}",
@@ -24,7 +24,7 @@
       "environment": [],
       "externalConsole": true,
       "MIMode": "lldb",
-      "preLaunchTask": "C/C++: clang++ (macOS strict) build active file (Og)"
+      "preLaunchTask": "C/C++: clang++ (macOS strict) build active file"
     },
     {
       "name": "C/C++: g++-15 build and debug active file (O2)",
@@ -40,7 +40,7 @@
       "preLaunchTask": "C/C++: Homebrew g++ (macOS strict) build active file (O2)"
     },
     {
-      "name": "C/C++: g++-15 build and debug active file (Og)",
+      "name": "C/C++: g++-15 build and debug active file",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/target/${fileBasenameNoExtension}",
@@ -50,7 +50,7 @@
       "environment": [],
       "externalConsole": true,
       "MIMode": "lldb",
-      "preLaunchTask": "C/C++: Homebrew g++ (macOS strict) build active file (Og)"
+      "preLaunchTask": "C/C++: Homebrew g++ (macOS strict) build active file"
     }
   ],
   "version": "2.0.0"

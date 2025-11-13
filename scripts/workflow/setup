@@ -338,7 +338,7 @@ fi
 
 cd ~/.tmux/plugins/tpm
 git pull
-
+mkdir -p ~/.config/nvim/pack/nvim/start/
 if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
   echo "Installing nvim-lspconfig"
   git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
@@ -438,6 +438,7 @@ echo 0 | sudo -S cp -rf ~/.fzf/bin/fzf /usr/bin/fzf
 echo 0 | sudo -S cp -rf ~/.fzf/bin/fzf /bin/fzf
 
 # Install NeoVim Telescope FZF Plugin manually
+mkdir -p ~/.local/share/nvim/lazy/
 first_pull=false
 if [[ ! -d ~/.local/share/nvim/lazy/telescope-fzf-native.nvim ]]; then
   echo "Installing NeoVim Telescope FZF Plugin from scratch..."
@@ -523,6 +524,34 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
 else
   batcat cache --build
 fi
+
+# Add Apple Terminal early exit check to shell configuration files
+for config_file in "$HOME/.bash_profile" "$HOME/.zprofile" "/etc/bashrc" "/etc/zshrc"; do
+  # Create file if it doesn't exist
+  if [[ ! -f "$config_file" ]]; then
+    echo 0 | sudo -S touch "$config_file" 2>/dev/null || touch "$config_file"
+  fi
+
+  # Check if the condition already exists in the first line
+  first_line=$(head -n 1 "$config_file" 2>/dev/null)
+  if [[ "$first_line" != *'$TERM_PROGRAM'*'Apple_Terminal'* ]]; then
+    # Add the one-liner check at the top
+    if [[ "$config_file" == *"zsh"* ]]; then
+      # For zsh files, use 'return 0'
+      temp_content='[[ "$TERM_PROGRAM" == "Apple_Terminal" ]] && return 0'
+    else
+      # For bash files, use 'return 0'
+      temp_content='[[ "$TERM_PROGRAM" == "Apple_Terminal" ]] && return 0'
+    fi
+
+    # Prepend to file
+    if [[ "$config_file" == "/etc/"* ]]; then
+      echo -e "$temp_content\n$(cat "$config_file")" | echo 0 | sudo -S tee "$config_file" > /dev/null
+    else
+      echo -e "$temp_content\n$(cat "$config_file")" > "$config_file"
+    fi
+  fi
+done
 
 echo -e "\nYou should now run this command \$[ source ~/.zshrc ]\n"
 

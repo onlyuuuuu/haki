@@ -13,7 +13,7 @@
             "preLaunchTask": "C/C++: cl.exe build active file (-O2//O2)"
         },
         {
-            "name": "C/C++: cl.exe build and debug active file (-Og//Od)",
+            "name": "C/C++: cl.exe build and debug active file",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
@@ -22,7 +22,7 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "console": "integratedTerminal",
-            "preLaunchTask": "C/C++: cl.exe build active file (-Og//Od)"
+            "preLaunchTask": "C/C++: cl.exe build active file"
         },
         {
             "name": "C/C++: g++.exe build and debug active file (O2)",
@@ -54,7 +54,7 @@
             "preLaunchTask": "C/C++: g++.exe build active file (O2)"
         },
         {
-            "name": "C/C++: g++.exe build and debug active file (Og)",
+            "name": "C/C++: g++.exe build and debug active file",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\target\\${fileBasenameNoExtension}.exe",
@@ -80,7 +80,7 @@
                 }
             ],
             "customLaunchSetupCommands": [],
-            "preLaunchTask": "C/C++: g++.exe build active file (Og)"
+            "preLaunchTask": "C/C++: g++.exe build active file"
         }
     ],
     "version": "2.0.0"

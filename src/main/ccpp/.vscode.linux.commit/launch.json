@@ -38,7 +38,7 @@
             }
         },
         {
-            "name": "C/C++: g++ build and debug active file (Og)",
+            "name": "C/C++: g++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/target/${fileBasenameNoExtension}",
@@ -65,7 +65,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++ build active file (Og)",
+            "preLaunchTask": "C/C++: g++ build active file",
             "miDebuggerPath": "/usr/bin/gdb",
             "logging": {
                 "engineLogging": false,

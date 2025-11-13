@@ -32,7 +32,7 @@
         },
         {
             "type": "cppbuild",
-            "label": "C/C++: cl.exe build active file (-Og//Od)",
+            "label": "C/C++: cl.exe build active file",
             "command": "cl.exe",
             "args": [
                 "/std:c++latest",
@@ -94,7 +94,7 @@
         },
         {
             "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file (Og)",
+            "label": "C/C++: g++.exe build active file",
             "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
@@ -103,7 +103,6 @@
                 "-D_GLIBCXX_DEBUG",
                 "-std=gnu++23",
                 "-g",
-                "-Og",
                 "-fsanitize-address-use-after-scope",
                 "-fno-omit-frame-pointer",
                 "-pipe",

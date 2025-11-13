@@ -36,7 +36,7 @@
     },
     {
       "type": "cppbuild",
-      "label": "C/C++: clang++ (macOS strict) build active file (Og)",
+      "label": "C/C++: clang++ (macOS strict) build active file",
       "command": "/usr/bin/clang++",
       "args": [
         "-std=gnu++23",
@@ -46,7 +46,6 @@
         "-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
         "-DNDEBUG",
         "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG",
-        "-Og",
         "-g",
         "-fsanitize=address,undefined",
         "-fsanitize-address-use-after-scope",
@@ -66,7 +65,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "detail": "Strict macOS clang++ build (Og)"
+      "detail": "Strict macOS clang++ build"
     },
     {
       "type": "cppbuild",
@@ -99,7 +98,7 @@
     },
     {
       "type": "cppbuild",
-      "label": "C/C++: Homebrew g++ (macOS strict) build active file (Og)",
+      "label": "C/C++: Homebrew g++ (macOS strict) build active file",
       "command": "/opt/homebrew/bin/g++-15",
       "args": [
         "-fdiagnostics-color=always",
@@ -108,7 +107,6 @@
         "-D_GLIBCXX_DEBUG",
         "-std=gnu++23",
         "-g",
-        "-Og",
         "-pipe",
         "${file}",
         "-o",
@@ -124,7 +122,7 @@
         "kind": "build",
         "isDefault": false
       },
-      "detail": "Strict Homebrew g++ build (Og)"
+      "detail": "Strict Homebrew g++ build"
     }
   ],
   "version": "2.0.0"
