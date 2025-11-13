@@ -6,7 +6,24 @@ struct token
     int str=0,end=0;
     token()=default;
     token(const string&t,const int&s):txt(t),str(s),end(s+t.length()){}
-    const bool operator==(const token&tk)const{return str==tk.str;}
+    bool operator!=(const token&tk)const{return str!=tk.str;}
+    bool operator==(const token&tk)const{return str==tk.str;}
+    bool operator>(const token&tk)const{return str>tk.str;}
+    bool operator<(const token&tk)const{return str<tk.str;}
+    bool operator>=(const token&tk)const{return str>=tk.str;}
+    bool operator<=(const token&tk)const{return str<=tk.str;}
+    bool operator!=(const int&i)const{return str!=i;}
+    bool operator==(const int&i)const{return str==i;}
+    bool operator>(const int&i)const{return str>i;}
+    bool operator<(const int&i)const{return str<i;}
+    bool operator>=(const int&i)const{return str>=i;}
+    bool operator<=(const int&i)const{return str<=i;}
+    friend bool operator!=(const int&i,const token&tk){return i!=tk.str;}
+    friend bool operator==(const int&i,const token&tk){return i==tk.str;}
+    friend bool operator>(const int&i,const token&tk){return i>tk.str;}
+    friend bool operator<(const int&i,const token&tk){return i<tk.str;}
+    friend bool operator>=(const int&i,const token&tk){return i>=tk.str;}
+    friend bool operator<=(const int&i,const token&tk){return i<=tk.str;}
 };
 struct input
 {
@@ -39,10 +56,6 @@ const entry& nearest_neighbor(const entry&a,const entry&b)
     if(a.n->str != b.n->str) return a.n->str < b.n->str ? a : b;
     return a.n->end > b.n->end ? a : b;
 }
-struct compare
-{
-    
-};
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -74,7 +87,7 @@ int main()
         end=std::max(end,v.back().end);
     }
     entry nr,bs;
-    start=1;
+    t="";start=1;
     while(start!=end)
     {
         bs.reset();
@@ -87,30 +100,45 @@ int main()
                 mit=m.erase(mit);
                 continue;
             }
-            if(mit->second.back->str <= start)
+            if(*mit->second.back <= start)
             {
                 bs=best_extension(bs,entry(mit,mit->second.back));
                 mit=m.erase(mit);
                 continue;
             }
-            if(mit->second.front->str > start)
+            if(*mit->second.front > start)
             {
                 nr=nearest_neighbor(nr,entry(mit++,mit->second.front));
                 continue;
             }
-            if(mit->second.front->str == start)
+            if(*mit->second.front == start)
             {
                 bs=best_extension(bs,entry(mit++,mit->second.front));
                 continue;
             }
             vit=std::lower_bound(mit->second.front,mit->second.tokens.end(),start);
-            if(vit->str == start)
+            if(*vit == start)
             {
                 bs=best_extension(bs,entry(mit++,vit));
                 continue;
             }
             nr=nearest_neighbor(nr,entry(mit,vit));
             bs=best_extension(bs,entry(mit++,std::prev(vit)));
+        }
+        if(!bs.i)
+        {
+            n=nr.n->str-start;
+            while(n--) t+='a';
+            t+=nr.n->txt;
+            start=nr.n->end;
+            nr.shift_left();
+        }
+        else
+        {
+            n=start-bs.n->str;
+            while(n--) t.pop_back();
+            t+=bs.n->txt;
+            start=bs.n->end;
         }
     }
     cout<<t<<'\n';
