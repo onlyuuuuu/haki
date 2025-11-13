@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 struct token
 {
@@ -25,32 +25,8 @@ int main()
     {
         cin>>t>>k>>start;
         d.emplace_back(t);
-        vector<token>&v=m.try_emplace(t.length()).first->second.tokens;
-        if(v.empty() || start >= v.back().str)
-        {
-            v.reserve(k+v.size());
-            v.emplace_back(d.back(),start);
-            while(--k)
-            {
-                cin>>start;
-                v.emplace_back(d.back(),start);
-            }
-        }
-        else
-        {
-            vector<token>tmp;
-            tmp.reserve(k+v.size());
-            for(i=0;v[i].str<start;i++) tmp.push_back(std::move(v[i]));
-            tmp.emplace_back(d.back(),start);
-            while(--k)
-            {
-                cin>>start;
-                for(;i<v.size()&&v[i].str<start;i++) tmp.push_back(std::move(v[i]));
-                tmp.emplace_back(d.back(),start);
-            }
-            for(;i<v.size();i++) tmp.push_back(std::move(v[i]));
-            v.swap(tmp);
-        }
+        auto&v=m.try_emplace(t.length()).first->second.tokens;
+        
         end=std::max(end,v.back().end);
     }
     cout<<t<<'\n';
