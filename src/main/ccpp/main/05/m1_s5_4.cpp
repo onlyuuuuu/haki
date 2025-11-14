@@ -62,7 +62,7 @@ int main()
     cin.tie(nullptr);
     map<int,input,greater<int>>m;
     map<int,input,greater<int>>::iterator mit;
-    string t;int k,n;int start,end=INT_MAX;cin>>n;
+    string t;int k,n;int start,end=INT_MIN;cin>>n;
     vector<string>d;d.reserve(n);
     vector<token>::iterator vit;
     while(n--)
@@ -123,8 +123,13 @@ int main()
                 bs=best_extension(bs,entry(mit++,vit));
                 continue;
             }
-            nr=nearest_neighbor(nr,entry(mit,vit));
-            bs=best_extension(bs,entry(mit++,std::prev(vit)));
+            nr=nearest_neighbor(nr,entry(mit,vit--));
+            if(vit->end > start) 
+            {
+                bs=best_extension(bs,entry(mit++,vit));
+                continue;
+            }
+            mit++;
         }
         if(!bs.i)
         {
