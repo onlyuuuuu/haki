@@ -93,9 +93,10 @@ int main()
         bs.reset();
         nr.reset();
         mit=m.begin();
-        while(mit != m.end() && start + mit->first > bs.n->end)
+        while(mit!=m.end())
         {
-            if(mit->second.back->end <= std::max(start,bs.n->end))
+            if( bs.i && start + mit->first <= bs.n->end ) break;
+            if( mit->second.back->end <= (!bs.i ? start : bs.n->end) )
             {
                 mit=m.erase(mit);
                 continue;
