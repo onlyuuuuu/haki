@@ -54,11 +54,11 @@ const token& best_extension(const token&a,const token&b)
     if(a.end != b.end) return a.end > b.end ? a : b;
     return a.str < b.str ? a : b;
 }
-const token& best_extension(const std::optional<token>&a,const token&b)
+const token& best_extension(const optional<token>&a,const token&b)
 {
     return best_extension(*a,b);
 }
-const token& best_extension(const std::optional<token>&a,const vector<token>::iterator&b)
+const token& best_extension(const optional<token>&a,const vector<token>::iterator&b)
 {
     return best_extension(*a,*b);
 }
@@ -91,7 +91,7 @@ int main()
         i.front=v.begin();
         end=std::max(end,v.back().end);
     }
-    std::optional<token>bs;entry nr;t="";start=1;
+    optional<token>bs;entry nr;t="";start=1;
     while(start!=end)
     {
         bs.reset();

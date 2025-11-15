@@ -37,4 +37,9 @@ int main()
     func(i++->vit++);
     cout<<"i->vit = "<<*(i->vit)<<" | "<<(i==v3.begin() ? "i still at v3.begin()" : "no longer at v3.begin()")<<'\n';
     cout<<"v3.begin()->vit = "<<*(v3.begin()->vit)<<'\n';
+    it=v.begin();
+    if(it==v.begin() || *++it==-2) cout<<"1st condition met!"<<'\n';
+    cout<<"it = "<<*it<<'\n';
+    if(it!=v.begin() || *++it==-2) cout<<"2nd condition met!"<<'\n';
+    cout<<"it = "<<*it<<'\n';
 }
