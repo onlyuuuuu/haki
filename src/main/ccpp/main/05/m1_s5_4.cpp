@@ -45,7 +45,6 @@ struct entry
 const entry& nearest_neighbor(const entry&a,const entry&b)
 {
     if(!a.i) return b;
-    if(!b.i) return a;
     if(a.n->str != b.n->str) return a.n->str < b.n->str ? a : b;
     return a.n->end > b.n->end ? a : b;
 }
@@ -56,11 +55,12 @@ const token& best_extension(const token&a,const token&b)
 }
 const token& best_extension(const optional<token>&a,const token&b)
 {
+    if(!a) return b;
     return best_extension(*a,b);
 }
 const token& best_extension(const optional<token>&a,const vector<token>::iterator&b)
 {
-    return best_extension(*a,*b);
+    return best_extension(a,*b);
 }
 int main()
 {
@@ -91,44 +91,40 @@ int main()
         i.front=v.begin();
         end=std::max(end,v.back().end);
     }
-    optional<token>bs;entry nr;t="";start=1;
+    optional<token>bs;
+    entry nr;
+    t="";start=1;
     while(start!=end)
     {
         bs.reset();
         nr.reset();
-        mit=m.begin();
-        while(mit!=m.end())
+        for(mit=m.begin();mit!=m.end();)
         {
             if(bs && start + mit->first <= bs->end) break;
-            if(mit->second.tokens.back().end <= (!bs ? start : bs->end))
-            {
-                mit=m.erase(mit);
-                continue;
-            }
-            if(mit->second.tokens.back() <= start)
+            else if(mit->second.tokens.back().end <= (!bs ? start : bs->end)) mit=m.erase(mit);
+            else if(mit->second.tokens.back() <= start)
             {
                 bs=best_extension(bs,mit->second.tokens.back());
                 mit=m.erase(mit);
-                continue;
             }
-            if(*mit->second.front > start)
+            else if(*mit->second.front > start)
             {
-                nr=nearest_neighbor(nr,entry(mit,mit++->second.front));
-                continue;
+                nr=nearest_neighbor(nr,entry(mit,mit->second.front));
+                mit++;
             }
-            if(*mit->second.front == start)
-            {
+            else if(*mit->second.front == start)
                 bs=best_extension(bs,mit++->second.front++);
-                continue;
-            }
-            vit=std::lower_bound(mit->second.front,mit->second.tokens.end(),start);
-            if(*vit == start || --vit->end > start)
+            else
             {
-                bs=best_extension(bs,vit);
-                mit++->second.shift_front(std::next(vit));
-                continue;
+                vit=std::lower_bound(mit->second.front,mit->second.tokens.end(),start);
+                if(*vit == start || --vit->end > start)
+                {
+                    bs=best_extension(bs,vit);
+                    mit++->second.shift_front(std::next(vit));
+                    continue;
+                }
+                nr=nearest_neighbor(nr,entry(mit++,++vit));
             }
-            nr=nearest_neighbor(nr,entry(mit++,++vit));
         }
         if(!bs)
         {

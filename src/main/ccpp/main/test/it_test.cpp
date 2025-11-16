@@ -36,6 +36,8 @@ int main()
     vector<object>::iterator i=v3.begin();
     func(i++->vit++);
     cout<<"i->vit = "<<*(i->vit)<<" | "<<(i==v3.begin() ? "i still at v3.begin()" : "no longer at v3.begin()")<<'\n';
+    func(i++->vit++);
+    cout<<"[END]i->vit = "<<*((--i)->vit)<<" | "<<(i==v3.end() ? "i is at v3.end()" : "i is not at v3.end()")<<'\n';
     cout<<"v3.begin()->vit = "<<*(v3.begin()->vit)<<'\n';
     it=v.begin();
     if(it==v.begin() || *++it==-2) cout<<"1st condition met!"<<'\n';
