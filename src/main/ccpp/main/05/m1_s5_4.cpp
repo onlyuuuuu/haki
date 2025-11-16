@@ -99,29 +99,37 @@ int main()
         for(mit=m.begin();mit!=m.end();)
         {
             if(bs && start + mit->first <= bs->end) break;
-            else if(mit->second.tokens.back().end <= (!bs ? start : bs->end)) mit=m.erase(mit);
-            else if(mit->second.tokens.back() <= start)
+            if(mit->second.tokens.back().end <= (!bs ? start : bs->end))
+            {
+                mit=m.erase(mit);
+                continue;
+            }
+            if(mit->second.tokens.back() <= start)
             {
                 bs=best_extension(bs,mit->second.tokens.back());
                 mit=m.erase(mit);
+                continue;
             }
-            else if(!bs && *mit->second.front > start)
+            if(*mit->second.front > start)
             {
-                nr=nearest_neighbor(nr,entry(mit,mit->second.front));
+                if(!bs) nr=nearest_neighbor(nr,entry(mit,mit->second.front));
                 mit++;
+                continue;
             }
-            else if(*mit->second.front == start)
-                bs=best_extension(bs,mit++->second.front++);
-            else
+            if(*mit->second.front == start)
             {
-                vit=std::lower_bound(mit->second.front,mit->second.tokens.end(),start);
-                if(*vit == start || --vit->end > start)
-                {
-                    bs=best_extension(bs,vit);
-                    mit++->second.shift_front(std::next(vit));
-                }
-                else if(!bs) nr=nearest_neighbor(nr,entry(mit++,++vit));
+                bs=best_extension(bs,(mit++)->second.front++);
+                continue;
             }
+            vit=std::lower_bound(mit->second.front,mit->second.tokens.end(),start);
+            if(*vit == start || (--vit)->end > start)
+            {
+                bs=best_extension(bs,vit);
+                (mit++)->second.shift_front(std::next(vit));
+                continue;
+            }
+            if(!bs) nr=nearest_neighbor(nr,entry(mit,++vit));
+            mit++;
         }
         if(!bs)
         {
