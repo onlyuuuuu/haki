@@ -119,10 +119,8 @@ int main()
                 {
                     bs=best_extension(bs,vit);
                     mit++->second.shift_front(std::next(vit));
-                    continue;
                 }
-                if(bs) continue;
-                nr=nearest_neighbor(nr,entry(mit++,++vit));
+                else if(!bs) nr=nearest_neighbor(nr,entry(mit++,++vit));
             }
         }
         if(!bs)
