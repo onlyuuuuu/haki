@@ -105,7 +105,7 @@ int main()
                 bs=best_extension(bs,mit->second.tokens.back());
                 mit=m.erase(mit);
             }
-            else if(*mit->second.front > start)
+            else if(!bs && *mit->second.front > start)
             {
                 nr=nearest_neighbor(nr,entry(mit,mit->second.front));
                 mit++;
@@ -119,8 +119,10 @@ int main()
                 {
                     bs=best_extension(bs,vit);
                     mit++->second.shift_front(std::next(vit));
+                    continue;
                 }
-                else nr=nearest_neighbor(nr,entry(mit++,++vit));
+                if(bs) continue;
+                nr=nearest_neighbor(nr,entry(mit++,++vit));
             }
         }
         if(!bs)
