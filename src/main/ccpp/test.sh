@@ -1,8 +1,12 @@
 #!/bin/bash
 
-ninja clean > /dev/null 2>&1
-cmake .
-cmake --build . --target clean
+cmake -S . -B build -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH="$(pwd)"
+cmake --build build
+# Remove .exe extension if present (MinGW adds it regardless)
+if [[ -f ./ccpp.exe ]]; then
+  mv ./ccpp.exe ./ccpp
+fi
+
 if [[ "$1" == "--benchmark" || "$1" == "-bm" || "$1" == "-b" || "$1" == "-v" ]]; then
   printf "\nEXECUTION WITH BENCHMARKING RESULT:\n\n"
 

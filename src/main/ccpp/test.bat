@@ -1,8 +1,15 @@
 @echo off
 setlocal EnableExtensions
 
-cmake .
-cmake --build . --target clean
+cmake -S . -B build -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH="%cd%"
+cmake --build build
+
+rem Move executable to ./ccpp.exe (Windows requires .exe extension)
+if exist ".\Debug\ccpp.exe" (
+  move /Y ".\Debug\ccpp.exe" ".\ccpp.exe" >nul
+) else if exist ".\Release\ccpp.exe" (
+  move /Y ".\Release\ccpp.exe" ".\ccpp.exe" >nul
+)
 
 set "RUN_BENCHMARK=0"
 set "arg=%~1"
