@@ -91,10 +91,8 @@ int main()
         i.front=v.begin();
         end=std::max(end,v.back().end);
     }
-    optional<token>bs;
-    entry nr;
-    t="";start=1;
-    while(start!=end)
+    optional<token>bs;entry nr;t="";
+    for(start=1;start!=end;)
     {
         bs.reset();
         nr.reset();
@@ -121,9 +119,8 @@ int main()
                 {
                     bs=best_extension(bs,vit);
                     mit++->second.shift_front(std::next(vit));
-                    continue;
                 }
-                nr=nearest_neighbor(nr,entry(mit++,++vit));
+                else nr=nearest_neighbor(nr,entry(mit++,++vit));
             }
         }
         if(!bs)
