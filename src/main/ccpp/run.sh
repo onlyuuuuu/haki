@@ -8,16 +8,10 @@ else
 fi
 
 ./clean.sh
-if [[ "$(uname -a)" == *"Darwin"* ]]; then
-  cmake -S . -B build
-  cmake --build build
-else
-  cmake --build .
+cmake -S . -B build -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH="$(pwd)"
+cmake --build build
+# Remove .exe extension if present (MinGW adds it regardless)
+if [[ -f ./ccpp.exe ]]; then
+  mv ./ccpp.exe ./ccpp
 fi
-if [[ "$(uname -a)" == *"MINGW"* ]]; then
-  ./ccpp.exe < $file
-elif [[ -f ./build/ccpp.exe ]]; then
-  ./build/ccpp.exe < $file
-else
-  ./build/ccpp < $file
-fi
+./ccpp < $file

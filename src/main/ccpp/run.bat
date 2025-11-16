@@ -14,38 +14,23 @@ call "%~dp0clean.bat"
 set "ERR=%ERRORLEVEL%"
 if not "%ERR%"=="0" goto finish
 
-set "UNAME="
-for /f "delims=" %%u in ('uname -a 2^>nul') do set "UNAME=%%u"
-
-set "IS_DARWIN=0"
-set "IS_MINGW=0"
-if defined UNAME (
-  echo(%UNAME%| findstr /i "Darwin" >nul && set "IS_DARWIN=1"
-  echo(%UNAME%| findstr /i "MINGW" >nul && set "IS_MINGW=1"
-)
-
-if "%IS_DARWIN%"=="1" (
-  cmake -S . -B build
-) else (
-  cmake --build .
-)
+cmake -S . -B build -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH="%cd%"
 set "ERR=%ERRORLEVEL%"
 if not "%ERR%"=="0" goto finish
 
-set "APP="
-if "%IS_MINGW%"=="1" (
-  if exist ".\ccpp.exe" set "APP=.\ccpp.exe"
-)
-if not defined APP if exist ".\build\ccpp.exe" set "APP=.\build\ccpp.exe"
-if not defined APP if exist ".\ccpp" set "APP=.\ccpp"
+cmake --build build
+set "ERR=%ERRORLEVEL%"
+if not "%ERR%"=="0" goto finish
 
-if defined APP (
-  "%APP%" < "%FILE%"
-  set "ERR=%ERRORLEVEL%"
-) else (
-  echo Failed to locate executable.
-  set "ERR=1"
+rem Move executable to ./ccpp.exe (Windows requires .exe extension)
+if exist ".\Debug\ccpp.exe" (
+  move /Y ".\Debug\ccpp.exe" ".\ccpp.exe" >nul
+) else if exist ".\Release\ccpp.exe" (
+  move /Y ".\Release\ccpp.exe" ".\ccpp.exe" >nul
 )
+
+.\ccpp.exe < "%FILE%"
+set "ERR=%ERRORLEVEL%"
 
 :finish
 popd >nul 2>&1
