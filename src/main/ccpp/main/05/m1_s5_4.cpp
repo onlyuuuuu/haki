@@ -94,7 +94,7 @@ int main()
     optional<token>bs;entry nr;t="";bool stop=false;
     for(start=1;start!=end;)
     {
-        
+        stop=false;
         bs.reset();
         nr.reset();
         for(mit=m.begin();mit!=m.end();)
@@ -156,6 +156,7 @@ int main()
             t+=nr.n->txt;
             start=nr.n->end;
             nr.shift_front();
+            continue;
         }
         for(;mit!=m.end() && start + mit->first > bs->end;)
         {
