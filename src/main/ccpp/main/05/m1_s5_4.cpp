@@ -98,53 +98,7 @@ int main()
         nr.reset();
         for(mit=m.begin();mit!=m.end();)
         {
-            if(bs && start + mit->first <= bs->end) break;
-            if(mit->second.tokens.back().end <= (!bs ? start : bs->end))
-            {
-                mit=m.erase(mit);
-                continue;
-            }
-            if(mit->second.tokens.back() <= start)
-            {
-                bs=best_extension(bs,mit->second.tokens.back());
-                mit=m.erase(mit);
-                continue;
-            }
-            if(*mit->second.front > start)
-            {
-                if(!bs) nr=nearest_neighbor(nr,entry(mit,mit->second.front));
-                mit++;
-                continue;
-            }
-            if(*mit->second.front == start)
-            {
-                bs=best_extension(bs,(mit++)->second.front++);
-                continue;
-            }
-            vit=std::lower_bound(mit->second.front,mit->second.tokens.end(),start);
-            if(*vit == start || (--vit)->end > start)
-            {
-                bs=best_extension(bs,vit);
-                (mit++)->second.shift_front(std::next(vit));
-                continue;
-            }
-            if(!bs) nr=nearest_neighbor(nr,entry(mit,++vit));
-            mit++;
-        }
-        if(!bs)
-        {
-            n=nr.n->str-start;
-            while(n--) t+='a';
-            t+=nr.n->txt;
-            start=nr.n->end;
-            nr.i->shift_front(std::next(nr.n));
-        }
-        else
-        {
-            n=start-bs->str;
-            while(n--) t.pop_back();
-            t+=bs->txt;
-            start=bs->end;
+            
         }
     }
     cout<<t<<'\n';
