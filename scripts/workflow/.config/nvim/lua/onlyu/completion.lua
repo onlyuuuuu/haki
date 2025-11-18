@@ -57,18 +57,27 @@ cmp.setup.cmdline(':', {
   matching = { disallow_symbol_nonprefix_matching = false }
 })
 
--- Set up lspconfig.
+-- Set up LSP servers.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
 
-lspconfig['jdtls'].setup { capabilities = capabilities }
-lspconfig['bashls'].setup { capabilities = capabilities }
-lspconfig['html'].setup { capabilities = capabilities }
-lspconfig['css_variables'].setup { capabilities = capabilities }
-lspconfig['cssls'].setup { capabilities = capabilities }
-lspconfig['cssmodules_ls'].setup { capabilities = capabilities }
-lspconfig['jsonls'].setup { capabilities = capabilities }
-lspconfig['dockerls'].setup { capabilities = capabilities }
-lspconfig['bright_script'].setup { capabilities = capabilities }
-lspconfig['clangd'].setup { capabilities = capabilities }
+-- Configure LSP servers using vim.lsp.config
+local servers = {
+  'jdtls',
+  'bashls',
+  'html',
+  'css_variables',
+  'cssls',
+  'cssmodules_ls',
+  'jsonls',
+  'dockerls',
+  'bright_script',
+  'clangd',
+}
+
+for _, server in ipairs(servers) do
+  vim.lsp.config[server] = {
+    capabilities = capabilities,
+  }
+  vim.lsp.enable(server)
+end
 

@@ -1,10 +1,69 @@
 #!/bin/bash
 
+set -e  # Exit on error
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR
 
+# Check for required dependencies
+echo "Checking dependencies..."
+
+# Check for git
+if ! command -v git &> /dev/null; then
+  echo "Error: git is not installed. Please install Xcode Command Line Tools:"
+  echo "  xcode-select --install"
+  exit 1
+fi
+
+# Check for cmake
+if ! command -v cmake &> /dev/null; then
+  echo "Error: cmake is not installed. Please install it:"
+  echo "  brew install cmake"
+  exit 1
+fi
+
+# Check for ninja
+if ! command -v ninja &> /dev/null; then
+  echo "Error: ninja is not installed. Please install it:"
+  echo "  brew install ninja"
+  exit 1
+fi
+
+# Check for xcrun (Xcode Command Line Tools)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if ! command -v xcrun &> /dev/null; then
+    echo "Error: Xcode Command Line Tools not found. Please install:"
+    echo "  xcode-select --install"
+    exit 1
+  fi
+fi
+
+echo "All dependencies found!"
+
 # C/C++ Language Server
 LLVM_ROOT=/tools/llvm-project
+
+# Check if /tools directory exists and is writable
+if [[ ! -d /tools ]]; then
+  echo "Directory /tools does not exist. Creating it..."
+  if echo 0 | sudo -S mkdir -p /tools && echo 0 | sudo -S chown $USER /tools; then
+    echo "Created /tools directory with proper permissions."
+  else
+    echo "Error: Failed to create /tools directory. Please run:"
+    echo "  sudo mkdir -p /tools && sudo chown \$USER /tools"
+    exit 1
+  fi
+elif [[ ! -w /tools ]]; then
+  echo "Directory /tools exists but is not writable. Fixing permissions..."
+  if echo 0 | sudo -S chown $USER /tools; then
+    echo "Fixed permissions for /tools directory."
+  else
+    echo "Error: Cannot write to /tools. Please run:"
+    echo "  sudo chown \$USER /tools"
+    exit 1
+  fi
+fi
+
 first_pull=false
 if [[ ! -d $LLVM_ROOT ]]; then
   echo "Installing Clangd Language Server..."
@@ -24,11 +83,54 @@ else
   echo "Local HEAD:  $LOCAL_HEAD"
   echo "Remote HEAD: $REMOTE_HEAD"
   git pull
-  mkdir -p $LLVM_ROOT/build/
-  cd $LLVM_ROOT/build/
+
+  # Reconfigure if forced or first pull
   if [[ $first_pull == true || "$1" == "--force" ]]; then
-    cmake $LLVM_ROOT/llvm/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
+    # Remove old build directory to ensure clean configuration
+    echo "Removing old build directory..."
+    rm -rf $LLVM_ROOT/build/
+    mkdir -p $LLVM_ROOT/build/
+    cd $LLVM_ROOT/build/
+
+    # Detect OS and set appropriate compiler flags
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      # macOS: Use Xcode toolchain explicitly
+      echo "Configuring for macOS with Xcode toolchain..."
+      SDK_PATH=$(xcrun --show-sdk-path)
+      CC_PATH=$(xcrun -f clang)
+      CXX_PATH=$(xcrun -f clang++)
+
+      echo "Using SDK: $SDK_PATH"
+      echo "Using CC: $CC_PATH"
+      echo "Using CXX: $CXX_PATH"
+
+      # Set up C++ flags to include the C++ standard library headers
+      export CXXFLAGS="-isysroot $SDK_PATH -stdlib=libc++ -I$SDK_PATH/usr/include/c++/v1"
+      export LDFLAGS="-L$SDK_PATH/usr/lib"
+
+      cmake $LLVM_ROOT/llvm/ -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
+        -DCMAKE_C_COMPILER="$CC_PATH" \
+        -DCMAKE_CXX_COMPILER="$CXX_PATH" \
+        -DDEFAULT_SYSROOT="$SDK_PATH" \
+        -DCMAKE_OSX_SYSROOT="$SDK_PATH" \
+        -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+        -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
+        -DHAVE_CXX_ATOMICS_WITHOUT_LIB=ON \
+        -DHAVE_CXX_ATOMICS64_WITHOUT_LIB=ON
+    else
+      # Linux: Use default compilers
+      echo "Configuring for Linux..."
+      cmake $LLVM_ROOT/llvm/ -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
+    fi
+  else
+    cd $LLVM_ROOT/build/
   fi
+
+  echo "Building clangd..."
   cmake --build $LLVM_ROOT/build --target clangd
 fi
 

@@ -11,6 +11,7 @@ qemu-system
 dtc
 make
 cmake
+ninja
 ninja-build
 crossbuild-essential-armel
 crossbuild-essential-armhf
@@ -62,7 +63,6 @@ libglib2.0-dev
 libfdt-dev
 libpixman-1-dev
 zlib1g-dev
-ninja-build
 git-email
 libaio-dev
 libbluetooth-dev 
@@ -120,7 +120,6 @@ libglib2.0-dev
 libfdt-dev
 libpixman-1-dev
 zlib1g-dev
-ninja-build
 git-email
 libaio-dev
 libbluetooth-dev
