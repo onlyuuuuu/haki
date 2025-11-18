@@ -466,6 +466,18 @@ make
 
 cd $SCRIPT_DIR
 
+if [[ "$(uname -a)" == *"Darwin"* ]]; then
+  echo 0 | sudo -S chown -R $USER ~/.local > /dev/null 2>&1
+  echo 0 | sudo -S chown -R $USER ~/.local/state > /dev/null 2>&1
+  echo 0 | sudo -S chown -R $USER ~/.local/state/nvim > /dev/null 2>&1
+  echo 0 | sudo -S chown -R $USER ~/.cache/nvim > /dev/null 2>&1
+else
+  echo 0 | sudo -S chown -R $USER:$GROUP ~/.local > /dev/null 2>&1
+  echo 0 | sudo -S chown -R $USER:$GROUP ~/.local/state > /dev/null 2>&1
+  echo 0 | sudo -S chown -R $USER:$GROUP ~/.local/state/nvim > /dev/null 2>&1
+  echo 0 | sudo -S chown -R $USER:$GROUP ~/.cache/nvim > /dev/null 2>&1
+fi
+
 cp -rf aliases.zsh2 ~/
 cp -rf .bash_aliases2 ~/
 
@@ -546,7 +558,7 @@ for config_file in "$HOME/.bash_profile" "$HOME/.zprofile" "/etc/bashrc" "/etc/z
 
     # Prepend to file
     if [[ "$config_file" == "/etc/"* ]]; then
-      echo -e "$temp_content\n$(cat "$config_file")" | echo 0 | sudo -S tee "$config_file" > /dev/null
+      echo -e "$temp_content\n$(cat "$config_file")" | sudo tee "$config_file" > /dev/null
     else
       echo -e "$temp_content\n$(cat "$config_file")" > "$config_file"
     fi
