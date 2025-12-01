@@ -195,15 +195,15 @@ fi
 
 cd ~/.config/catppuccin/nerd-fonts
 # Compare the local and remote HEAD commits
-#$SCRIPT_DIR/checkForUpdates.sh ~/.config/catppuccin/nerd-fonts
-#status_code=$?
-#if [[ "$status_code" == 0 && $first_pull == false ]]; then
-#  echo "Catppuccin Nerd Fonts is up-to-date. No need to pull or build."
-#else
-#  echo "Pulling in latest changes from Catppuccin and installing it now..."
-#  git pull
-#  ./install.sh
-#fi
+$SCRIPT_DIR/checkForUpdates.sh ~/.config/catppuccin/nerd-fonts
+status_code=$?
+if [[ "$status_code" == 0 && $first_pull == false ]]; then
+  echo "Catppuccin Nerd Fonts is up-to-date. No need to pull or build."
+else
+  echo "Pulling in latest changes from Catppuccin and installing it now..."
+  git pull
+  ./install.sh
+fi
 
 first_install=false
 if command -v nvm > /dev/null 2>&1; then
