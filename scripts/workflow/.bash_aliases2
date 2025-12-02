@@ -10,7 +10,11 @@ alias vim='nvim'
 alias vi='nvim'
 alias port='echo 0 | sudo -S port'
 alias cls='clear'
-alias cd='z'
+if [[ "$(uname -a)" == *"MINGW"* ]]; then
+  unalias cd
+else
+  alias cd='z'
+fi
 alias shutdown='echo 0 | sudo -S shutdown -h now'
 alias reboot='echo 0 | sudo -S reboot'
 
@@ -24,14 +28,14 @@ alias reboot='echo 0 | sudo -S reboot'
 ## Show hidden files ##
 #alias l.='ls -d .* --color=auto'
 
-if [[ "$(which exa)" == *"not"*"found"* ]]; then
-  alias ls='eza'
-  alias ll='eza -lha'
-  alias tree='eza --tree'
-elif [[ "$(uname -a)" == *"MINGW"* ]]; then
+if [[ "$(uname -a)" == *"MINGW"* ]]; then
   alias ls='ls --color=auto'
   alias ll='ls -la'
   alias l.='ls -d .* --color=auto'
+elif [[ "$(which exa)" == *"not"*"found"* ]]; then
+  alias ls='eza'
+  alias ll='eza -lha'
+  alias tree='eza --tree'
 else
   alias ls='exa'
   alias ll='exa -lha'

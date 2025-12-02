@@ -9,7 +9,11 @@ else
 fi
 alias port='echo 0 | sudo -S port'
 alias cls='clear'
-alias cd='z'
+if [[ "$(uname -a)" == *"MINGW"* ]]; then
+  unalias cd
+else
+  alias cd='z'
+fi
 alias shutdown='echo 0 | sudo -S shutdown -h now'
 alias reboot='echo 0 | sudo -S reboot'
 
