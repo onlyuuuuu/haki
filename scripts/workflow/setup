@@ -537,6 +537,10 @@ else
   batcat cache --build
 fi
 
+if [[ "$(uname -a)" == *"Linux"*"microsoft"* ]]; then
+  echo 0 | sudo -S ln -sf /home/onlyu/.sdkman/candidates/java/current/bin/java /usr/bin/java
+fi
+
 # Add Apple Terminal early exit check to shell configuration files
 for config_file in "$HOME/.bash_profile" "$HOME/.zprofile" "/etc/bashrc" "/etc/zshrc"; do
   # Create file if it doesn't exist
