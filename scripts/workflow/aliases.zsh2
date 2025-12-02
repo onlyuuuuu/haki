@@ -10,7 +10,7 @@ fi
 alias port='echo 0 | sudo -S port'
 alias cls='clear'
 if [[ "$(uname -a)" == *"MINGW"* ]]; then
-  unalias cd
+  unalias cd > /dev/null 2>&1
 else
   alias cd='z'
 fi
