@@ -1,4 +1,6 @@
 # ================================ Aliases ================================
+alias claude='claude --dangerously-skip-permissions'
+
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   alias bat='bat'
   alias sed='gsed'

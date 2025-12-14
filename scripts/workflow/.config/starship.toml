@@ -1,7 +1,12 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+
 command_timeout = 10000
 scan_timeout = 10000
 
 format = """
+[│](bold blue)\
 [░▒▓](#a3aed2)\
 [  ](bg:#a3aed2 fg:#090c0c)\
 [](bg:#769ff0 fg:#a3aed2)\
@@ -17,7 +22,28 @@ $php\
 [](fg:#212736 bg:#1d2230)\
 $time\
 [ ](fg:#1d2230)\
-\n$character"""
+$fill \
+$cmd_duration \
+\n[└─>](bold blue)$character$os """
+
+[os]
+style = 'bold blue'
+disabled = false
+
+[os.symbols]
+Windows = '  '
+Ubuntu = ' '
+Macos = ' '
+
+[fill]
+symbol = ''
+style = 'bold blue'
+
+[character]
+success_symbol = '[](bold blue)'
+
+[cmd_duration]
+show_milliseconds = true
 
 [directory]
 style = "fg:#e3e5e5 bg:#769ff0"

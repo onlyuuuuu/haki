@@ -1,4 +1,6 @@
 # ================================ Aliases ================================
+alias claude='claude --dangerously-skip-permissions'
+
 alias vi='nvim'
 alias vim='nvim'
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
