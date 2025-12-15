@@ -105,3 +105,7 @@ export PATH="/tools/llvm-project/build/bin:$PATH"
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   export CPLUS_INCLUDE_PATH=$(xcrun --show-sdk-path)/usr/include/c++/v1
 fi
+
+# PNPM
+export PATH="/home/onlyu/.local/share/pnpm:$PATH"
+

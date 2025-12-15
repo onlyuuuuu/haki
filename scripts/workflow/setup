@@ -135,17 +135,17 @@ if [[ "$status_code" == 0 && $first_pull == false ]]; then
   echo "Perl source is at the latest, no need to do anything..."
 else
   echo "Pulling in latest changes from Perl and installing it now..."
-  #git pull
-  #./Configure -des -Dprefix=$HOME/perl5dev -Dusedevel
-  #make -j$(nproc) test
-  #echo 0 | sudo -S make -j$(nproc) install
+  git pull
+  ./Configure -des -Dprefix=$HOME/perl5dev -Dusedevel
+  make -j$(nproc) test
+  echo 0 | sudo -S make -j$(nproc) install
 fi
 
-#PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
-#PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-#PERL_LOCAL_LIB_ROOT="$HOME/perl5dev${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-#PERL_MB_OPT="--install_base \"$HOME/perl5dev\""; export PERL_MB_OPT;
-#PERL_MM_OPT="INSTALL_BASE=$HOME/perl5dev"; export PERL_MM_OPT;
+export PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
+export PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+export PERL_LOCAL_LIB_ROOT="$HOME/perl5dev${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+export PERL_MB_OPT="--install_base \"$HOME/perl5dev\""; export PERL_MB_OPT;
+export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5dev"; export PERL_MM_OPT;
 
 first_pull=false
 if [[ ! -d /tools/rainbarf ]]; then
@@ -242,33 +242,32 @@ while IFS= read -r package; do
   npm i -g $package
 done < "$SCRIPT_DIR/node-packages.txt"
 
-# pkg="bash-language-server"
-# first_install=false
-# if npm ls -g --depth=0 "$pkg" >/dev/null 2>&1; then
-#   echo "$pkg is installed globally. Skipping further operaions..."
-# else
-#   echo "$pkg is NOT installed globally."
-#   first_install=true
-#   npm i -g $pkg
-# fi
-# if [[ $first_install == false && $1 == "--force" ]]; then
-#   echo "Force installing $pkg"
-#   npm i -g $pkg
-# fi
-#
-# pkg="vscode-langservers-extracted"
-# first_install=false
-# if npm ls -g --depth=0 "$pkg" >/dev/null 2>&1; then
-#   echo "$pkg is installed globally. Skipping further operaions..."
-# else
-#   echo "$pkg is NOT installed globally."
-#   first_install=true
-#   npm i -g $pkg
-# fi
-# if [[ $first_install == false && $1 == "--force" ]]; then
-#   echo "Force installing $pkg"
-#   npm i -g $pkg
-# fi
+pkg="bash-language-server"
+first_install=false
+if npm ls -g --depth=0 "$pkg" >/dev/null 2>&1; then
+  echo "$pkg is installed globally. Skipping further operaions..."
+else
+  echo "$pkg is NOT installed globally."
+  first_install=true
+  npm i -g $pkg
+fi
+if [[ $first_install == false && $1 == "--force" ]]; then
+  echo "Force installing $pkg"
+  npm i -g $pkg
+fi
+pkg="vscode-langservers-extracted"
+first_install=false
+if npm ls -g --depth=0 "$pkg" >/dev/null 2>&1; then
+  echo "$pkg is installed globally. Skipping further operaions..."
+else
+  echo "$pkg is NOT installed globally."
+  first_install=true
+  npm i -g $pkg
+fi
+if [[ $first_install == false && $1 == "--force" ]]; then
+  echo "Force installing $pkg"
+  npm i -g $pkg
+fi
 
 first_install=false
 if command -v starship > /dev/null 2>&1; then
@@ -324,13 +323,13 @@ fi
 cd ~/.config/btop-catppuccin
 git pull
 
-#if [[ ! -d  ~/.config/tmux/plugins/catppuccin/tmux ]]; then
-#  mkdir -p ~/.config/tmux/plugins/catppuccin/
-#  git clone --depth 1 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
-#fi
+if [[ ! -d  ~/.config/tmux/plugins/catppuccin/tmux ]]; then
+  mkdir -p ~/.config/tmux/plugins/catppuccin/
+  git clone --depth 1 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
+fi
 
-#cd ~/.config/tmux/plugins/catppuccin/tmux
-#git pull origin main
+cd ~/.config/tmux/plugins/catppuccin/tmux
+git pull origin main
 
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
   git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -344,30 +343,30 @@ if [[ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]]; then
   git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
 fi
 
-#mkdir -p ~/.config/tmux-powerline
-#if [[ ! -d ~/.config/tmux/plugins/tmux-powerline ]]; then
-#  mkdir -p ~/.config/tmux/plugins/
-#  cd ~/.config/tmux/plugins/
-#  git clone --depth 1 https://github.com/erikw/tmux-powerline.git
-#fi
+mkdir -p ~/.config/tmux-powerline
+if [[ ! -d ~/.config/tmux/plugins/tmux-powerline ]]; then
+  mkdir -p ~/.config/tmux/plugins/
+  cd ~/.config/tmux/plugins/
+  git clone --depth 1 https://github.com/erikw/tmux-powerline.git
+fi
 
 # TMUX Powerline config
-#cd ~/.config/tmux/plugins/tmux-powerline
-#git pull
-#chmod +x generate_config.sh
-#./generate_config.sh
-#if [[ ! -f ~/.config/tmux-powerline/config.sh ]]; then
-#  echo "TMUX Powerline configuration is already present, not overwritting anything..."
-#  mv ~/.config/tmux-powerline/config.sh.default ~/.config/tmux-powerline/config.sh
-#  chmod +x ~/.config/tmux-powerline/config.sh
-#fi
+cd ~/.config/tmux/plugins/tmux-powerline
+git pull
+chmod +x generate_config.sh
+./generate_config.sh
+if [[ ! -f ~/.config/tmux-powerline/config.sh ]]; then
+  echo "TMUX Powerline configuration is already present, not overwritting anything..."
+  mv ~/.config/tmux-powerline/config.sh.default ~/.config/tmux-powerline/config.sh
+  chmod +x ~/.config/tmux-powerline/config.sh
+fi
 
 # TMUX Powerline theme
-#if [[ ! -f ~/.config/tmux-powerline/themes/my-theme.sh ]]; then
-#  mkdir -p ~/.config/tmux-powerline/themes
-#  cp ~/.config/tmux/plugins/tmux-powerline/themes/default.sh ~/.config/tmux-powerline/themes/my-theme.sh
-#  chmod +x ~/.config/tmux-powerline/themes/my-theme.sh
-#fi
+if [[ ! -f ~/.config/tmux-powerline/themes/my-theme.sh ]]; then
+  mkdir -p ~/.config/tmux-powerline/themes
+  cp ~/.config/tmux/plugins/tmux-powerline/themes/default.sh ~/.config/tmux-powerline/themes/my-theme.sh
+  chmod +x ~/.config/tmux-powerline/themes/my-theme.sh
+fi
 
 # Java Language Server
 first_pull=false
@@ -463,6 +462,8 @@ make
 #   git pull
 #   make
 # fi
+
+$SCRIPT_DIR/installPNPM --pnpm-update
 
 cd $SCRIPT_DIR
 

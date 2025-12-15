@@ -1,0 +1,60 @@
+#!/bin/bash
+
+PNPM_UPDATE=false
+for arg in "$@"; do
+    case $arg in
+        --pnpm-update)
+            PNPM_UPDATE=true
+            ;;
+    esac
+done
+
+install_curl_wget() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        if command -v apt &> /dev/null; then
+            echo "Installing curl and wget on Ubuntu/Debian..."
+            sudo apt install -y curl wget
+        fi
+    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "mingw"* ]]; then
+        echo "Installing curl and wget on MINGW..."
+        pacman -S --noconfirm curl wget
+    else
+        echo "Error: Unable to install curl or wget. Please install manually."
+        exit 1
+    fi
+}
+
+install_pnpm() {
+    echo "PNPM is not installed. Installing..."
+    if command -v curl &> /dev/null; then
+        curl -fsSL https://get.pnpm.io/install.sh | sh -
+    elif command -v wget &> /dev/null; then
+        wget -qO- https://get.pnpm.io/install.sh | sh -
+    else
+        echo "Neither curl nor wget is installed."
+        install_curl_wget
+        if command -v curl &> /dev/null; then
+            curl -fsSL https://get.pnpm.io/install.sh | sh -
+        elif command -v wget &> /dev/null; then
+            wget -qO- https://get.pnpm.io/install.sh | sh -
+        else
+            echo "Error: Failed to install curl or wget."
+            exit 1
+        fi
+    fi
+    export PNPM_HOME="$HOME/.local/share/pnpm"
+    export PATH="$PNPM_HOME:$PATH"
+}
+
+if ! command -v pnpm &> /dev/null; then
+    install_pnpm
+else
+    echo "PNPM is already installed."
+fi
+
+if [[ "$PNPM_UPDATE" == true ]]; then
+    echo "Updating PNPM..."
+    pnpm self-update
+fi
+
+echo "PNPM setup complete."
