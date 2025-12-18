@@ -109,3 +109,8 @@ fi
 # PNPM
 export PATH="/home/onlyu/.local/share/pnpm:$PATH"
 
+# For Claude Code
+export BASH_DEFAULT_TIMEOUT_MS=2700000
+export BASH_MAX_TIMEOUT_MS=2700000
+export MCP_TIMEOUT=2700000
+
