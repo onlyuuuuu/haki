@@ -19,7 +19,7 @@ fi
 
 export BAT_THEME="Catppuccin Latte"
 
-tmux source ~/.tmux.conf
+tmux source ~/.tmux.conf > /dev/null 2>&1
 
 if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
   STARSHIP_DISABLE_ZLE_HOOKS=1
@@ -83,6 +83,7 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
   export FZF_DEFAULT_COMMAND="fd . --hidden --exclude .git"
 else
   export FZF_DEFAULT_COMMAND="/usr/bin/fdfind . --hidden --exclude .git"
+fi
 
 export PATH="$HOME/.fzf/bin:$PATH"
 export PATH="/tools/.fzf/bin:$PATH"
