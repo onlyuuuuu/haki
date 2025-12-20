@@ -1,5 +1,6 @@
 # ================================ Aliases ================================
 alias claude='claude --dangerously-skip-permissions'
+alias gemini='gemini --yolo'
 
 if [[ "$(uname -a)" == *"Darwin"* ]]; then
   alias bat='bat'
