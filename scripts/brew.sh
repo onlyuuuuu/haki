@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [[ "$(uname -a)" == *"aarch64"* ]]; then
-  echo "This BREW script will now be ignore since aarch64 architecture is detected..."
-  exit
-fi
+#if [[ "$(uname -a)" == *"aarch64"* ]]; then
+#  echo "This BREW script will now be ignore since aarch64 architecture is detected..."
+#  exit
+#fi
 
 if command -v brew > /dev/null 2>&1; then
   echo "Brew already installed, skipping further operations..."

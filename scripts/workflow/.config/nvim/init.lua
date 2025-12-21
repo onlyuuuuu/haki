@@ -1,3 +1,7 @@
+-- This is a dummy comments
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 require("lazyvim")
 require("config.lazy")
 require("autoclose").setup()
@@ -59,9 +63,5 @@ vim.api.nvim_create_autocmd("FileType",
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = "*",
-  command = "startinsert",
-})
-
 vim.cmd.colorscheme "catppuccin-latte"
+

@@ -5,4 +5,23 @@ vim.g.loaded_netrwPlugin = 1
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
 
-require("nvim-tree").setup()
+require("neo-tree").setup({
+  window = {
+    width = 30,
+  },
+  filesystem = {
+    filtered_items = {
+      visible = true, -- when true, they will just be displayed differently instead of being hidden
+      hide_dotfiles = false,
+      hide_gitignored = false,
+      hide_by_name = {
+        --".DS_Store",
+        --"thumbs.db",
+        --"node_modules",
+      },
+    },
+    follow_current_file = {
+      enabled = true,
+    },
+  },
+})
