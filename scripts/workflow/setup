@@ -485,6 +485,8 @@ cp -rf .bash_aliases2 ~/
 # Remove first
 rm -rf ~/.config/nvim/lua/plugins/
 cp -rf .config ~/
+cp -rf .claude ~/
+cp -rf .gemini ~/
 
 cp -rf .tmux ~/
 if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
