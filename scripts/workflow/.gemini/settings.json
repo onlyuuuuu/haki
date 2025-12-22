@@ -22,7 +22,7 @@
   },
   "experimental": {
     "codebaseInvestigatorSettings": {
-      "maxNumTurns": 100
+      "maxNumTurns": 10000
     }
   }
 }
