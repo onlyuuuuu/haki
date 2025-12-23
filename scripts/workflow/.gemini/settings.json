@@ -24,5 +24,6 @@
     "codebaseInvestigatorSettings": {
       "maxNumTurns": 10000
     }
-  }
+  },
+  "model": "gemini-3-pro-preview"
 }
