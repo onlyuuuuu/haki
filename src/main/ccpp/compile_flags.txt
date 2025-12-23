@@ -1,2 +1,3 @@
+-xc++
 -std=gnu++23
 -I/usr/local/include

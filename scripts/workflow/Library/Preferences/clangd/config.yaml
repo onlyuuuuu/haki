@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -I/usr/local/include
+  Remove: [-fmodules-ts, -fmodule-mapper=*, -fdeps-format=*]

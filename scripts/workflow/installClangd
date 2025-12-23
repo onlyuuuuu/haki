@@ -135,3 +135,7 @@ else
 fi
 
 cd $SCRIPT_DIR
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  cp -rf Library ~/
+fi
