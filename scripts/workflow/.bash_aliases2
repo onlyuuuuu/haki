@@ -45,12 +45,14 @@ else
   alias tree='exa --tree'
 fi
 
-if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
-  alias tail='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
-  alias t='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
-else
-  alias tail='/usr/bin/tail -f -n +1'
-  alias t='/usr/bin/tail -f -n +1'
+if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
+  if [[ "$(uname -a)" == *"Linux"*"Microsoft"* ]]; then
+    alias tail='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
+    alias t='/usr/bin/tail ---disable-inotify -s 1 -f -n +1'
+  else
+    alias tail='/usr/bin/tail -f -n +1'
+    alias t='/usr/bin/tail -f -n +1'
+  fi
 fi
 
 ## get rid of command not found ##

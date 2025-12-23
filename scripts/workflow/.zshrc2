@@ -24,6 +24,8 @@ tmux source ~/.tmux.conf > /dev/null 2>&1
 if [[ "$TERM_PROGRAM" != *"Apple_Terminal"* ]]; then
   STARSHIP_DISABLE_ZLE_HOOKS=1
   eval "$(starship init zsh)"
+else
+  unalias tail
 fi
 
 eval "$(zoxide init zsh)"
