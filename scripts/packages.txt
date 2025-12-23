@@ -177,3 +177,4 @@ fd-find
 fd
 clangd-12
 gemini-cli
+cloud-guest-utils
