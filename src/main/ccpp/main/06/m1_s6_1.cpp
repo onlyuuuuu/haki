@@ -8,18 +8,15 @@ int main()
     for(int j=1;j<=n;j++)
     {
         cin>>i;
+        if (i>=x) continue;
         m.emplace(i,j);
     }
-    auto f=m.upper_bound(x);
-    while (m.end()!=f)
+    for (auto it=m.begin();m.end()!=it;it=m.erase(it))
     {
-        auto f2=m.find(x-f->first);
-        if(m.end()!=f2)
-        {
-            cout<<f->first<<" "<<f2->first;
-            return 0;
-        }
-        f=m.erase(f);
+        auto f=m.find(x-(it->first));
+        if(m.end()==f) continue;
+        cout<<it->second<<' '<<f->second;
+        return 0;
     }
     cout<<"IMPOSSIBLE";
     return 0;
