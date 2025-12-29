@@ -119,33 +119,7 @@ else
   echo 0 | sudo -S make -j$(nproc) install
 fi
 
-first_pull=false
-if [[ ! -d /tools/perl-source ]]; then
-  echo "Installing Perl from source"
-  cd /tools/
-  git clone --depth 1 https://github.com/Perl/perl5.git perl-source
-  first_pull=true
-fi
-
-cd /tools/perl-source
-# Compare the local and remote HEAD commits
-$SCRIPT_DIR/checkForUpdates.sh /tools/perl-source
-status_code=$?
-if [[ "$status_code" == 0 && $first_pull == false ]]; then
-  echo "Perl source is at the latest, no need to do anything..."
-else
-  echo "Pulling in latest changes from Perl and installing it now..."
-  git pull
-  ./Configure -des -Dprefix=$HOME/perl5dev -Dusedevel
-  make -j$(nproc) test
-  echo 0 | sudo -S make -j$(nproc) install
-fi
-
-export PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
-export PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-export PERL_LOCAL_LIB_ROOT="$HOME/perl5dev${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-export PERL_MB_OPT="--install_base \"$HOME/perl5dev\""; export PERL_MB_OPT;
-export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5dev"; export PERL_MM_OPT;
+./installPerl
 
 first_pull=false
 if [[ ! -d /tools/rainbarf ]]; then

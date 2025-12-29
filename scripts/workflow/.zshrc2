@@ -117,3 +117,12 @@ export BASH_DEFAULT_TIMEOUT_MS=2700000
 export BASH_MAX_TIMEOUT_MS=2700000
 export MCP_TIMEOUT=2700000
 
+# For Perl (from source)
+export PATH="/tools/perl-source:$PATH"
+
+export PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
+export PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+export PERL_LOCAL_LIB_ROOT="$HOME/perl5dev${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+export PERL_MB_OPT="--install_base \"$HOME/perl5dev\""; export PERL_MB_OPT;
+export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5dev"; export PERL_MM_OPT;
+
