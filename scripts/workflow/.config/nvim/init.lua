@@ -22,6 +22,9 @@ vim.lsp.enable('clangd')
 -- Mason NeoVim package manager
 require("mason").setup()
 
+-- More plugins setup
+require('lualine').setup()
+
 -- Load my own configs
 require("onlyu")
 require("onlyu.remap")
