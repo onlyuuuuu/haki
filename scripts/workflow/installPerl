@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+echo "Location of [$(basename "${BASH_SOURCE[0]}")] is: $SCRIPT_DIR"
+
 first_pull=false
 if [[ ! -d /tools/perl-source ]]; then
   echo "Installing Perl from source"
@@ -12,21 +15,45 @@ cd /tools/perl-source
 # Compare the local and remote HEAD commits
 $SCRIPT_DIR/checkForUpdates.sh /tools/perl-source
 status_code=$?
-if [[ "$status_code" == 0 && $first_pull == false ]]; then
+if [[ "$status_code" == 0 && $first_pull == false && $1 != "--force" ]]; then
   echo "Perl source is at the latest, no need to do anything..."
 else
   echo "Pulling in latest changes from Perl and installing it now..."
   git pull
+  git fetch --tags
+  git checkout $(git tag --sort=-version:refname | head -n 1)
+  echo 0 | sudo -S rm -rf $HOME/perl5dev
   ./Configure -des -Dprefix=$HOME/perl5dev -Dusedevel
+  # ./Configure -des -Dprefix=$HOME/perl5dev
   make -j$(nproc) test
   echo 0 | sudo -S make -j$(nproc) install
 fi
+
+echo 0 | sudo -S chown -R $USER $HOME/perl5dev
+echo 0 | sudo -S ln -sf $(find $HOME/perl5dev/bin/ -type f -name "perl5.*" -print) /usr/bin/perl
+echo 0 | sudo -S ln -sf $(find $HOME/perl5dev/bin/ -type f -name "cpan5.*" -print) /usr/bin/cpan
+
+ln -sf $(find $HOME/perl5dev/bin/ -type f -name "perl5.*" -print) $HOME/perl5dev/bin/perl
+ln -sf $(find $HOME/perl5dev/bin/ -type f -name "cpan5.*" -print) $HOME/perl5dev/bin/cpan
+
+export PATH="/tools/perl-source:$PATH"
+export PATH="/tools/perl-source/utils:$PATH"
+export PATH="$HOME/perl5dev/bin:$PATH"
 
 export PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
 export PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 export PERL_LOCAL_LIB_ROOT="$HOME/perl5dev${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 export PERL_MB_OPT="--install_base \"$HOME/perl5dev\""; export PERL_MB_OPT;
 export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5dev"; export PERL_MM_OPT;
+
+$HOME/perl5dev/bin/perl --version
+$HOME/perl5dev/bin/cpan --version
+$HOME/perl5dev/bin/cpan App::cpanminus
+$HOME/perl5dev/bin/cpan Log::Log4perl
+
+echo 0 | sudo -S cp -rf $HOME/perl5dev/bin/cpanm /usr/bin/cpanm
+
+$HOME/perl5dev/bin/cpanm CGI
 
 # 1. Define the file and the string to search for
 ZSHRC_FILE="$HOME/.zshrc"
@@ -52,6 +79,8 @@ else
 
 # For Perl (from source)
 export PATH="/tools/perl-source:$PATH"
+export PATH="/tools/perl-source/utils:$PATH"
+export PATH="$HOME/perl5dev/bin:$PATH"
 
 export PATH="$HOME/perl5dev/bin${PATH:+:${PATH}}"; export PATH;
 export PERL5LIB="$HOME/perl5dev/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;

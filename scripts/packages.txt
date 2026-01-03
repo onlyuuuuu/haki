@@ -1,3 +1,5 @@
+postgresql
+postgresql-contrib
 httping
 wget
 curl
