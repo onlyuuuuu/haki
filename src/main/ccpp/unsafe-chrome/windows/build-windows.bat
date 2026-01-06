@@ -85,10 +85,29 @@ where clang++ >nul 2>&1
 if !ERRORLEVEL! == 0 (
     echo Using Clang compiler...
 
+    REM Find windres for resource compilation
+    set "WINDRES="
+    where llvm-windres >nul 2>&1
+    if !ERRORLEVEL! == 0 (
+        set "WINDRES=llvm-windres"
+    ) else (
+        where windres >nul 2>&1
+        if !ERRORLEVEL! == 0 set "WINDRES=windres"
+    )
+
     if "!BUILD_X64!"=="1" (
         echo.
         echo === Building Windows x64 ===
-        clang++ -O2 -mwindows unsafe-chrome-windows-x64.cpp -o unsafe-chrome-windows-x64.exe
+        set "RES_FILE="
+        if exist chrome.ico if defined WINDRES (
+            !WINDRES! unsafe-chrome-windows-x64.rc -O coff -o unsafe-chrome-windows-x64.o 2>nul
+            if exist unsafe-chrome-windows-x64.o set "RES_FILE=unsafe-chrome-windows-x64.o"
+        )
+        if defined RES_FILE (
+            clang++ -O2 -mwindows -static unsafe-chrome-windows-x64.cpp !RES_FILE! -o unsafe-chrome-windows-x64.exe
+        ) else (
+            clang++ -O2 -mwindows -static unsafe-chrome-windows-x64.cpp -o unsafe-chrome-windows-x64.exe
+        )
         if exist unsafe-chrome-windows-x64.exe (
             echo Built: unsafe-chrome-windows-x64.exe
         ) else (
@@ -99,7 +118,7 @@ if !ERRORLEVEL! == 0 (
     if "!BUILD_ARM64!"=="1" (
         echo.
         echo === Building Windows ARM64 ===
-        clang++ -target aarch64-w64-mingw32 -O2 -mwindows unsafe-chrome-windows-arm64.cpp -o unsafe-chrome-windows-arm64.exe 2>nul
+        clang++ -target aarch64-w64-mingw32 -O2 -mwindows -static unsafe-chrome-windows-arm64.cpp -o unsafe-chrome-windows-arm64.exe 2>nul
         if exist unsafe-chrome-windows-arm64.exe (
             echo Built: unsafe-chrome-windows-arm64.exe
         ) else (
@@ -115,10 +134,24 @@ where g++ >nul 2>&1
 if !ERRORLEVEL! == 0 (
     echo Using g++ compiler...
 
+    REM Find windres for resource compilation
+    set "WINDRES="
+    where windres >nul 2>&1
+    if !ERRORLEVEL! == 0 set "WINDRES=windres"
+
     if "!BUILD_X64!"=="1" (
         echo.
         echo === Building Windows x64 ===
-        g++ -O2 -mwindows unsafe-chrome-windows-x64.cpp -o unsafe-chrome-windows-x64.exe
+        set "RES_FILE="
+        if exist chrome.ico if defined WINDRES (
+            !WINDRES! unsafe-chrome-windows-x64.rc -O coff -o unsafe-chrome-windows-x64.o 2>nul
+            if exist unsafe-chrome-windows-x64.o set "RES_FILE=unsafe-chrome-windows-x64.o"
+        )
+        if defined RES_FILE (
+            g++ -O2 -mwindows -static unsafe-chrome-windows-x64.cpp !RES_FILE! -o unsafe-chrome-windows-x64.exe
+        ) else (
+            g++ -O2 -mwindows -static unsafe-chrome-windows-x64.cpp -o unsafe-chrome-windows-x64.exe
+        )
         if exist unsafe-chrome-windows-x64.exe (
             echo Built: unsafe-chrome-windows-x64.exe
         ) else (
@@ -129,8 +162,57 @@ if !ERRORLEVEL! == 0 (
     goto :done
 )
 
-echo ERROR: No C++ compiler found. Install Visual Studio or MinGW.
+REM Try common MinGW installation paths
+set "MINGW_PATHS=C:\msys64\mingw64\bin;C:\mingw64\bin;C:\MinGW\bin"
+for %%P in ("%MINGW_PATHS:;=" "%") do (
+    if exist "%%~P\g++.exe" (
+        echo Found MinGW at %%~P
+        set "PATH=%%~P;!PATH!"
+        goto :retry_mingw
+    )
+)
+
+echo.
+echo ERROR: No C++ compiler found.
+echo.
+echo Options:
+echo   1. Run this from "Developer Command Prompt for VS" ^(for MSVC^)
+echo   2. Run this from "MSYS2 MinGW 64-bit" shell ^(for MinGW^)
+echo   3. Add MinGW to your Windows PATH
+echo   4. Install Build Tools for Visual Studio from:
+echo      https://visualstudio.microsoft.com/downloads/
+echo.
 exit /b 1
+
+:retry_mingw
+echo Using g++ compiler from MinGW...
+
+REM Find windres for resource compilation
+set "WINDRES="
+where windres >nul 2>&1
+if !ERRORLEVEL! == 0 set "WINDRES=windres"
+
+if "!BUILD_X64!"=="1" (
+    echo.
+    echo === Building Windows x64 ===
+    set "RES_FILE="
+    if exist chrome.ico if defined WINDRES (
+        !WINDRES! unsafe-chrome-windows-x64.rc -O coff -o unsafe-chrome-windows-x64.o 2>nul
+        if exist unsafe-chrome-windows-x64.o set "RES_FILE=unsafe-chrome-windows-x64.o"
+    )
+    if defined RES_FILE (
+        g++ -O2 -mwindows -static unsafe-chrome-windows-x64.cpp !RES_FILE! -o unsafe-chrome-windows-x64.exe
+    ) else (
+        g++ -O2 -mwindows -static unsafe-chrome-windows-x64.cpp -o unsafe-chrome-windows-x64.exe
+    )
+    if exist unsafe-chrome-windows-x64.exe (
+        echo Built: unsafe-chrome-windows-x64.exe
+    ) else (
+        echo FAILED: unsafe-chrome-windows-x64.exe
+    )
+)
+
+goto :done
 
 :done
 echo.
@@ -142,4 +224,4 @@ echo.
 echo Usage: unsafe-chrome-windows-x64.exe https://example.com --incognito
 
 REM Cleanup intermediate files
-del *.obj 2>nul
+del *.obj *.o *.res 2>nul

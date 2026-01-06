@@ -64,25 +64,39 @@ if [ $BUILD_X64 -eq 1 ]; then
     echo ""
     echo "=== Building Windows x64 ==="
 
-    # Find compiler - prefer clang++, then g++
+    # Find compiler - prefer MinGW g++ over MSYS g++ to avoid msys-2.0.dll dependency
     COMPILER=""
-    if command -v clang++ &> /dev/null; then
-        COMPILER="clang++"
+    # First, try the MinGW64 toolchain (works from any MSYS2 shell)
+    if [ -x "/mingw64/bin/g++" ]; then
+        COMPILER="/mingw64/bin/g++"
+    elif [ -x "/mingw64/bin/x86_64-w64-mingw32-g++" ]; then
+        COMPILER="/mingw64/bin/x86_64-w64-mingw32-g++"
     elif command -v x86_64-w64-mingw32-g++ &> /dev/null; then
         COMPILER="x86_64-w64-mingw32-g++"
+    elif command -v clang++ &> /dev/null; then
+        COMPILER="clang++"
     elif command -v g++ &> /dev/null; then
+        # Warn if this might be MSYS g++ instead of MinGW g++
+        if ldd "$(which g++)" 2>/dev/null | grep -q "msys"; then
+            echo "ERROR: Only MSYS g++ found, which produces executables requiring msys-2.0.dll"
+            echo "       Install MinGW64 toolchain: pacman -S mingw-w64-x86_64-gcc"
+            exit 1
+        fi
         COMPILER="g++"
     else
         echo "ERROR: No x64 C++ compiler found"
+        echo "       Install MinGW64 toolchain: pacman -S mingw-w64-x86_64-gcc"
         exit 1
     fi
 
-    # Find windres
+    # Find windres - prefer MinGW windres (works from any MSYS2 shell)
     WINDRES=""
-    if command -v llvm-windres &> /dev/null; then
-        WINDRES="llvm-windres"
+    if [ -x "/mingw64/bin/windres" ]; then
+        WINDRES="/mingw64/bin/windres"
     elif command -v x86_64-w64-mingw32-windres &> /dev/null; then
         WINDRES="x86_64-w64-mingw32-windres"
+    elif command -v llvm-windres &> /dev/null; then
+        WINDRES="llvm-windres"
     elif command -v windres &> /dev/null; then
         WINDRES="windres"
     fi
@@ -93,8 +107,9 @@ if [ $BUILD_X64 -eq 1 ]; then
     RES_FILE=""
     if [ -f chrome.ico ] && [ -n "$WINDRES" ]; then
         echo "Using windres: $WINDRES"
-        if $WINDRES unsafe-chrome-windows-x64.rc -o unsafe-chrome-windows-x64.res 2>/dev/null; then
-            RES_FILE="unsafe-chrome-windows-x64.res"
+        # Output as COFF object file (.o) which g++ can link directly
+        if $WINDRES unsafe-chrome-windows-x64.rc -O coff -o unsafe-chrome-windows-x64.o 2>/dev/null; then
+            RES_FILE="unsafe-chrome-windows-x64.o"
         else
             echo "Note: windres failed, building without icon/version info"
         fi
@@ -103,9 +118,9 @@ if [ $BUILD_X64 -eq 1 ]; then
     fi
 
     if [ -n "$RES_FILE" ]; then
-        $COMPILER -O2 -mwindows unsafe-chrome-windows-x64.cpp "$RES_FILE" -o chrome-windows-x64.exe
+        $COMPILER -O2 -mwindows -static unsafe-chrome-windows-x64.cpp "$RES_FILE" -o chrome-windows-x64.exe
     else
-        $COMPILER -O2 -mwindows unsafe-chrome-windows-x64.cpp -o chrome-windows-x64.exe
+        $COMPILER -O2 -mwindows -static unsafe-chrome-windows-x64.cpp -o chrome-windows-x64.exe
     fi
 
     if [ -f chrome-windows-x64.exe ]; then
@@ -148,8 +163,9 @@ if [ $BUILD_ARM64 -eq 1 ]; then
         RES_FILE=""
         if [ -f chrome.ico ] && [ -n "$WINDRES" ]; then
             echo "Using windres: $WINDRES"
-            if $WINDRES unsafe-chrome-windows-arm64.rc -o unsafe-chrome-windows-arm64.res 2>/dev/null; then
-                RES_FILE="unsafe-chrome-windows-arm64.res"
+            # Output as COFF object file (.o) which g++ can link directly
+            if $WINDRES unsafe-chrome-windows-arm64.rc -O coff -o unsafe-chrome-windows-arm64.o 2>/dev/null; then
+                RES_FILE="unsafe-chrome-windows-arm64.o"
             else
                 echo "Note: windres failed, building without icon/version info"
             fi
@@ -158,9 +174,9 @@ if [ $BUILD_ARM64 -eq 1 ]; then
         fi
 
         if [ -n "$RES_FILE" ]; then
-            $COMPILER $COMPILER_FLAGS -O2 -mwindows unsafe-chrome-windows-arm64.cpp "$RES_FILE" -o chrome-windows-arm64.exe 2>&1
+            $COMPILER $COMPILER_FLAGS -O2 -mwindows -static unsafe-chrome-windows-arm64.cpp "$RES_FILE" -o chrome-windows-arm64.exe 2>&1
         else
-            $COMPILER $COMPILER_FLAGS -O2 -mwindows unsafe-chrome-windows-arm64.cpp -o chrome-windows-arm64.exe 2>&1
+            $COMPILER $COMPILER_FLAGS -O2 -mwindows -static unsafe-chrome-windows-arm64.cpp -o chrome-windows-arm64.exe 2>&1
         fi
 
         if [ -f chrome-windows-arm64.exe ]; then
