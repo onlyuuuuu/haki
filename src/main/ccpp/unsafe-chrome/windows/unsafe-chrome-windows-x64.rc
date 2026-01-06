@@ -1,0 +1,35 @@
+// Resource file for Chrome-like appearance (Windows x64)
+// Compile with: windres unsafe-chrome-windows-x64.rc -o unsafe-chrome-windows-x64.res
+
+// Icon
+1 ICON "chrome.ico"
+
+// Version Information - using raw values instead of winver.h constants
+1 VERSIONINFO
+FILEVERSION     131,0,6778,265
+PRODUCTVERSION  131,0,6778,265
+FILEFLAGSMASK   0x3fL
+FILEFLAGS       0x0L
+FILEOS          0x40004L
+FILETYPE        0x1L
+FILESUBTYPE     0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "Google LLC\0"
+            VALUE "FileDescription", "Google Chrome\0"
+            VALUE "FileVersion", "131.0.6778.265\0"
+            VALUE "InternalName", "chrome_exe\0"
+            VALUE "LegalCopyright", "Copyright 2024 Google LLC. All rights reserved.\0"
+            VALUE "OriginalFilename", "chrome.exe\0"
+            VALUE "ProductName", "Google Chrome\0"
+            VALUE "ProductVersion", "131.0.6778.265\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 0x04B0
+    END
+END

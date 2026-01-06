@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\"\")",
+      "Bash(dir \"c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\\\\unsafe-chrome\")",
+      "Bash(cmd //c \"cd /d c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\\\\unsafe-chrome\\\\windows && build-windows.bat\")",
+      "Bash(cmd //c \"c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\\\\unsafe-chrome\\\\windows\\\\build-windows.bat\")",
+      "Bash(./build-windows.sh:*)",
+      "Bash(windres:*)",
+      "Bash(gcc:*)",
+      "Bash(cat:*)",
+      "Bash(g++:*)",
+      "Bash(echo:*)",
+      "Bash(/c/msys64/ucrt64/bin/gcc.exe /tmp/test.c -o /tmp/test.exe)",
+      "Bash(/c/msys64/ucrt64/bin/gcc.exe:*)",
+      "Bash(cmd //c \"echo int main\\(\\){return 0;} > C:\\\\temp\\\\test.c && C:\\\\msys64\\\\ucrt64\\\\bin\\\\gcc.exe C:\\\\temp\\\\test.c -o C:\\\\temp\\\\test.exe 2>&1 && echo SUCCESS || echo FAILED\")",
+      "Bash(clang++:*)",
+      "Bash(if [ -f chrome-windows-x64.exe ])",
+      "Bash(then echo \"SUCCESS\")",
+      "Bash(else echo \"FAILED\")",
+      "Bash(fi)",
+      "Bash(ls:*)",
+      "Bash(where:*)",
+      "Bash(.build-windows.bat)",
+      "Bash(cmd /c \"cd /d c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\\\\unsafe-chrome\\\\windows && build-windows.bat\")",
+      "Bash(powershell -Command \"cd ''c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\\\\unsafe-chrome\\\\windows''; cmd /c build-windows.bat\")",
+      "Bash(powershell -Command \"& ''c:\\\\dev\\\\haki\\\\src\\\\main\\\\ccpp\\\\unsafe-chrome\\\\windows\\\\build-windows.bat''\")",
+      "Bash(powershell:*)"
+    ]
+  }
+}
