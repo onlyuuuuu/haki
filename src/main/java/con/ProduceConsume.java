@@ -49,65 +49,6 @@ class Anything
     }
 }
 
-
-class AnythingVersionTwo
-{
-    private final ArrayList<Integer> l         = new ArrayList<>();
-    private final Lock               lock      = new ReentrantLock();
-    private final Condition          condition = lock.newCondition();
-    public AnythingVersionTwo(){}
-    public void produce(String threadName)
-    {
-        boolean locked = false;
-        try
-        {
-            while (!l.isEmpty())
-            {
-                System.out.println(threadName + ": Cannot produce if the list is not empty!");
-                condition.await();
-            }
-            int i = 1;
-            while (l.size() < 5)
-            {
-                Thread.sleep(1000);
-                l.add(i);
-                System.out.println(threadName + ": Added " + i++ + " into the list. Size: " + l.size());
-            }
-            condition.notify();
-        }
-        catch (Exception e) {}
-        finally
-        {
-            if (locked)
-                lock.unlock();
-        }
-    }
-    public void consume(String threadName)
-    {
-        boolean locked = false;
-        try
-        {
-            while (l.isEmpty())
-            {
-                System.out.println(threadName + ": Cannot consume if the list is empty!");
-                condition.await();
-            }
-            while (!l.isEmpty())
-            {
-                Thread.sleep(1000);
-                System.out.println(threadName + ": Removed " + l.removeLast() + " into the list. Size: " + l.size());
-            }
-            condition.notify();
-        }
-        catch (Exception e) {}
-        finally
-        {
-            if (locked)
-                lock.unlock();
-        }
-    }
-}
-
 // rm -rf *.class > /dev/null 2>&1; javac ProduceConsume.java; java ProduceConsume
 public class ProduceConsume
 {
