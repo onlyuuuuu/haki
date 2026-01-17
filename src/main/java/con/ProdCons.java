@@ -4,7 +4,7 @@ import java.util.concurrent.Semaphore;
 class Producer
 {
     private final String name;
-    private final LinkedList<Integer> queue;
+    private volatile LinkedList<Integer> queue;
     private final Semaphore semaphore;
 
     public Producer(String name, LinkedList<Integer> queue, Semaphore semaphore)
@@ -41,6 +41,7 @@ class Producer
         finally
         {
             if (locked) semaphore.release();
+            System.out.println(name + " | " + Thread.currentThread().getName() + ": Lock released!");
         }
     }
 }
@@ -48,7 +49,7 @@ class Producer
 class Consumer
 {
     private final String name;
-    private final LinkedList<Integer> queue;
+    private volatile LinkedList<Integer> queue;
     private final Semaphore semaphore;
 
     public Consumer(String name, LinkedList<Integer> queue, Semaphore semaphore)
@@ -61,6 +62,7 @@ class Consumer
     public void consume()
     {
         if (queue.isEmpty()) return;
+        //System.out.println(name + " | " + Thread.currentThread().getName() + ": Queue is not empty! Gud to go!");
         boolean locked = semaphore.tryAcquire();
         if (!locked) return;
         try
@@ -81,7 +83,11 @@ class Consumer
         catch (Exception e) {}
         finally
         {
-            if (locked) semaphore.release();
+            if (locked)
+            {
+                semaphore.release();
+                System.out.println(name + " | " + Thread.currentThread().getName() + ": Lock released!");
+            }
         }
     }
 }
@@ -90,7 +96,7 @@ class Consumer
 public class ProdCons
 {
     private static volatile LinkedList<Integer> queue = new LinkedList<>();
-    private static volatile Semaphore semaphore = new Semaphore(1);
+    private static Semaphore semaphore = new Semaphore(1);
     public static void main(String[] args) throws InterruptedException
     {
         Producer p1 = new Producer("Producer1", queue, semaphore);
@@ -100,53 +106,50 @@ public class ProdCons
         Thread t1 = new Thread(() -> {
             while (true)
             {
-                try
-                {
-                    Thread.sleep(200);
-                }
-                catch (Exception e) {}
+//                try
+//                {
+//                    Thread.sleep(200);
+//                }
+//                catch (Exception e) {}
                 p1.produce();
             }
         }, "Thread1");
         Thread t2 = new Thread(() -> {
             while (true)
             {
-                try
-                {
-                    Thread.sleep(200);
-                }
-                catch (Exception e) {}
+//                try
+//                {
+//                    Thread.sleep(200);
+//                }
+//                catch (Exception e) {}
                 p2.produce();
             }
         }, "Thread2");
         Thread t3 = new Thread(() -> {
             while (true)
             {
-                try
-                {
-                    Thread.sleep(200);
-                }
-                catch (Exception e) {}
+//                try
+//                {
+//                    Thread.sleep(200);
+//                }
+//                catch (Exception e) {}
                 c1.consume();
             }
         }, "Thread3");
         Thread t4 = new Thread(() -> {
             while (true)
             {
-                try
-                {
-                    Thread.sleep(200);
-                }
-                catch (Exception e) {}
+//                try
+//                {
+//                    Thread.sleep(200);
+//                }
+//                catch (Exception e) {}
                 c2.consume();
             }
         }, "Thread4");
         t1.start();
-        Thread.sleep(200);
-        t2.start();
-        Thread.sleep(200);
         t3.start();
-        Thread.sleep(200);
+        t2.start();
         t4.start();
     }
 }
