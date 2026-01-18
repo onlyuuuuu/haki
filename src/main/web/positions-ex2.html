@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Home</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script type="module" src="script.js"></script>
+  <style>
+    html {
+      overflow: hidden;
+    }
+
+    body {
+      height: 200vh;
+      width: auto;
+      padding: 50px;
+      border: 6px black solid;
+      overflow: hidden; /* have to also add to html */
+    }
+
+    div {
+      margin: 20px;
+      border: 6px green solid;
+      padding: 10px;
+    }
+
+    div.big-outer {
+      border: 6px darkorange solid;
+      position: relative;
+      left: 100px;
+    }
+
+    div.outer {
+      border: 6px red solid;
+      overflow: hidden;
+    }
+
+    div.static {
+      position: static;
+    }
+
+    div.relative {
+      position: relative;
+      left: 50px;
+      top: 50px;
+    }
+  </style>
+</head>
+<body>
+<div class="big-outer">
+  <div class="outer">
+    <div class="static">
+      This div element has position: static;
+    </div>
+    <div class="relative">
+      This div element has position: relative;
+    </div>
+  </div>
+</div>
+</body>
+</html>

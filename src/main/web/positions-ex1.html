@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Home</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script type="module" src="script.js"></script>
+  <style>
+    body {
+      height: 200vh;
+      width: auto;
+      padding: 50px;
+      border: 6px black solid;
+    }
+
+    div {
+      margin: 20px;
+      border: 6px green solid;
+      padding: 10px;
+    }
+
+    div.outer {
+      border: 6px red solid;
+    }
+
+    div.static {
+      position: static;
+    }
+
+    div.relative {
+      position: relative;
+      left: 20px;
+      top: 20px;
+    }
+
+    div.fixed {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      background-color: lightyellow;
+    }
+
+    div.fixed2 {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: lightyellow;
+      z-index: -1;
+    }
+
+    div.fixed3 {
+      position: fixed;
+      top: 400px;
+      left: 30px;
+      background-color: lightyellow;
+      height: 200px;
+    }
+
+    div.absolute {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: orange;
+    }
+
+    div.sticky {
+      position: sticky;
+      top: 0;
+      /* bottom: 0; */
+      background-color: lightgreen;
+    }
+
+    div.image {
+      position: relative;
+      top: 20px;
+      left: 300px;
+      height: 400px;
+      width: 500px;
+      /* background-image: url(./image.jpg);
+      background-position: center; */
+      background-color: lightblue;
+    }
+
+    div.top-left {
+      display: inline-block;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border: none;
+    }
+
+    div.bottom-left {
+      display: inline-block;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      border: none;
+    }
+
+    div.top-right {
+      display: inline-block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+    }
+
+    div.bottom-right {
+      /*display: inline-block;*/
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      border: none;
+    }
+
+    div.center {
+      /*display: inline-block;*/
+      display: block;
+      width: 96%;
+      position: absolute;
+      text-align: center;
+      top: 49%;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="outer">
+  <div class="static">
+    This div element has position: static;
+  </div>
+  <div class="relative">
+    This div element has position: relative;
+  </div>
+  <div class="fixed">
+    This div element has position: fixed;
+  </div>
+  <div class="fixed2">
+    This div element also has position: fixed; with lower z-index
+  </div>
+  <div class="fixed3">
+    This div element also has position: fixed;
+    <div class="absolute">position: absolute</div>
+  </div>
+</div>
+<div class="sticky">
+  This div element also has position: sticky;
+</div>
+<div class="image">
+  <div class="top-left">top left</div>
+  <div class="bottom-left">bottom left</div>
+  <div class="top-right">right top</div>
+  <div class="bottom-right">bottom top</div>
+  <div class="center">center</div>
+</div>
+</body>
+</html>
