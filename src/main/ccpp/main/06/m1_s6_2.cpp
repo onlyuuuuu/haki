@@ -30,6 +30,14 @@ int main()
     m.begin()->second.pop();
     if(m.begin()->second.empty())
         m.erase(m.begin());
+    while( x-(v.back().first+m.begin()->first) > std::prev(m.end())->first )
+    {
+        ms=v.back().first+m.begin()->first;
+        v.emplace_back(m.begin()->first,m.begin()->second.front());
+        m.begin()->second.pop();
+        if(m.begin()->second.empty())
+            m.erase(m.begin());
+    }
     while(!m.empty())
     {
         pair<int,int>p={m.begin()->first,m.begin()->second.front()};
