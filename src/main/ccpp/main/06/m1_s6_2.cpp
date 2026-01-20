@@ -45,7 +45,7 @@ int main()
         return 0;
     }
     move(v,m);
-    if(m.empty())
+    if(m.empty()||(m.size()==1&&m.begin()->second.size()==1))
     {
         cout<<"IMPOSSIBLE"<<'\n';
         return 0;
