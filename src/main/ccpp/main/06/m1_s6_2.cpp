@@ -15,7 +15,7 @@ int main()
     {
         cin>>i;
         if(i>x-2)continue;
-        auto p = m.try_emplace(i,NULL);
+        auto p = m.try_emplace(i);
         if(!p.second)
         {
             if(p.first->second.size()==3)continue;
@@ -23,7 +23,7 @@ int main()
             continue;
         }
         queue<int>q;
-        q.push(i);
+        q.push(j);
         p.first->second=q;
     }
     v.emplace_back(m.begin()->first,m.begin()->second.front());
@@ -44,7 +44,7 @@ int main()
         else if(diff == v.front().first)
             vit=v.begin()+1;
         else
-            vit=std::upper_bound(v.begin(),v.end(),diff);
+            vit=std::upper_bound(v.begin(),v.end(),std::make_pair(diff,0));
         for(;vit!=v.end();vit++)
         {
             ms=vit->first+p.first;
