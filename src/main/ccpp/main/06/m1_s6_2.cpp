@@ -79,6 +79,12 @@ int main()
         {
             ms=vit->first+p.first;
             int lookup=x-ms;
+            if(lookup < m.begin()->first)
+            {
+                cout<<"IMPOSSIBLE"<<'\n';
+                return 0;
+            }
+            if(lookup > std::prev(m.end())->first)continue;
             if(lookup == m.begin()->first)
             {
                 cout<<vit->second<<' '<<p.second<<' '<<m.begin()->second.front()<<'\n';
@@ -89,14 +95,11 @@ int main()
                 cout<<vit->second<<' '<<p.second<<' '<<std::prev(m.end())->second.front()<<'\n';
                 return 0;
             }
-            if(lookup > m.begin()->first && lookup < std::prev(m.end())->first)
+            auto mit=m.find(lookup);
+            if(mit!=m.end())
             {
-                auto mit=m.find(lookup);
-                if(mit!=m.end())
-                {
-                    cout<<vit->second<<' '<<p.second<<' '<<mit->second.front()<<'\n';
-                    return 0;
-                }
+                cout<<vit->second<<' '<<p.second<<' '<<mit->second.front()<<'\n';
+                return 0;
             }
         }
         if(p.first == v.back().first)continue;
