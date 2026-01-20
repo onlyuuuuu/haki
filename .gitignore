@@ -1,4 +1,5 @@
 !**/.cph
+!**/.cph/.*
 src/main/ccpp/ccpp
 src/main/ccpp/.cmake/
 src/main/ccpp/ccpp.dir/

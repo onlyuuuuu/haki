@@ -1,7 +1,20 @@
 #include<bits/stdc++.h>
 using namespace std;
+static void drop(map<int,queue<int>>&m)
+{
+    m.begin()->second.pop();
+    if(m.begin()->second.empty())
+        m.erase(m.begin());
+}
+static void move(vector<pair<int,int>>&v,map<int,queue<int>>&m)
+{
+    v.emplace_back(m.begin()->first,m.begin()->second.front());
+    drop(m);
+}
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     map<int,queue<int>>m;
     vector<pair<int,int>>v;
     int n,x,i,ms=0;
@@ -26,22 +39,31 @@ int main()
         q.push(j);
         p.first->second=q;
     }
-    v.emplace_back(m.begin()->first,m.begin()->second.front());
-    m.begin()->second.pop();
-    if(m.begin()->second.empty())
-        m.erase(m.begin());
-    while( x-(v.back().first+m.begin()->first) > std::prev(m.end())->first )
+    if(m.empty())
+    {
+        cout<<"IMPOSSIBLE"<<'\n';
+        return 0;
+    }
+    move(v,m);
+    if(m.empty())
+    {
+        cout<<"IMPOSSIBLE"<<'\n';
+        return 0;
+    }
+    while( !m.empty() && x-(v.back().first+m.begin()->first) > std::prev(m.end())->first )
     {
         ms=v.back().first+m.begin()->first;
-        v.emplace_back(m.begin()->first,m.begin()->second.front());
-        m.begin()->second.pop();
-        if(m.begin()->second.empty())
-            m.erase(m.begin());
+        if(v.back().first == m.begin()->first)
+        {
+            drop(m);
+            continue;
+        }
+        move(v,m);
     }
     while(!m.empty())
     {
         pair<int,int>p={m.begin()->first,m.begin()->second.front()};
-        m.begin()->second.pop();
+        m.begin()->second.pop();`
         if(m.begin()->second.empty())
             m.erase(m.begin());
         if(m.empty())continue;
