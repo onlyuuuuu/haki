@@ -18,6 +18,7 @@ int main()
     map<int,queue<int>>m;
     vector<pair<int,int>>v;
     int n,x,i,ms=0;
+    int an=0;
     cin>>n>>x;
     if(n<3||x<3)
     {
@@ -33,23 +34,20 @@ int main()
         {
             if(p.first->second.size()==3)continue;
             p.first->second.push(j);
+            ++an;
             continue;
         }
         queue<int>q;
         q.push(j);
         p.first->second=q;
+        ++an;
     }
-    if(m.empty())
+    if(an<3)
     {
         cout<<"IMPOSSIBLE"<<'\n';
         return 0;
     }
     move(v,m);
-    if(m.empty()||(m.size()==1&&m.begin()->second.size()==1))
-    {
-        cout<<"IMPOSSIBLE"<<'\n';
-        return 0;
-    }
     while( !m.empty() && x-(v.back().first+m.begin()->first) > std::prev(m.end())->first )
     {
         ms=v.back().first+m.begin()->first;
