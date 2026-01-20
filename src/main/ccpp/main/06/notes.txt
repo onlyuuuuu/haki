@@ -23,20 +23,34 @@ until: 23 - 7 =  16
 4
 4 7 9 10 11
 
--------- can we skip to?
+-------- can we skip to? --------
 1 2 3 4 7
 9
 10 11
-pre MS: 11
-MS: 
+cur MS: 11
+pot MS: 16
+lookup: 11 - 9 = 2 (upper: 3)
+diff? : 11 - 9 = 2 (upper: 3)
+diff? : 23 - (11 + 9) = 3 (lower: 3)
 
 before that (above):
 1 2 3 4
 7
 9 10 11
-pre MS: 11
-MS: 
+cur MS: 7
+pot MS: 11
 23 - 11 = 12
+
+----------------------------------------
+
+x=28
+1 2 3
+7
+13 20
+cur MS: 5
+pot MS: 10
+lookup: 5 - 7 = -2 (upper: 1)
+diff? : 28 - (20 + 7) = 1 (lower: 1)
 
 ----------------------------------------
 

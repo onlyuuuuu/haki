@@ -63,10 +63,12 @@ int main()
     while(!m.empty())
     {
         pair<int,int>p={m.begin()->first,m.begin()->second.front()};
-        m.begin()->second.pop();
-        if(m.begin()->second.empty())
-            m.erase(m.begin());
-        if(m.empty())continue;
+        drop(m);
+        if(m.empty())
+        {
+            cout<<"IMPOSSIBLE"<<'\n';
+            return 0;
+        }
         int diff=ms-p.first;
         auto vit=v.begin();
         if(diff < v.front().first)
@@ -84,7 +86,6 @@ int main()
                 cout<<"IMPOSSIBLE"<<'\n';
                 return 0;
             }
-            if(lookup > std::prev(m.end())->first)continue;
             if(lookup == m.begin()->first)
             {
                 cout<<vit->second<<' '<<p.second<<' '<<m.begin()->second.front()<<'\n';
