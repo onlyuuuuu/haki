@@ -3,13 +3,29 @@ using namespace std;
 static void drop(map<int,queue<int>>&m)
 {
     m.begin()->second.pop();
-    if(m.begin()->second.empty())
+    if(m.begin()->second.empty()||INT_MIN==m.begin()->second.front())
         m.erase(m.begin());
 }
-static void move(vector<pair<int,int>>&v,map<int,queue<int>>&m)
+static pair<int,int> poll(map<int,queue<int>>&m)
 {
+    pair<int,int>p={m.begin()->first,m.begin()->second.front()};
+    drop(m);
+    return p;
+}
+static void move(map<int,queue<int>>&m,vector<pair<int,int>>&v)
+{
+    if(v.back().first==m.begin()->first)
+    {
+        drop(m);
+        return;
+    }
     v.emplace_back(m.begin()->first,m.begin()->second.front());
     drop(m);
+}
+static void move(const pair<int,int>&p,vector<pair<int,int>>&v)
+{
+    if(p.first==v.back().first) return;
+    v.emplace_back(p.first,p.second);
 }
 int main()
 {
@@ -17,92 +33,72 @@ int main()
     cin.tie(NULL);
     map<int,queue<int>>m;
     vector<pair<int,int>>v;
-    int n,x,i,ms=0;
-    int an=0;
+    int n,x,i,s=0;
     cin>>n>>x;
     if(n<3||x<3)
     {
         cout<<"IMPOSSIBLE"<<'\n';
         return 0;
     }
-    for(int j=1;j<=n;j++)
+    for(int pos=1;pos<=n;pos++)
     {
         cin>>i;
         if(i>x-2)continue;
         auto p = m.try_emplace(i);
-        if(!p.second)
+        if(p.second)
         {
-            if(p.first->second.size()==3)continue;
-            p.first->second.push(j);
-            ++an;
+            queue<int>q;
+            q.push(pos);
+            p.first->second=q;
             continue;
         }
-        queue<int>q;
-        q.push(j);
-        p.first->second=q;
-        ++an;
+        if(INT_MIN==p.first->second.back())continue;
+        if(2==p.first->second.size())
+        {
+            cout<<p.first->second.front()<<' '<<p.first->second.back()<<' '<<pos<<'\n';
+            return 0;
+        }
+        if(2*p.first->first>=x)
+        {
+            p.first->second.push(INT_MIN);
+            continue;
+        }
+        if(3*p.first->first==x)
+        {
+            p.first->second.push(pos);
+            continue;
+        }
+        p.first->second.push(pos);
+        p.first->second.push(INT_MIN);
     }
-    if(an<3)
+    if(m.empty())
     {
         cout<<"IMPOSSIBLE"<<'\n';
         return 0;
     }
-    move(v,m);
-    while( !m.empty() && x-(v.back().first+m.begin()->first) > std::prev(m.end())->first )
+    move(m,v);
+    s=v.front().first;
+    while(!m.empty() && x-(v.back().first+m.begin()->first) > std::prev(m.end())->first)
     {
-        ms=v.back().first+m.begin()->first;
-        if(v.back().first == m.begin()->first)
-        {
-            drop(m);
-            continue;
-        }
-        move(v,m);
+        s=v.back().first+m.begin()->first;
+        move(m,v);
+    }
+    if(!m.empty() && s + std::prev(m.end())->first == x)
+    {
+        cout<<v.back().second<<' '<<v[v.size()-2].second<<' '<<std::prev(m.end())->second.front()<<'\n';
+        return 0;
     }
     while(!m.empty())
     {
-        pair<int,int>p={m.begin()->first,m.begin()->second.front()};
-        drop(m);
+        pair<int,int>p=poll(m);
+        auto vit=v.begin();
+        
         if(m.empty())
         {
             cout<<"IMPOSSIBLE"<<'\n';
             return 0;
         }
-        int diff=ms-p.first;
-        auto vit=v.begin();
-        if(diff < v.front().first)
-            vit=v.begin();
-        else if(diff == v.front().first)
-            vit=v.begin()+1;
-        else
-            vit=std::upper_bound(v.begin(),v.end(),std::make_pair(diff,0));
-        for(;vit!=v.end();vit++)
-        {
-            ms=vit->first+p.first;
-            int lookup=x-ms;
-            if(lookup < m.begin()->first)
-            {
-                cout<<"IMPOSSIBLE"<<'\n';
-                return 0;
-            }
-            if(lookup == m.begin()->first)
-            {
-                cout<<vit->second<<' '<<p.second<<' '<<m.begin()->second.front()<<'\n';
-                return 0;
-            }
-            if(lookup == std::prev(m.end())->first)
-            {
-                cout<<vit->second<<' '<<p.second<<' '<<std::prev(m.end())->second.front()<<'\n';
-                return 0;
-            }
-            auto mit=m.find(lookup);
-            if(mit!=m.end())
-            {
-                cout<<vit->second<<' '<<p.second<<' '<<mit->second.front()<<'\n';
-                return 0;
-            }
-        }
-        if(p.first == v.back().first)continue;
-        v.push_back(p);
+        
     }
     cout<<"IMPOSSIBLE"<<'\n';
     return 0;
