@@ -14,7 +14,7 @@ static pair<int,int> poll(map<int,queue<int>>&m)
 }
 static void move(map<int,queue<int>>&m,vector<pair<int,int>>&v)
 {
-    if(v.back().first==m.begin()->first)
+    if(!v.empty() && v.back().first==m.begin()->first)
     {
         drop(m);
         return;
@@ -24,7 +24,7 @@ static void move(map<int,queue<int>>&m,vector<pair<int,int>>&v)
 }
 static void move(const pair<int,int>&p,vector<pair<int,int>>&v)
 {
-    if(p.first==v.back().first) return;
+    if(!v.empty() && p.first==v.back().first) return;
     v.emplace_back(p.first,p.second);
 }
 int main()
@@ -33,7 +33,7 @@ int main()
     cin.tie(NULL);
     map<int,queue<int>>m;
     vector<pair<int,int>>v;
-    int n,x,i,s=0;
+    int n,x,i,l;
     cin>>n>>x;
     if(n<3||x<3)
     {
@@ -77,28 +77,51 @@ int main()
         return 0;
     }
     move(m,v);
-    s=v.front().first;
-    while(!m.empty() && x-(v.back().first+m.begin()->first) > std::prev(m.end())->first)
-    {
-        s=v.back().first+m.begin()->first;
+    while(!m.empty() && x - ( v.back().first + m.begin()->first ) > std::prev(m.end())->first)
         move(m,v);
-    }
-    if(!m.empty() && s + std::prev(m.end())->first == x)
+    if(!m.empty() && v.back().first + m.begin()->first + std::prev(m.end())->first == x)
     {
-        cout<<v.back().second<<' '<<v[v.size()-2].second<<' '<<std::prev(m.end())->second.front()<<'\n';
+        cout<<v.back().second<<' '<<m.begin()->second.front()<<' '<<std::prev(m.end())->second.front()<<'\n';
         return 0;
     }
     while(!m.empty())
     {
         pair<int,int>p=poll(m);
-        auto vit=v.begin();
-        
         if(m.empty())
         {
             cout<<"IMPOSSIBLE"<<'\n';
             return 0;
         }
-        
+        n = x - ( std::prev(m.end())->first + p.first );
+        if(n == v.front().first)
+        {
+            cout<<v.front().second<<' '<<p.second<<' '<<std::prev(m.end())->second.front()<<'\n';
+            return 0;
+        }
+        if(n == v.back().first)
+        {
+            cout<<v.back().second<<' '<<p.second<<' '<<std::prev(m.end())->second.front()<<'\n';
+            return 0;
+        }
+        auto it=v.end();
+        if(n < v.front().first)     it=v.begin();
+        else if(n > v.back().first) it=v.end();
+        else                        it=std::lower_bound(v.begin(),v.end(),std::make_pair(n,0));
+        for(;it!=v.end();it++)
+        {
+            l = x - ( p.first + it->first );
+            if(l < m.begin()->first)break;
+            if(l == m.begin()->first)
+            {
+                cout<<it->second<<' '<<p.second<<' '<<m.begin()->second.front()<<'\n';
+                return 0;
+            }
+            auto f=m.find(l);
+            if(f==m.end())continue;
+            cout<<it->second<<' '<<p.second<<' '<<f->second.front()<<'\n';
+            return 0;
+        }
+        move(p,v);
     }
     cout<<"IMPOSSIBLE"<<'\n';
     return 0;
