@@ -15,7 +15,7 @@ static pair<int,int> poll(map<int,queue<int>>&m)
 static pair<int,int> sum_of_two(map<int,queue<int>>&m,const int&s)
 {
     pair<int,int> r={0,0};
-    
+    if()
     return r;
 }
 int main()
@@ -61,7 +61,7 @@ int main()
             cout<<p.second<<' '<<r.first<<' '<<r.second<<'\n';
             return 0;
         }
-        if(m.begin()->first == p.first)
+        if(!m.empty() && m.begin()->first == p.first)
             m.erase(m.begin());
     }
     cout<<"IMPOSSIBLE"<<'\n';
