@@ -27,7 +27,11 @@ static pair<int,int> sum_of_two(map<int,queue<int>>&m,const int&s)
         }
         h=t.emplace_hint(h,m.begin()->first,m.begin()->second);
         m.erase(m.begin());
-        if(m.empty())return r;
+        if(m.empty())
+        {
+            t.swap(m);
+            return r;
+        }
         int l = s - std::prev(t.end())->first;
         if(l < m.begin()->first || l > std::prev(m.end())->first)continue;
         if(l == m.begin()->first)
@@ -48,12 +52,7 @@ static pair<int,int> sum_of_two(map<int,queue<int>>&m,const int&s)
         r.second=f->second.front();
         return r;
     }
-    while(!m.empty())
-    {
-        h=t.emplace_hint(h,m.begin()->first,m.begin()->second);
-        m.erase(m.begin());
-    }
-    m.swap(t);
+    t.swap(m);
     return r;
 }
 int main()
