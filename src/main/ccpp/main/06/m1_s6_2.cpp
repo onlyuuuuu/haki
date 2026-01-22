@@ -14,8 +14,41 @@ static pair<int,int> poll(map<int,queue<int>>&m)
 }
 static pair<int,int> sum_of_two(map<int,queue<int>>&m,const int&s)
 {
-    pair<int,int> r={0,0};
-    if()
+    map<int,queue<int>>t;
+    pair<int,int>r={0,0};
+    auto h=t.begin();
+    while(!m.empty())
+    {
+        if(m.begin()->second.size()>1 && 2*m.begin()->first==s)
+        {
+            r.first=m.begin()->second.front();
+            r.second=m.begin()->second.back();
+            return r;
+        }
+        h=t.emplace_hint(h,m.begin()->first,m.begin()->second);
+        m.erase(m.begin());
+        if(m.empty())return r;
+        int l = s - std::prev(t.end())->first;
+        if(l < m.begin()->first || l > std::prev(m.end())->first)continue;
+        if(l == m.begin()->first)
+        {
+            r.first=std::prev(t.end())->second.front();
+            r.second=m.begin()->second.front();
+            return r;
+        }
+        if(l == std::prev(m.end())->first)
+        {
+            r.first=std::prev(t.end())->second.front();
+            r.second=std::prev(m.end())->second.front();
+            return r;
+        }
+        auto f=m.find(l);
+        if(f==m.end())continue;
+        r.first=std::prev(t.end())->second.front();
+        r.second=f->second.front();
+        return r;
+    }
+    if(!t.empty())m.swap(t);
     return r;
 }
 int main()
@@ -55,6 +88,11 @@ int main()
     while(!m.empty())
     {
         auto p=poll(m);
+        if(m.empty() || m.begin()->second.size()==1)
+        {
+            cout<<"IMPOSSIBLE"<<'\n';
+            return 0;
+        }
         auto r=sum_of_two(m,x-p.first);
         if(r.first!=0)
         {
