@@ -48,7 +48,12 @@ static pair<int,int> sum_of_two(map<int,queue<int>>&m,const int&s)
         r.second=f->second.front();
         return r;
     }
-    if(!t.empty())m.swap(t);
+    while(!m.empty())
+    {
+        h=t.emplace_hint(h,m.begin()->first,m.begin()->second);
+        m.erase(m.begin());
+    }
+    m.swap(t);
     return r;
 }
 int main()
