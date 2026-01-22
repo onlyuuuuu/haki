@@ -88,7 +88,7 @@ int main()
     while(!m.empty())
     {
         auto p=poll(m);
-        if(m.empty() || m.begin()->second.size()==1)
+        if(m.empty()||(m.size()==1&&m.begin()->second.size()==1))
         {
             cout<<"IMPOSSIBLE"<<'\n';
             return 0;
