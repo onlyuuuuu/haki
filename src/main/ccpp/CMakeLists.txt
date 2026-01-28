@@ -15,7 +15,12 @@ file(GLOB_RECURSE
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
 
-add_executable(ccpp main/test/recur.cpp)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+    "main/test/*.cpp"
+    "main/06/*.cpp"
+)
+
+add_executable(ccpp ${SOURCES})
 
 if(MINGW)
     # Match VSCode tasks.json: g++.exe build (O2)
