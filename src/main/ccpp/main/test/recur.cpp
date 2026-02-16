@@ -1,15 +1,22 @@
 #include<bits/stdc++.h>
 using namespace std;
-void solve(const int&n)
+static vector<int>v;
+static void f(const int&i)
 {
-    cout<<n<<'\n';
-    if(n==1)return;
-    solve(n-1);
-    cout<<"-----------------"<<'\n';
-    solve(n-1);
+    if (i==3)
+    {
+        for (auto j:v)
+            cout<<j<<' ';
+        cout<<'\n';
+        return;
+    }
+    f(i+1);
+    v.push_back(i);
+    f(i+1);
+    v.pop_back();
 }
 int main()
 {
-    solve(4);
+    f(0);
     return 0;
 }
