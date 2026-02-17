@@ -32,6 +32,7 @@ require("onlyu.tree")
 require("onlyu.telescope")
 require("onlyu.commentary")
 require("onlyu.completion")
+require("onlyu.cp")
 
 -- Set tab width to 2 spaces
 vim.opt.number = true

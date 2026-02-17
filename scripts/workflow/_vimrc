@@ -1,0 +1,605 @@
+" =============================================================================
+" Haki Vim Configuration
+" Enhanced _vimrc for multi-language development
+" Supports: Java, C/C++, Python, Rust, Go, JavaScript/TypeScript, HTML/CSS, Bash, Batch
+" =============================================================================
+
+" Basic Settings from original _vimrc
+let $LANG = 'en_US.UTF-8'
+set langmenu=en_US.UTF-8
+language messages en_US.UTF-8
+
+" Cursor settings
+set guicursor=a:block
+let &t_SI = "\e[2 q"
+let &t_EI = "\e[2 q"
+
+" Vim with all enhancements
+source $VIMRUNTIME/vimrc_example.vim
+
+" Use the internal diff if available
+if &diffopt !~# 'internal'
+  set diffexpr=MyDiff()
+endif
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg1 = substitute(arg1, '!', '\!', 'g')
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg2 = substitute(arg2, '!', '\!', 'g')
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let arg3 = substitute(arg3, '!', '\!', 'g')
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  let cmd = substitute(cmd, '!', '\!', 'g')
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+
+" =============================================================================
+" Enhanced Configuration Starts Here
+" =============================================================================
+
+" Disable compatibility with vi
+set nocompatible
+
+" Enable filetype detection, plugins, and indent
+filetype plugin indent on
+
+" Enable syntax highlighting
+syntax on
+
+" =============================================================================
+" General Settings
+" =============================================================================
+
+" Line numbers
+set number
+set relativenumber
+
+" Encoding
+set encoding=utf-8
+set fileencoding=utf-8
+
+" Indentation
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
+
+" Search settings
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" Display
+set showcmd
+set showmode
+set wildmenu
+set wildmode=longest:full,full
+set cursorline
+set scrolloff=5
+set sidescrolloff=5
+
+" Performance
+set lazyredraw
+set updatetime=300
+
+" Backspace behavior
+set backspace=indent,eol,start
+
+" Mouse support
+set mouse=a
+
+" Clipboard (use system clipboard)
+if has('clipboard')
+  set clipboard=unnamed
+  if has('unnamedplus')
+    set clipboard=unnamed,unnamedplus
+  endif
+endif
+
+" Backup and swap
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Persistent undo
+if has('persistent_undo')
+  set undofile
+  set undodir=$HOME/.vim/undodir
+  if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p', 0700)
+  endif
+endif
+
+" Split behavior
+set splitright
+set splitbelow
+
+" Status line
+set laststatus=2
+set ruler
+
+" Wrap settings
+set nowrap
+set linebreak
+
+" Color scheme
+set background=dark
+colorscheme desert
+if has('termguicolors')
+  set termguicolors
+endif
+
+" =============================================================================
+" Plugin Management (vim-plug)
+" =============================================================================
+
+" Auto-install vim-plug if not present
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Initialize plugin system
+call plug#begin('~/.vim/plugged')
+
+" File explorer
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Fuzzy finder
+Plug 'ctrlpvim/ctrlp.vim'
+
+" Status line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" Git integration
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" Auto pairs
+Plug 'jiangmiao/auto-pairs'
+
+" Commenting
+Plug 'tpope/vim-commentary'
+
+" Surround
+Plug 'tpope/vim-surround'
+
+" Multiple cursors
+Plug 'terryma/vim-multiple-cursors'
+
+" Auto-completion (lightweight)
+Plug 'lifepillar/vim-mucomplete'
+
+" Linting and fixing
+Plug 'dense-analysis/ale'
+
+" Language-specific plugins
+" C/C++
+Plug 'vim-scripts/c.vim', { 'for': ['c', 'cpp'] }
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
+
+" Python
+Plug 'vim-python/python-syntax', { 'for': 'python' }
+Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
+
+" JavaScript/TypeScript
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'typescript'] }
+
+" HTML/CSS
+Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'javascript', 'typescript'] }
+Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+
+" Rust
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+
+" Go
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
+
+" Java
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+
+" Markdown
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown', { 'for': 'markdown' }
+
+" Color schemes
+Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+" Tagbar (code outline)
+Plug 'preservim/tagbar'
+
+" Indent guides
+Plug 'Yggdroot/indentLine'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+call plug#end()
+
+" =============================================================================
+" Plugin Configurations
+" =============================================================================
+
+" NERDTree
+nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <leader>n :NERDTreeFind<CR>
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['\.pyc$', '__pycache__', '\.git$', '\.class$', '\.o$']
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+" Auto-close NERDTree if it's the last window
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" CtrlP
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$|node_modules|target|build|dist',
+  \ 'file': '\v\.(exe|so|dll|class|pyc)$',
+  \ }
+let g:ctrlp_show_hidden = 1
+
+" Airline
+let g:airline_theme='onedark'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+
+" GitGutter
+set updatetime=100
+let g:gitgutter_enabled = 1
+let g:gitgutter_map_keys = 0
+
+" ALE (Linting)
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint'],
+\   'javascript': ['eslint'],
+\   'typescript': ['eslint', 'tsserver'],
+\   'rust': ['cargo'],
+\   'go': ['gopls', 'golint'],
+\   'c': ['gcc', 'clang'],
+\   'cpp': ['gcc', 'clang'],
+\   'java': ['javac'],
+\}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['black', 'autopep8'],
+\   'javascript': ['prettier', 'eslint'],
+\   'typescript': ['prettier', 'eslint'],
+\   'css': ['prettier'],
+\   'html': ['prettier'],
+\   'rust': ['rustfmt'],
+\   'go': ['gofmt'],
+\}
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 1
+
+" MUcomplete (auto-completion)
+set completeopt+=menuone,noselect
+set shortmess+=c
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 1
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" Tagbar
+nnoremap <F8> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+let g:tagbar_width = 30
+
+" IndentLine
+let g:indentLine_char = '┊'
+let g:indentLine_enabled = 1
+
+" Gruvbox theme
+let g:gruvbox_contrast_dark = 'hard'
+colorscheme gruvbox
+
+" =============================================================================
+" Language-Specific Settings
+" =============================================================================
+
+" Java
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+autocmd FileType java setlocal tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType java nmap <F5> :!javac % && java %:r<CR>
+autocmd FileType java nmap <F4> :!javac %<CR>
+
+" C/C++
+autocmd FileType c,cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType c,cpp setlocal commentstring=//\ %s
+autocmd FileType cpp nmap <F5> :!g++ -std=c++20 -O2 -Wall % -o %:r && %:r<CR>
+autocmd FileType c nmap <F5> :!gcc -std=c11 -O2 -Wall % -o %:r && %:r<CR>
+autocmd FileType cpp nmap <F4> :!g++ -std=c++20 -O2 -Wall % -o %:r<CR>
+autocmd FileType c nmap <F4> :!gcc -std=c11 -O2 -Wall % -o %:r<CR>
+
+" Python
+autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType python setlocal expandtab
+autocmd FileType python nmap <F5> :!python %<CR>
+let g:python_highlight_all = 1
+
+" JavaScript/TypeScript
+autocmd FileType javascript,typescript setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType javascript nmap <F5> :!node %<CR>
+autocmd FileType typescript nmap <F5> :!ts-node %<CR>
+
+" HTML/CSS
+autocmd FileType html,css setlocal tabstop=2 softtabstop=2 shiftwidth=2
+let g:user_emmet_leader_key='<C-Z>'
+
+" Rust
+autocmd FileType rust setlocal tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType rust nmap <F5> :!cargo run<CR>
+autocmd FileType rust nmap <F4> :!cargo build<CR>
+let g:rustfmt_autosave = 1
+
+" Go
+autocmd FileType go setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
+autocmd FileType go nmap <F5> :!go run %<CR>
+autocmd FileType go nmap <F4> :!go build %<CR>
+let g:go_fmt_autosave = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+
+" Bash/Shell
+autocmd FileType sh setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType sh nmap <F5> :!bash %<CR>
+
+" Batch files
+autocmd FileType dosbatch setlocal tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType dosbatch nmap <F5> :!%<CR>
+
+" Markdown
+autocmd FileType markdown setlocal tabstop=2 softtabstop=2 shiftwidth=2 wrap
+let g:vim_markdown_folding_disabled = 1
+
+" =============================================================================
+" Custom Keybindings
+" =============================================================================
+
+" Leader key
+let mapleader = " "
+
+" Save file
+nnoremap <C-s> :w<CR>
+inoremap <C-s> <Esc>:w<CR>a
+vnoremap <C-s> <Esc>:w<CR>
+
+" Quit
+nnoremap <C-q> :q<CR>
+
+" Save and quit
+nnoremap <leader>wq :wq<CR>
+
+" Window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Buffer navigation
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bd :bdelete<CR>
+
+" Tab navigation
+nnoremap <leader>tn :tabnext<CR>
+nnoremap <leader>tp :tabprevious<CR>
+nnoremap <leader>tc :tabnew<CR>
+nnoremap <leader>tx :tabclose<CR>
+
+" Clear search highlight
+nnoremap <leader>/ :nohlsearch<CR>
+
+" Toggle line numbers
+nnoremap <leader>ln :set number!<CR>
+nnoremap <leader>lr :set relativenumber!<CR>
+
+" Split windows
+nnoremap <leader>sv :vsplit<CR>
+nnoremap <leader>sh :split<CR>
+
+" Resize windows
+nnoremap <C-Up> :resize +2<CR>
+nnoremap <C-Down> :resize -2<CR>
+nnoremap <C-Left> :vertical resize -2<CR>
+nnoremap <C-Right> :vertical resize +2<CR>
+
+" Move lines up/down
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Copy to end of line
+nnoremap Y y$
+
+" Paste without yanking in visual mode
+vnoremap p "_dP
+
+" Select all
+nnoremap <C-a> gg<S-v>G
+
+" Undo/Redo
+nnoremap <leader>u :undo<CR>
+nnoremap <leader>r :redo<CR>
+
+" Quick compile and run (F5)
+" Language-specific F5 is defined in autocmd sections above
+
+" Quick compile only (F4)
+" Language-specific F4 is defined in autocmd sections above
+
+" Format code
+nnoremap <leader>f :ALEFix<CR>
+
+" Toggle paste mode
+nnoremap <leader>p :set paste!<CR>
+
+" =============================================================================
+" Custom Functions
+" =============================================================================
+
+" Toggle between light and dark background
+function! ToggleBackground()
+  if &background == 'dark'
+    set background=light
+  else
+    set background=dark
+  endif
+endfunction
+nnoremap <leader>bg :call ToggleBackground()<CR>
+
+" Create directory if it doesn't exist when saving
+function! s:MkNonExDir(file, buf)
+  if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+    let dir=fnamemodify(a:file, ':h')
+    if !isdirectory(dir)
+      call mkdir(dir, 'p')
+    endif
+  endif
+endfunction
+augroup BWCCreateDir
+  autocmd!
+  autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
+" Remove trailing whitespace on save
+function! TrimWhitespace()
+  let l:save = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:save)
+endfunction
+autocmd BufWritePre * call TrimWhitespace()
+
+" =============================================================================
+" Auto Commands
+" =============================================================================
+
+" Return to last edit position when opening files
+autocmd BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+
+" Highlight yanked text
+if has('nvim')
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank {timeout=200}
+else
+  autocmd TextYankPost * silent! call timer_start(200, { -> execute('normal! `[v`]') })
+endif
+
+" Auto-close certain pairs of windows
+autocmd QuitPre * if &filetype == 'nerdtree' | NERDTreeClose | endif
+
+" =============================================================================
+" Status Line (if airline is not loaded)
+" =============================================================================
+
+if !exists('g:loaded_airline')
+  set statusline=
+  set statusline+=%#PmenuSel#
+  set statusline+=%#LineNr#
+  set statusline+=\ %f
+  set statusline+=%m
+  set statusline+=%=
+  set statusline+=%#CursorColumn#
+  set statusline+=\ %y
+  set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+  set statusline+=\[%{&fileformat}\]
+  set statusline+=\ %p%%
+  set statusline+=\ %l:%c
+  set statusline+=\
+endif
+
+" =============================================================================
+" GUI-specific settings
+" =============================================================================
+
+if has('gui_running')
+  " GUI font
+  if has('win32')
+    set guifont=Cascadia_Code:h11:cANSI
+  else
+    set guifont=Cascadia\ Code\ 11
+  endif
+
+  " Remove menu bar, toolbar, scrollbars
+  set guioptions-=m
+  set guioptions-=T
+  set guioptions-=r
+  set guioptions-=L
+
+  " Window size
+  set lines=40
+  set columns=140
+endif
+
+" =============================================================================
+" Platform-specific settings
+" =============================================================================
+
+if has('win32') || has('win64')
+  " Windows-specific settings
+  set shell=cmd.exe
+  set shellcmdflag=/c
+  set shellquote=
+  set shellxquote=
+
+  " Use PowerShell for certain commands (optional)
+  " set shell=powershell.exe
+  " set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
+endif
+
+" =============================================================================
+" Welcome message
+" =============================================================================
+
+autocmd VimEnter * if argc() == 0 | echo "Haki Vim - Ready for Development!" | endif
+
+" =============================================================================
+" End of configuration
+" =============================================================================

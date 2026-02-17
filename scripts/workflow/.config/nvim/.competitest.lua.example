@@ -1,0 +1,55 @@
+-- Example local .competitest.lua configuration
+-- Copy this file to your competitive programming directory and customize it
+-- This file will override global CompetiTest settings for this directory
+
+return {
+  -- Custom compile command for this directory
+  compile_command = {
+    cpp = {
+      exec = "g++",
+      args = {
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Wshadow",
+        "-DLOCAL", -- Define LOCAL macro for debugging
+        "$(FNAME)",
+        "-o",
+        "$(FNOEXT)"
+      }
+    },
+  },
+
+  -- Custom run command
+  run_command = {
+    cpp = { exec = "./$(FNOEXT)" },
+  },
+
+  -- Custom timeout (in milliseconds)
+  maximum_time = 2000, -- 2 seconds for this contest
+
+  -- Test case file format
+  testcases_single_file_format = "$(FNOEXT).testcases",
+
+  -- Received problems path template
+  -- $(PROBLEM) = problem name, $(FEXT) = file extension
+  received_problems_path = "$(CWD)/$(PROBLEM).$(FEXT)",
+
+  -- Contest directory structure
+  -- When receiving a contest, problems will be organized like:
+  -- contest_name/A/A.cpp, contest_name/B/B.cpp, etc.
+  received_contests_directory = "$(CWD)/$(CONTEST)",
+  received_contests_problems_path = "$(PROBLEM)/$(PROBLEM).$(FEXT)",
+
+  -- Use different template for this directory
+  template_file = {
+    cpp = "~/cp_templates/contest_template.cpp",
+  },
+}
+
+-- Usage:
+-- 1. Copy this file to your contest/problem directory
+-- 2. Rename to ".competitest.lua" (remove .example)
+-- 3. Customize settings as needed
+-- 4. CompetiTest will automatically use these settings in this directory
