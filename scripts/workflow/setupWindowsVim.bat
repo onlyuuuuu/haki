@@ -277,32 +277,31 @@ if not exist "%VIM_AUTOLOAD%" (
     mkdir "%VIM_AUTOLOAD%" 2>nul
 )
 
-if exist "%VIM_PLUG%" (
+if exist "!VIM_PLUG!" (
     echo [SKIP] vim-plug already installed
 ) else (
     echo Downloading vim-plug...
+    set "PLUG_DOWNLOADED=0"
 
     :: Try curl first (built into Windows 10 1803+)
     where curl >nul 2>&1
-    if errorLevel 1 (
-        :TryPowerShellDownload
-        :: Fallback to PowerShell
-        powershell -NoProfile -ExecutionPolicy Bypass -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' -OutFile '%VIM_PLUG%' -UseBasicParsing}" 2>nul
-        if errorLevel 1 (
+    if not errorLevel 1 (
+        curl -fLo "!VIM_PLUG!" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 2>nul
+        if not errorLevel 1 set "PLUG_DOWNLOADED=1"
+    )
+
+    if "!PLUG_DOWNLOADED!"=="1" (
+        echo [OK] vim-plug installed via curl
+    ) else (
+        echo [INFO] Trying PowerShell download...
+        powershell -NoProfile -ExecutionPolicy Bypass -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' -OutFile '!VIM_PLUG!' -UseBasicParsing}" 2>nul
+        if not errorLevel 1 (
+            echo [OK] vim-plug installed via PowerShell
+        ) else (
             echo [ERROR] Failed to download vim-plug
             echo [INFO] Please download manually from:
             echo https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-            echo Save to: %VIM_PLUG%
-        ) else (
-            echo [OK] vim-plug installed via PowerShell
-        )
-    ) else (
-        curl -fLo "%VIM_PLUG%" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 2>nul
-        if errorLevel 1 (
-            echo [WARNING] curl download failed, trying PowerShell...
-            goto :TryPowerShellDownload
-        ) else (
-            echo [OK] vim-plug installed via curl
+            echo Save to: !VIM_PLUG!
         )
     )
 )
@@ -382,14 +381,9 @@ if exist "%VIM_PLUG%" (
         echo [SKIP] Vim not found, skipping plugin installation
         echo [INFO] Run :PlugInstall manually after installing Vim
     ) else (
-        :: Create a temporary vim script to install plugins
-        set "INSTALL_SCRIPT=%TEMP%\vim_install_plugins.vim"
-        echo silent^! PlugInstall --sync > "!INSTALL_SCRIPT!"
-        echo qall^! >> "!INSTALL_SCRIPT!"
-
-        :: Run vim with the install script (show output for debugging if it hangs)
+        :: Run vim non-interactively to install plugins
         echo [INFO] Running Vim plugin installation, please wait...
-        vim -u "%USERPROFILE%\_vimrc" -S "!INSTALL_SCRIPT!"
+        vim --not-a-term -N -u "%USERPROFILE%\_vimrc" --cmd "set nomore" -c "silent! PlugInstall --sync" -c "qall!"
 
         if errorLevel 1 (
             echo [WARNING] Plugin installation may have encountered issues
@@ -397,9 +391,6 @@ if exist "%VIM_PLUG%" (
         ) else (
             echo [OK] Plugins installed successfully
         )
-
-        :: Clean up temporary script
-        del "!INSTALL_SCRIPT!" >nul 2>&1
     )
 ) else (
     echo [SKIP] vim-plug not installed, skipping plugin installation
@@ -519,13 +510,15 @@ exit /b 0
 
 :: Function to refresh PATH without restarting
 :RefreshPath
+set "SysPath="
+set "UsrPath="
 for /f "skip=2 tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH 2^>nul') do set "SysPath=%%b"
 for /f "skip=2 tokens=2*" %%a in ('reg query "HKCU\Environment" /v PATH 2^>nul') do set "UsrPath=%%b"
 if defined SysPath if defined UsrPath (
-    set "PATH=%SysPath%;%UsrPath%"
+    set "PATH=!SysPath!;!UsrPath!"
 ) else if defined SysPath (
-    set "PATH=%SysPath%"
+    set "PATH=!SysPath!"
 ) else if defined UsrPath (
-    set "PATH=%UsrPath%"
+    set "PATH=!UsrPath!"
 )
 exit /b 0

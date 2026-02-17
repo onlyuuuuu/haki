@@ -275,8 +275,38 @@ if %errorLevel% equ 0 (
 )
 echo.
 
+:: Install GNU Make
+echo [STEP 8] Installing GNU Make...
+where make >nul 2>&1
+if %errorLevel% equ 0 (
+    echo [SKIP] GNU Make already installed
+) else (
+    if defined PKG_MGR (
+        if "!PKG_MGR!"=="winget" (
+            echo Installing via winget...
+            winget install --id=GnuWin32.Make -e --silent --accept-package-agreements --accept-source-agreements 2>nul
+            if errorLevel 1 (
+                echo [WARNING] GNU Make installation failed
+                echo [INFO] Please install manually from https://gnuwin32.sourceforge.net/packages/make.htm
+            ) else (
+                echo [OK] GNU Make installed
+            )
+        ) else (
+            choco install make -y
+            if errorLevel 1 (
+                echo [WARNING] GNU Make installation failed
+            ) else (
+                echo [OK] GNU Make installed
+            )
+        )
+    ) else (
+        echo [SKIP] No package manager - GNU Make installation skipped
+    )
+)
+echo.
+
 :: Install a Nerd Font (optional but recommended for icons)
-echo [STEP 8] Installing Nerd Font...
+echo [STEP 9] Installing Nerd Font...
 if defined PKG_MGR (
     if "!PKG_MGR!"=="winget" (
         echo [INFO] Installing CascadiaCode Nerd Font...
@@ -296,13 +326,13 @@ if defined PKG_MGR (
 echo.
 
 :: Refresh PATH
-echo [STEP 9] Refreshing environment variables...
+echo [STEP 10] Refreshing environment variables...
 call :RefreshPath
 echo [OK] PATH refreshed
 echo.
 
 :: Setup NeoVim config
-echo [STEP 10] Setting up NeoVim configuration...
+echo [STEP 11] Setting up NeoVim configuration...
 
 :: Check if existing config is a symlink
 set "IS_SYMLINK=0"
@@ -387,7 +417,7 @@ if !LINK_CREATED!==0 (
 echo.
 
 :: Create CP templates directory
-echo [STEP 11] Creating competitive programming templates directory...
+echo [STEP 12] Creating competitive programming templates directory...
 set "CP_TEMPLATES=%USERPROFILE%\cp_templates"
 if not exist "%CP_TEMPLATES%" (
     mkdir "%CP_TEMPLATES%" 2>nul
@@ -402,7 +432,7 @@ if not exist "%CP_TEMPLATES%" (
 echo.
 
 :: Final verification
-echo [STEP 12] Verifying installation...
+echo [STEP 13] Verifying installation...
 echo.
 
 :: Check if nvim can be found
