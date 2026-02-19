@@ -199,8 +199,36 @@ if %errorLevel% equ 0 (
 )
 echo.
 
+:: Install fzf (for fuzzy finding)
+echo [STEP 6] Installing fzf...
+where fzf >nul 2>&1
+if %errorLevel% equ 0 (
+    echo [SKIP] fzf already installed
+) else (
+    if defined PKG_MGR (
+        if "!PKG_MGR!"=="winget" (
+            winget install --id=junegunn.fzf -e --silent --accept-package-agreements --accept-source-agreements 2>nul
+            if errorLevel 1 (
+                echo [SKIP] fzf installation failed ^(optional^)
+            ) else (
+                echo [OK] fzf installed
+            )
+        ) else (
+            choco install fzf -y
+            if errorLevel 1 (
+                echo [SKIP] fzf installation failed ^(optional^)
+            ) else (
+                echo [OK] fzf installed
+            )
+        )
+    ) else (
+        echo [SKIP] No package manager - fzf installation skipped
+    )
+)
+echo.
+
 :: Install Node.js (for LSP servers)
-echo [STEP 6] Installing Node.js...
+echo [STEP 7] Installing Node.js...
 where node >nul 2>&1
 if %errorLevel% equ 0 (
     echo [SKIP] Node.js already installed
@@ -233,7 +261,7 @@ if %errorLevel% equ 0 (
 echo.
 
 :: Install GCC (for treesitter compilation)
-echo [STEP 7] Installing GCC/C++ compiler...
+echo [STEP 8] Installing GCC/C++ compiler...
 where gcc >nul 2>&1
 if %errorLevel% equ 0 (
     echo [SKIP] GCC already installed
@@ -276,7 +304,7 @@ if %errorLevel% equ 0 (
 echo.
 
 :: Install GNU Make
-echo [STEP 8] Installing GNU Make...
+echo [STEP 9] Installing GNU Make...
 where make >nul 2>&1
 if %errorLevel% equ 0 (
     echo [SKIP] GNU Make already installed
@@ -306,7 +334,7 @@ if %errorLevel% equ 0 (
 echo.
 
 :: Install a Nerd Font (optional but recommended for icons)
-echo [STEP 9] Installing Nerd Font...
+echo [STEP 10] Installing Nerd Font...
 if defined PKG_MGR (
     if "!PKG_MGR!"=="winget" (
         echo [INFO] Installing CascadiaCode Nerd Font...
@@ -326,13 +354,13 @@ if defined PKG_MGR (
 echo.
 
 :: Refresh PATH
-echo [STEP 10] Refreshing environment variables...
+echo [STEP 11] Refreshing environment variables...
 call :RefreshPath
 echo [OK] PATH refreshed
 echo.
 
 :: Setup NeoVim config
-echo [STEP 11] Setting up NeoVim configuration...
+echo [STEP 12] Setting up NeoVim configuration...
 
 :: Check if existing config is a symlink
 set "IS_SYMLINK=0"
@@ -417,7 +445,7 @@ if !LINK_CREATED!==0 (
 echo.
 
 :: Create CP templates directory
-echo [STEP 12] Creating competitive programming templates directory...
+echo [STEP 13] Creating competitive programming templates directory...
 set "CP_TEMPLATES=%USERPROFILE%\cp_templates"
 if not exist "%CP_TEMPLATES%" (
     mkdir "%CP_TEMPLATES%" 2>nul
@@ -432,7 +460,7 @@ if not exist "%CP_TEMPLATES%" (
 echo.
 
 :: Final verification
-echo [STEP 13] Verifying installation...
+echo [STEP 14] Verifying installation...
 echo.
 
 :: Check if nvim can be found

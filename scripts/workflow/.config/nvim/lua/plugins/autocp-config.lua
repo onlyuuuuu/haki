@@ -114,11 +114,6 @@ return {
     config = function()
       require("auto-save").setup({
         enabled = true,
-        execution_message = {
-          message = function()
-            return "" -- Silent save
-          end,
-        },
         trigger_events = {"InsertLeave", "TextChanged"},
         condition = function(buf)
           local fn = vim.fn
