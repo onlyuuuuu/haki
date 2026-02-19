@@ -333,8 +333,36 @@ if %errorLevel% equ 0 (
 )
 echo.
 
+:: Install GNU sed
+echo [STEP 10] Installing GNU sed...
+where sed >nul 2>&1
+if %errorLevel% equ 0 (
+    echo [SKIP] GNU sed already installed
+) else (
+    if defined PKG_MGR (
+        if "!PKG_MGR!"=="winget" (
+            winget install --id=GnuWin32.Sed -e --silent --accept-package-agreements --accept-source-agreements 2>nul
+            if errorLevel 1 (
+                echo [SKIP] GNU sed installation failed ^(optional^)
+            ) else (
+                echo [OK] GNU sed installed
+            )
+        ) else (
+            choco install sed -y
+            if errorLevel 1 (
+                echo [SKIP] GNU sed installation failed ^(optional^)
+            ) else (
+                echo [OK] GNU sed installed
+            )
+        )
+    ) else (
+        echo [SKIP] No package manager - GNU sed installation skipped
+    )
+)
+echo.
+
 :: Install a Nerd Font (optional but recommended for icons)
-echo [STEP 10] Installing Nerd Font...
+echo [STEP 11] Installing Nerd Font...
 if defined PKG_MGR (
     if "!PKG_MGR!"=="winget" (
         echo [INFO] Installing CascadiaCode Nerd Font...
@@ -354,13 +382,13 @@ if defined PKG_MGR (
 echo.
 
 :: Refresh PATH
-echo [STEP 11] Refreshing environment variables...
+echo [STEP 12] Refreshing environment variables...
 call :RefreshPath
 echo [OK] PATH refreshed
 echo.
 
 :: Setup NeoVim config
-echo [STEP 12] Setting up NeoVim configuration...
+echo [STEP 13] Setting up NeoVim configuration...
 
 :: Check if existing config is a symlink
 set "IS_SYMLINK=0"
@@ -445,7 +473,7 @@ if !LINK_CREATED!==0 (
 echo.
 
 :: Create CP templates directory
-echo [STEP 13] Creating competitive programming templates directory...
+echo [STEP 14] Creating competitive programming templates directory...
 set "CP_TEMPLATES=%USERPROFILE%\cp_templates"
 if not exist "%CP_TEMPLATES%" (
     mkdir "%CP_TEMPLATES%" 2>nul
@@ -460,7 +488,7 @@ if not exist "%CP_TEMPLATES%" (
 echo.
 
 :: Final verification
-echo [STEP 14] Verifying installation...
+echo [STEP 15] Verifying installation...
 echo.
 
 :: Check if nvim can be found
