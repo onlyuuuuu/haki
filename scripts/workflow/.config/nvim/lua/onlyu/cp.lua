@@ -197,4 +197,4 @@ public class Main {
   end
 end
 
-print("Competitive Programming setup loaded! Use <leader>c for CP commands or F5 to run tests.")
+-- print("Competitive Programming setup loaded! Use <leader>c for CP commands or F5 to run tests.")
