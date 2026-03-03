@@ -339,24 +339,45 @@ where sed >nul 2>&1
 if %errorLevel% equ 0 (
     echo [SKIP] GNU sed already installed
 ) else (
-    if defined PKG_MGR (
-        if "!PKG_MGR!"=="winget" (
-            winget install --id=GnuWin32.Sed -e --silent --accept-package-agreements --accept-source-agreements 2>nul
-            if errorLevel 1 (
-                echo [SKIP] GNU sed installation failed ^(optional^)
-            ) else (
-                echo [OK] GNU sed installed
-            )
-        ) else (
+    set "SED_INSTALLED=0"
+    :: Prefer scoop (most reliable GNU sed on Windows)
+    where scoop >nul 2>&1
+    if not errorLevel 1 (
+        echo Installing via scoop...
+        scoop install sed
+        if not errorLevel 1 (
+            set "SED_INSTALLED=1"
+            echo [OK] GNU sed installed via scoop
+        )
+    )
+    :: Try choco next
+    if "!SED_INSTALLED!"=="0" (
+        where choco >nul 2>&1
+        if not errorLevel 1 (
+            echo Installing via chocolatey...
             choco install sed -y
-            if errorLevel 1 (
-                echo [SKIP] GNU sed installation failed ^(optional^)
-            ) else (
-                echo [OK] GNU sed installed
+            if not errorLevel 1 (
+                set "SED_INSTALLED=1"
+                echo [OK] GNU sed installed via chocolatey
             )
         )
-    ) else (
-        echo [SKIP] No package manager - GNU sed installation skipped
+    )
+    :: Winget GnuWin32 as last resort
+    if "!SED_INSTALLED!"=="0" (
+        if defined PKG_MGR (
+            if "!PKG_MGR!"=="winget" (
+                echo Installing via winget...
+                winget install --id=GnuWin32.Sed -e --silent --accept-package-agreements --accept-source-agreements 2>nul
+                if not errorLevel 1 (
+                    set "SED_INSTALLED=1"
+                    echo [OK] GNU sed installed via winget
+                )
+            )
+        )
+    )
+    if "!SED_INSTALLED!"=="0" (
+        echo [SKIP] GNU sed installation failed ^(optional^)
+        echo [INFO] Install manually with: scoop install sed  OR  choco install sed
     )
 )
 echo.
