@@ -110,7 +110,10 @@ if [[ "$(uname -a)" == *"Darwin"* ]]; then
 fi
 
 # PNPM
-export PATH="/home/onlyu/.local/share/pnpm:$PATH"
+export PATH="$HOME/.local/share/pnpm:$PATH"
+
+# Java
+export PATH="$HOME/.sdkman/candidates/java/current/bin:$PATH"
 
 # For Claude Code
 export BASH_DEFAULT_TIMEOUT_MS=2700000

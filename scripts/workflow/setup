@@ -515,7 +515,7 @@ else
 fi
 
 if [[ "$(uname -a)" == *"Linux"*"microsoft"* ]]; then
-  echo 0 | sudo -S ln -sf /home/onlyu/.sdkman/candidates/java/current/bin/java /usr/bin/java
+  echo 0 | sudo -S ln -sf $HOME/.sdkman/candidates/java/current/bin/java /usr/bin/java
 fi
 
 # Add Apple Terminal early exit check to shell configuration files
@@ -539,9 +539,9 @@ for config_file in "$HOME/.bash_profile" "$HOME/.zprofile" "/etc/bashrc" "/etc/z
 
     # Prepend to file
     if [[ "$config_file" == "/etc/"* ]]; then
-      echo -e "$temp_content\n$(cat "$config_file")" | sudo tee "$config_file" > /dev/null
+      sudo echo -e "$temp_content\n$(cat "$config_file")" | sudo tee "$config_file" > /dev/null
     else
-      echo -e "$temp_content\n$(cat "$config_file")" > "$config_file"
+      sudo echo -e "$temp_content\n$(cat "$config_file")" > "$config_file"
     fi
   fi
 done
