@@ -1,5 +1,5 @@
 # ================================ Aliases ================================
-alias claude='claude --dangerously-skip-permissions'
+alias claude='~/.local/bin/claude --dangerously-skip-permissions'
 alias gemini='gemini --yolo --model gemini-3-pro-preview'
 
 alias vi='nvim'

@@ -115,8 +115,11 @@ export PATH="$HOME/.local/share/pnpm:$PATH"
 # Java
 export PATH="$HOME/.sdkman/candidates/java/current/bin:$PATH"
 
+# SQLCL
+export PATH="/tools/sqlcl/bin:$PATH"
+
 # For Claude Code
 export BASH_DEFAULT_TIMEOUT_MS=2700000
 export BASH_MAX_TIMEOUT_MS=2700000
 export MCP_TIMEOUT=2700000
-
+export PATH="$HOME/.local/bin:$PATH"
