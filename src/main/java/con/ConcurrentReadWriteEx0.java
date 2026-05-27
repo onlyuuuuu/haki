@@ -31,8 +31,7 @@ public class ConcurrentReadWriteEx0
 
     static void process2(Coordinate coord)
     {
-        final Coordinate c = coord;
-        if (c.x != c.y)
+        if (coord.x != coord.y)
         {
             System.err.println("WRONG! Coordinates are suppose to be equal, but instead is different");
             return;
@@ -79,6 +78,8 @@ public class ConcurrentReadWriteEx0
 
     private static volatile ImmutableCoordinate sharedIC = new ImmutableCoordinate(5, 5);
 
+    private static volatile Coordinate _C = new Coordinate(5, 5);
+
     public static void main(String[] args)
     {
         System.out.println("ConcurrentReadWrite started...");
@@ -86,6 +87,8 @@ public class ConcurrentReadWriteEx0
         final Coordinate c = new Coordinate(5, 5);
 
         AtomicReference<ImmutableCoordinate> cRef = new AtomicReference<>(new ImmutableCoordinate(5, 5));
+
+        AtomicReference<Coordinate> arc = new AtomicReference<>(c);
 
         Thread t1 = new Thread(() -> {
             while(true)
@@ -102,10 +105,12 @@ public class ConcurrentReadWriteEx0
                 //process(sharedIC);
                 //process2(sharedIC);
 
-                final ImmutableCoordinate ic = sharedIC; // atomic read
-                c.x = ic.x;
-                c.y = ic.y;
-                process(c);
+//                final ImmutableCoordinate ic = sharedIC; // atomic read
+//                c.x = ic.x;
+//                c.y = ic.y;
+//                process(c);
+
+                process2(arc.get());
             }
         });
 
@@ -154,11 +159,33 @@ public class ConcurrentReadWriteEx0
             }
         });
 
+        Thread t6 = new Thread(() -> {
+            while(true)
+            {
+                for (int i = 1; i <= 10; i++)
+                {
+                    _C = new Coordinate(i, i);
+                }
+            }
+        });
+
+        Thread t7 = new Thread(() -> {
+            while(true)
+            {
+                for (int i = 1; i <= 10; i++)
+                {
+                    arc.set(new Coordinate(i, i));
+                }
+            }
+        });
+
         t1.start();
 //        t2.start();
 //        t3.start();
 //        t4.start();
-        t5.start();
+//        t5.start();
+//        t6.start();
+        t7.start();
     }
 
 }
