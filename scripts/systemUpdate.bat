@@ -49,5 +49,8 @@ echo ============================================================
 echo  All updates complete — %date% %time%
 echo ============================================================
 echo.
+
+call systemUpdate2.bat
+
 pause
 endlocal
